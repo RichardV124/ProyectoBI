@@ -7,14 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="AUDITORIA_LOGIN")
-public class AuditoriaLogin implements Serializable{
+@Table(name="AUDITORIA_ACCESO")
+public class AuditoriaAcceso implements Serializable{
 
 	@Id
 	@Column(name="ID")
@@ -37,11 +38,12 @@ public class AuditoriaLogin implements Serializable{
 	@Temporal(TemporalType.TIME)
 	private Date hora;
 	
-	@JoinColumn(name="LOGIN_USERNAME")
-	@ManyToOne(cascade={})
-	private Login login;
+	@JoinColumns({ @JoinColumn(name = "ACCESO_TIPO_USUARIO_TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO"),
+		@JoinColumn(name = "ACCESO_TIPO_USUARIO_ACCESO_ID", referencedColumnName = "ID_ACCESO") })
+	@ManyToOne
+	private AccesoTipoUsuario accessoTipoUsuario;
 	
-	public AuditoriaLogin() {
+	public AuditoriaAcceso() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -93,14 +95,13 @@ public class AuditoriaLogin implements Serializable{
 		this.hora = hora;
 	}
 
-	public Login getLogin() {
-		return login;
+	public AccesoTipoUsuario getAccessoTipoUsuario() {
+		return accessoTipoUsuario;
 	}
 
-	public void setLogin(Login login) {
-		this.login = login;
+	public void setAccessoTipoUsuario(AccesoTipoUsuario accessoTipoUsuario) {
+		this.accessoTipoUsuario = accessoTipoUsuario;
 	}
-
 	
 	
 }

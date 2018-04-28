@@ -6,22 +6,20 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="AUDITORIA_LOGIN")
-public class AuditoriaLogin implements Serializable{
+@Table(name="AUDITORIA_CONEXION")
+public class AuditoriaConexion implements Serializable{
 
 	@Id
 	@Column(name="ID")
 	private int id;
 	
-	@Column(name="INGRESO",nullable=false)
-	private boolean ingreso;
+	@Column(name="ACCION",length=40,nullable=false)
+	private String accion;
 	
 	@Column(name="NAVEGADOR",length=40, nullable=false)
 	private String navegador;
@@ -37,11 +35,7 @@ public class AuditoriaLogin implements Serializable{
 	@Temporal(TemporalType.TIME)
 	private Date hora;
 	
-	@JoinColumn(name="LOGIN_USERNAME")
-	@ManyToOne(cascade={})
-	private Login login;
-	
-	public AuditoriaLogin() {
+	public AuditoriaConexion() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -53,12 +47,12 @@ public class AuditoriaLogin implements Serializable{
 		this.id = id;
 	}
 
-	public boolean isIngreso() {
-		return ingreso;
+	public String getAccion() {
+		return accion;
 	}
 
-	public void setIngreso(boolean ingreso) {
-		this.ingreso = ingreso;
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 
 	public String getNavegador() {
@@ -92,15 +86,5 @@ public class AuditoriaLogin implements Serializable{
 	public void setHora(Date hora) {
 		this.hora = hora;
 	}
-
-	public Login getLogin() {
-		return login;
-	}
-
-	public void setLogin(Login login) {
-		this.login = login;
-	}
-
-	
 	
 }

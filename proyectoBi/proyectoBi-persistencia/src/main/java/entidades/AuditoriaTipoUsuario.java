@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,7 +39,7 @@ public class AuditoriaTipoUsuario implements Serializable{
 	private Date hora;
 	
 	@JoinColumn(name="TIPO_USUARIO_ID")
-	@ManyToMany(cascade={})
+	@ManyToOne(cascade={})
 	private TipoUsuario tipoUsuario;
 	
 	public AuditoriaTipoUsuario() {
