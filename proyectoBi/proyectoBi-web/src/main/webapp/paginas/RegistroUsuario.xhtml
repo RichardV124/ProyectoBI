@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Registro Usuarios" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+					<p:outputLabel for="tfcedusu" id="cedusu" value="Cedula" />
+					<p:inputText id="tfcedusu" class="form-control"  value="#{registroUsuarioController.cedula}" />
+					<p:message for="tfcedusu" />
+	
+					<p:outputLabel for="tfnomusu" id="nomusu" value="Nombre" />
+					<h:inputSecret id="tfnomusu" class="form-control"  value="#{registroUsuarioController.nombre}" />
+					<p:message for="tfnomusu" />
+					
+					<p:outputLabel for="tfapeusu" id="apeusu" value="Apellido" />
+					<h:inputSecret id="tfapeusu" class="form-control"  value="#{registroUsuarioController.apellido}" />
+					<p:message for="tfapeusu" />
+					
+					<h:outputLabel for="tftFechaNacimiento" value="Fecha Nacimiento" />
+					<h:inputText id="tftFechaNacimiento" value="#{registroUsuarioController.fechaNacimiento}" mode="inline"
+									a:placeholder="dia-mes-año" class="form-control">
+									<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tftFechaNacimiento" />
+					
+					<p:outputLabel for="cbgenusu" id="lbdptomedusu" value="Genero"  />
+					<h:selectOneMenu id="cbgenusu" class="form-control" value="#{registroUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{registroUsuarioController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptomedusu" />
+					
+					<p:outputLabel for="cbdptomed" id="lbdptomed" value="Departamento"  />
+					<h:selectOneMenu id="cbdptomed" class="form-control" value="#{registroUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{registroUsuarioController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptomed" />
+					
+					<p:outputLabel for="cbareausu" id="lbareausu" value="Area empresa"  />
+					<h:selectOneMenu id="cbareausu" class="form-control" value="#{registroUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{registroUsuarioController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbareausu" />
+					
+					<p:outputLabel for="cbtipousu" id="lbtipousu" value="Tipo usuario"  />
+					<h:selectOneMenu id="cbtipousu" class="form-control" value="#{registroUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{registroUsuarioController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbtipousu" />
+					
+					<p:outputLabel for="tfsalusu" id="salusu" value="Salario" />
+					<h:inputSecret id="tfsalusu" class="form-control"  value="#{registroUsuarioController.salario}" />
+					<p:message for="tfsalusu" />
+					
+					
+					
+				</h:panelGrid>
+				</p:fieldset>
+				</h:form>			
+				
+				<h:form prependId="false">
+				
+				<p:fieldset legend="Info inicio sesion" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+				<p:outputLabel for="tfreusu" id="reusu" value="Usuario" />
+				<p:inputText id="tfreusu" class="form-control"  value="#{registroUsuarioController.username}" />
+				<p:message for="tfreusu" />
+	
+				<p:outputLabel for="tfrepass" id="repass" value="Contraseña" />
+				<h:inputSecret id="tfrepass" class="form-control"  value="#{registroUsuarioController.password}" />
+				<p:message for="tfrepass" />
+				
+				<p:outputLabel for="tfrecopass" id="rcopass" value="Confirmar contraseña" />
+				<h:inputSecret id="tfrecopass" class="form-control"  value="#{registroUsuarioController.confirmarpassword}" />
+				<p:message for="tfrecopass" />
+				
+				<p:commandButton id="btregisusu" value="Registrarse" process="@this" action="/paginas/publico/login.xhtml?faces-redirect=false" />
+					
+				</h:panelGrid>
+				</p:fieldset>
+				
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>
