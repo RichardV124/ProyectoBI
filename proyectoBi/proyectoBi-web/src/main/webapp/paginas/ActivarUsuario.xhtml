@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Activar/Desactivar Usuario" style="margin-top:10px">
+			
+				<h:panelGrid columns="3">
+				<p:outputLabel for="tfbususu" id="bususu" value="Buscar Usuario" />
+				<h:inputSecret id="tfbususu" class="form-control"  value="#{ActivarUsuarioController.buscar}" />
+				<p:message for="bususu" />
+				<br></br>
+				<p:commandButton id="btbuscarusu" style="display:block" value="Buscar Usuario" process="@this" action="#" />
+				</h:panelGrid>
+				</p:fieldset>
+				</h:form>
+				
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablaEmp"  style="margin-top:15px">
+					<p:tab title="Estado Usuario">
+					<p:dataTable value="#{ActivarUsuarioController.rolAccesos}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Cedula
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Apellido
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Estado
+						</f:facet>
+							<p:commandButton action="#{GestionAccesosRolController.quitar(a)}" value="eliminar" update="gestion" process="@this" id="btnbuscar"/>
+						</p:column>
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>			
+
+	</ui:define>
+
+</ui:composition>
