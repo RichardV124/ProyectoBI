@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Gestion Acceso Rol" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+					<p:outputLabel for="cbgesrol" id="lbrol" value="Seleccione Rol"  />
+					<h:selectOneMenu id="cbgesrol" class="form-control" value="#{GestionAccesoRolController.rolSeleccionado}">
+					<f:selectItems value="#{GestionAccesoRolController.listaRol}" var="rol"
+					itemValue="#{rol}" itemLabel="#{rol.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{GestionAccesoRolController.listarRoles}"/>
+					</h:selectOneMenu>
+					<p:message for="lbrol" />
+					
+					<p:outputLabel for="cbgeacces" id="lbacceso" value="Seleccione Acceso"  />
+					<h:selectOneMenu id="cbgeacces" class="form-control" value="#{GestionAccesoRolController.accesoSeleccionado}">
+					<f:selectItems value="#{GestionAccesoRolController.listaDptos}" var="acceso"
+					itemValue="#{acceso}" itemLabel="#{dpto.descripcion}"/>
+					<f:ajax event="change" execute="@this" render="datosmed" listener="#{GestionAccesoRolController.listarAccesos}"/>
+					</h:selectOneMenu>
+					<p:message for="lbacceso" />
+					
+					<p:commandButton id="btAsignarPermi" value="Asignar permiso" process="@this" action="#" />
+					
+					
+				</h:panelGrid>
+				</p:fieldset>
+				</h:form>
+				
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablaEmp"  style="margin-top:15px">
+					<p:tab title="Accesos Rol">
+					<p:dataTable value="#{GestionAccesosRolController.rolAccesos}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Rol
+						</f:facet>
+							<p:outputLabel value="#{a.rol.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Acceso
+						</f:facet>
+							<p:outputLabel value="#{a.acceso.nombreAcceso}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Codigo Acceso
+						</f:facet>
+							<p:outputLabel value="#{a.acceso.codigo}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Eliminar Acceso
+						</f:facet>
+							<p:commandButton action="#{GestionAccesosRolController.quitar(a)}" value="eliminar" update="gestion" process="@this" id="btnbuscar"/>
+						</p:column>
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>			
+
+	</ui:define>
+
+</ui:composition>
