@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -23,7 +24,8 @@ public class TipoProducto implements Serializable{
 	
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TIPO_PRODUCTO_SEQ")
+    @SequenceGenerator(sequenceName = "tipo_producto_seq", allocationSize = 1, name = "TIPO_PRODUCTO_SEQ")
 	private int id;
 	
 	@Column(name="NOMBRE", nullable=false, length=50)

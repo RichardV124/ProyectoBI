@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +21,8 @@ public class AuditoriaLogin implements Serializable{
 
 	@Id
 	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_LOGIN_SEQ")
+    @SequenceGenerator(sequenceName = "auditoria_login_seq", allocationSize = 1, name = "AUDITORIA_LOGIN_SEQ")
 	private int id;
 	
 	@Column(name="INGRESO",nullable=false)

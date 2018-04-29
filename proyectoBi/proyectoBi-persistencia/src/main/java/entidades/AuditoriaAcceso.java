@@ -5,10 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +22,8 @@ public class AuditoriaAcceso implements Serializable{
 
 	@Id
 	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_ACCESO_SEQ")
+    @SequenceGenerator(sequenceName = "auditoria_acceso_seq", allocationSize = 1, name = "AUDITORIA_ACCESO_SEQ")
 	private int id;
 	
 	@Column(name="INGRESO",nullable=false)

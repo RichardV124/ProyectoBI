@@ -5,7 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +19,8 @@ public class AuditoriaConexion implements Serializable{
 
 	@Id
 	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_CONEXION_SEQ")
+    @SequenceGenerator(sequenceName = "auditoria_conexion_seq", allocationSize = 1, name = "AUDITORIA_CONEXION_SEQ")
 	private int id;
 	
 	@Column(name="ACCION",length=40,nullable=false)
