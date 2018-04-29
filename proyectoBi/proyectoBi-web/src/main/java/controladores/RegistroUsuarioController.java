@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
@@ -11,11 +12,17 @@ import javax.ws.rs.Encoded;
 
 import org.omnifaces.cdi.ViewScoped;
 
+import beans.DepartamentoEJB;
+import beans.GeneroEJB;
+import beans.MunicipioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
 import entidades.Departamento;
 import entidades.Genero;
+import entidades.Login;
 import entidades.Municipio;
+import entidades.TipoUsuario;
+import entidades.Usuario;
 
 @ViewScoped
 @Named("registroUsuarioController")
@@ -23,6 +30,15 @@ public class RegistroUsuarioController implements Serializable{
 
 	@EJB
 	private UsuarioEJB usuarioEJB;
+	
+	@EJB
+	private DepartamentoEJB departamentoEJB;
+	
+	@EJB
+	private MunicipioEJB municipioEJB;
+	
+	@EJB
+	private GeneroEJB generoEJB;
 	
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
@@ -36,15 +52,15 @@ public class RegistroUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar la fecha")
 	private Date fechaNacimiento;
 	
-	private Genero generoSeleccionado;
+	private int generoSeleccionado;
 	
 	private List<Genero> listaGeneros;
 	
-	private Municipio municipioSeleccionado;
+	private int municipioSeleccionado;
 	
 	private List<Municipio> listaMunicipios;
 	
-	private Departamento dptoSeleccionado;
+	private int dptoSeleccionado;
 	
 	private List<Departamento> listaDptos;
 	
@@ -57,10 +73,56 @@ public class RegistroUsuarioController implements Serializable{
 	@NotNull(message = "Debe confirmar la contraseña")
 	private String confirmarpassword;
 	
+	@PostConstruct
+	public void inicializar(){
+		// TODO Auto-generated constructor stub
+		llenarCombos();
+	}
 	
 	public void registrar(){
 		
+		Usuario usu = usuarioEJB.buscar(cedula, 2);
+		if(usu!=null){
+			
+			Usuario u =  new Usuario();
+			u.setCedula(cedula);
+			u.setNombre(nombre);
+			u.setApellido(apellido);
+			
+			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			u.setGenero(gen);
+			
+			AreaEmpresa area = new AreaEmpresa();
+			u.setAreaEmpresa(area);
+			
+			u.setfechaNacimiento(fechaNacimiento);
+			u.setSalario(0);
+			
+			TipoUsuario tipo = new TipoUsuario();
+			u.setTipoUsuario(tipo);
+			
+			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			u.setMunicipio(mun);
+			
+//			Login login = 
+			
+			usuarioEJB.crear(u, 2);
+		}
+		
 		limpiar();
+	}
+	
+	public void llenarCombos(){
+		listaDptos = departamentoEJB.listar(2);
+		listaGeneros = generoEJB.listar(2);
+		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+	}
+	
+	public void listarMunicipios(){
+		if(dptoSeleccionado!=0){
+			Departamento dpto = departamentoEJB.buscar(2, dptoSeleccionado);
+			listaMunicipios = municipioEJB.listar(2, dpto);	
+		}
 	}
 	
 	public void limpiar(){
@@ -68,117 +130,12 @@ public class RegistroUsuarioController implements Serializable{
 		nombre ="";
 		apellido ="";
 		fechaNacimiento =null;
-		generoSeleccionado= null;
-		municipioSeleccionado=null;
-		dptoSeleccionado=null;
 		username="";
 		password="";
 		confirmarpassword="";
+		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
 	}
 	
-
-	public String getCedula() {
-		return cedula;
-	}
-
-	public void setCedula(String cedula) {
-		this.cedula = cedula;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-	public Date getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public Genero getGeneroSeleccionado() {
-		return generoSeleccionado;
-	}
-
-	public void setGeneroSeleccionado(Genero generoSeleccionado) {
-		this.generoSeleccionado = generoSeleccionado;
-	}
-
-	public List<Genero> getListaGeneros() {
-		return listaGeneros;
-	}
-
-	public void setListaGeneros(List<Genero> listaGeneros) {
-		this.listaGeneros = listaGeneros;
-	}
-
-	public Municipio getMunicipioSeleccionado() {
-		return municipioSeleccionado;
-	}
-
-	public void setMunicipioSeleccionado(Municipio municipioSeleccionado) {
-		this.municipioSeleccionado = municipioSeleccionado;
-	}
-
-	public List<Municipio> getListaMunicipios() {
-		return listaMunicipios;
-	}
-
-	public void setListaMunicipios(List<Municipio> listaMunicipios) {
-		this.listaMunicipios = listaMunicipios;
-	}
-
-	public Departamento getDptoSeleccionado() {
-		return dptoSeleccionado;
-	}
-
-	public void setDptoSeleccionado(Departamento dptoSeleccionado) {
-		this.dptoSeleccionado = dptoSeleccionado;
-	}
-
-	public List<Departamento> getListaDptos() {
-		return listaDptos;
-	}
-
-	public void setListaDptos(List<Departamento> listaDptos) {
-		this.listaDptos = listaDptos;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getConfirmarpassword() {
-		return confirmarpassword;
-	}
-
-	public void setConfirmarpassword(String confirmarpassword) {
-		this.confirmarpassword = confirmarpassword;
-	}
+	
 		
 }

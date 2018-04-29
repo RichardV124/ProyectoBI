@@ -23,9 +23,6 @@ public class Login implements Serializable{
 	@Column(name="ACTIVO")
 	private boolean activo;
 	
-	@OneToOne
-	@JoinColumn(name="USUARIO_CEDULA",unique=true)
-	private Usuario usuario;
 
 	public String getUsername() {
 		return username;
@@ -50,15 +47,4 @@ public class Login implements Serializable{
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	
-	
-
 }

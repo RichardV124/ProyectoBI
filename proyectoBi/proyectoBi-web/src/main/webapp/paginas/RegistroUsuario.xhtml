@@ -40,8 +40,8 @@
 					<p:outputLabel for="cbdptousu" id="lbdptousu" value="Departamento"  />
 					<h:selectOneMenu id="cbdptousu" class="form-control" value="#{registroUsuarioController.dptoSeleccionado}">
 					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
-					itemValue="#{dpto}" itemLabel="#{dpto.nombre}"/>
-					<f:ajax event="change" execute="@this" render="datosusu" listener="#{registroUsuarioController.listarMunicipios}"/>
+					itemValue="#{dpto.id}" itemLabel="#{dpto.nombre}"/>
+					<f:ajax event="change" execute="@this" render="cbmunicipiousu" listener="#{registroUsuarioController.listarMunicipios}"/>
 					</h:selectOneMenu>
 					<p:message for="lbdptousu" />
 

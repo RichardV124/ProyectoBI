@@ -19,16 +19,16 @@ import excepciones.ExcepcionNegocio;
 public class Persistencia  implements Serializable{
 	
 	/**
-	 * Instancia a postgress (2)
-	 */
-	@PersistenceContext(unitName = "postgres")
-	private EntityManager emP;
-	
-	/**
 	 * Instancia a Oracle (1)
 	 */
 	@PersistenceContext(unitName = "oracle")
 	private EntityManager emO;
+	
+	/**
+	 * Instancia a postgress (2)
+	 */
+	@PersistenceContext(unitName = "postgres")
+	private EntityManager emP;
 	
 	
 	/**
@@ -120,6 +120,27 @@ public class Persistencia  implements Serializable{
 			return q.getResultList();
 		case 2:
 			Query p = emP.createNamedQuery(sql);
+			return p.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
+		}
+	}
+	
+	/**
+	 * Listar objetos
+	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
+	 * @return lista de los objetos encontrados
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object> listarConUnParametro(String sql, Object o){
+		switch (this.bd) {
+		case 1:
+			Query q = emO.createNamedQuery(sql);
+			q.setParameter(1, o);
+			return q.getResultList();
+		case 2:
+			Query p = emP.createNamedQuery(sql);
+			p.setParameter(1, o);
 			return p.getResultList();
 		default:
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");

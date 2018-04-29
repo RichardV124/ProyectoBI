@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,17 +36,17 @@ public class Usuario implements Serializable{
 	
 	@Column(name="FECHA_NACIMIENTO",nullable=false)
 	@Temporal(TemporalType.DATE)
-	private Date fechaResultado;
+	private Date fechaNacimiento;
 	
 	@JoinColumn(name="MUNICIPIO_ID")
 	@ManyToOne(cascade = {})
 	private Municipio municipio;
 	
-	@JoinColumn(name="AREA_EMPRESA_ID")
+	@JoinColumn(name="AREA_EMPRESA_ID", nullable=true)
 	@ManyToOne(cascade = {})
 	private AreaEmpresa areaEmpresa;
 	
-	@JoinColumn(name="TIPO_USUARIO_ID")
+	@JoinColumn(name="TIPO_USUARIO_ID", nullable=true)
 	@ManyToOne(cascade = {})
 	private TipoUsuario tipoUsuario;
 	
@@ -55,6 +56,10 @@ public class Usuario implements Serializable{
 	@JoinColumn(name="GENERO_ID")
 	@ManyToOne(cascade = {})
 	private Genero genero;
+	
+	@JoinColumn(name="LOGIN_USERNAME")
+	@OneToOne
+	private Login login;
 	
 	
 	public Usuario() {
@@ -92,13 +97,13 @@ public class Usuario implements Serializable{
 	}
 
 
-	public Date getFechaResultado() {
-		return fechaResultado;
+	public Date getfechaNacimiento() {
+		return fechaNacimiento;
 	}
 
 
-	public void setFechaResultado(Date fechaResultado) {
-		this.fechaResultado = fechaResultado;
+	public void setfechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 
@@ -149,6 +154,26 @@ public class Usuario implements Serializable{
 
 	public void setGenero(Genero genero) {
 		this.genero = genero;
+	}
+
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+
+	public Login getLogin() {
+		return login;
+	}
+
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 	
 	

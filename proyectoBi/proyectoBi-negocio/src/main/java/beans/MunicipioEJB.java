@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.Departamento;
 import entidades.Municipio;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -20,9 +21,10 @@ public class MunicipioEJB {
 	/**
 	 * metodo para listar los municipio registrados
 	 */
-	public List<Municipio> listar(int bd) {
+	public List<Municipio> listar(int bd, Departamento dpto) {
 		em.setBd(bd);	
-		List<Municipio> muns =  (List<Municipio>)(Object)em.listar(Municipio.CONSULTA_LISTAR_MUNICIPIOS);
+		
+		List<Municipio> muns =  (List<Municipio>)(Object)em.listarConUnParametro(Municipio.CONSULTA_LISTAR_MUNICIPIOS, dpto);
 		if (muns.isEmpty()) {
 			throw new ExcepcionNegocio("No hay municipios registrados en la base de datos");
 		} else {
