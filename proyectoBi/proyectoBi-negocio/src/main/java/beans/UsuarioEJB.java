@@ -8,6 +8,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import entidades.Usuario;
+import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
 
 @LocalBean
@@ -65,7 +66,13 @@ public class UsuarioEJB {
 	 */
 	public List<Usuario> listarUsuarios(int bd){
 		em.setBd(bd);	
-		return (List<Usuario>)(Object)em.listar(Usuario.CONSULTA_LISTAR_USUARIOS);
+		List<Usuario> usuarios= (List<Usuario>)(Object)em.listar(Usuario.CONSULTA_LISTAR_USUARIOS);
+		if (usuarios.isEmpty()) {
+			throw new ExcepcionNegocio("No hay usuarios registrados en la base de datos");
+		} else {
+			return usuarios;
+		}
+		
 	}
 	
 }

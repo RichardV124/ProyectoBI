@@ -59,6 +59,7 @@ public class RegistroUsuarioController implements Serializable{
 	
 	
 	public void registrar(){
+		
 		limpiar();
 	}
 	
