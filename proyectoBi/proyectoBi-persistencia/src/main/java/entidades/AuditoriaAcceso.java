@@ -43,8 +43,8 @@ public class AuditoriaAcceso implements Serializable{
 	@Temporal(TemporalType.TIME)
 	private Date hora;
 	
-	@JoinColumns({ @JoinColumn(name = "ACCESO_TIPO_USUARIO_TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO"),
-		@JoinColumn(name = "ACCESO_TIPO_USUARIO_ACCESO_ID", referencedColumnName = "ID_ACCESO") })
+	@JoinColumns({ @JoinColumn(name = "ATU_TIPO_USUARIO_ID", referencedColumnName = "ID_TIPO_USUARIO"),
+		@JoinColumn(name = "ATU_ACCESO_ID", referencedColumnName = "ID_ACCESO") })
 	@ManyToOne
 	private AccesoTipoUsuario accessoTipoUsuario;
 	
