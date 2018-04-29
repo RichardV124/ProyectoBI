@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Inicio sesion" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+					<p:outputLabel for="tfusu" id="usu" value="Usuario" />
+					<p:inputText id="tfusu" class="form-control"  value="#{usuarioController.username}" />
+					<p:message for="tfusu" />
+	
+					<p:outputLabel for="tfpass" id="pass" value="Contraseña" />
+					<h:inputSecret id="tfpass" class="form-control"  value="#{usuarioController.password}" />
+					<p:message for="tfpass" />
+					
+				</h:panelGrid>
+				
+				<p:commandButton value="Iniciar Sesion" ajax="false" action="#{usuarioController.login()}" />
+				<p:commandButton id="btregis" value="Registrarse" process="@this" action="/paginas/publico/login.xhtml?faces-redirect=false" />
+			</p:fieldset>
+			
+		</h:form>
+	</ui:define>
+
+</ui:composition>
