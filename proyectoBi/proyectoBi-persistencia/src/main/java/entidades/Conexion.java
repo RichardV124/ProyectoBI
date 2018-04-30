@@ -31,7 +31,7 @@ public class Conexion implements Serializable{
 	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
 	
-	@Column(name="ACTIVO", nullable=false)
+	@Column(name="ACTIVO", nullable=true)
 	private boolean activo;
 
 	
