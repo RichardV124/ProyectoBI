@@ -11,14 +11,17 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Encoded;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
+import beans.AuditoriaUsuarioEJB;
 import beans.DepartamentoEJB;
 import beans.GeneroEJB;
 import beans.LoginEJB;
 import beans.MunicipioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
+import entidades.AuditoriaUsuario;
 import entidades.Departamento;
 import entidades.Genero;
 import entidades.Login;
@@ -45,6 +48,9 @@ public class RegistroUsuarioController implements Serializable{
 	
 	@EJB
 	private LoginEJB loginEJB;
+	
+	@EJB
+	private AuditoriaUsuarioEJB auditoriaEJB;
 	
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
@@ -104,6 +110,7 @@ public class RegistroUsuarioController implements Serializable{
 			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
 			u.setMunicipio(mun);
 
+			//creando Login
 			Login login = new Login();
 			login.setActivo(false);
 			login.setUsername(username);
@@ -112,12 +119,24 @@ public class RegistroUsuarioController implements Serializable{
 			u.setLogin(login);
 
 			usuarioEJB.crear(u, 2);
+			
+			//creando auditoria
+			crearAuditoria(u, "Crear", 2);
+			
+			//limpiamos campos
 			limpiar();
 			Messages.addFlashGlobalInfo("Registro exitoso");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 
+	}
+	
+	public void crearAuditoria(Usuario u, String accion, int bd){
+		String browserDetails = Faces.getRequestHeader("User-Agent");
+		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		auditoria.setUsuario(u);
+		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	
 	public void llenarCombos(){
