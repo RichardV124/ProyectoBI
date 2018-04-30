@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,16 +20,21 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AUDITORIA_ACCESO")
+@NamedQueries({ 
+	@NamedQuery(name = AuditoriaAcceso.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM AuditoriaAcceso a") 
+	})
 public class AuditoriaAcceso implements Serializable{
 
+	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaAcceso.ListarAuditorias";
+	
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_ACCESO_SEQ")
     @SequenceGenerator(sequenceName = "auditoria_acceso_seq", allocationSize = 1, name = "AUDITORIA_ACCESO_SEQ")
 	private int id;
 	
-	@Column(name="INGRESO",nullable=false)
-	private boolean ingreso;
+	@Column(name="ACCION",nullable=false)
+	private String accion;
 	
 	@Column(name="NAVEGADOR",length=40, nullable=false)
 	private String navegador;
@@ -60,12 +67,13 @@ public class AuditoriaAcceso implements Serializable{
 		this.id = id;
 	}
 
-	public boolean isIngreso() {
-		return ingreso;
+
+	public String getAccion() {
+		return accion;
 	}
 
-	public void setIngreso(boolean ingreso) {
-		this.ingreso = ingreso;
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 
 	public String getNavegador() {
