@@ -15,7 +15,7 @@
 					<h:selectOneMenu id="cbgesrol" class="form-control"
 						value="#{GestionAccesoTipoUsuarioController.rolSeleccionado}">
 						<f:selectItems value="#{GestionAccesoTipoUsuarioController.roles}"
-							var="rol" itemValue="#{rol}" itemLabel="#{rol.descripcion}" />
+							var="rol" itemValue="#{rol.id}" itemLabel="#{rol.descripcion}" />
 						<f:ajax event="change" execute="@this" render="datosmed"
 							listener="#{GestionAccesoTipoUsuarioController.listarRoles}" />
 					</h:selectOneMenu>
@@ -26,7 +26,7 @@
 					<h:selectOneMenu id="cbgeacces" class="form-control"
 						value="#{GestionAccesoTipoUsuarioController.accesoSeleccionado}">
 						<f:selectItems value="#{GestionAccesoTipoUsuarioController.accesos}"
-							var="acceso" itemValue="#{acceso}"
+							var="acceso" itemValue="#{acceso.id}"
 							itemLabel="#{dpto.descripcion}" />
 						<f:ajax event="change" execute="@this" render="datosmed"
 							listener="#{GestionAccesoTipoUsuarioController.listarAccesos}" />
@@ -51,25 +51,29 @@
 
 			<p:accordionPanel id="panelTablaEmp" style="margin-top:15px">
 				<p:tab title="Accesos Rol">
-					<p:dataTable value="#{GestionAccesosRolController.rolAccesos}"
-						id="tabla" var="a" border="1">
+					<p:dataTable value="#{GestionAccesoTipoUsuarioController.accesosTipoUsuario}"
+						id="tabla" var="ac" border="1">
 
 						<p:column>
 							<f:facet name="header">
 							Rol
 						</f:facet>
+						<p:outputLabel value="#{ac.tipoUsuario}" />
 						</p:column>
+						
 
 						<p:column>
 							<f:facet name="header">
 							Acceso
 						</f:facet>
+						<p:outputLabel value="#{ac.acceso}" />
 						</p:column>
 
 						<p:column>
 							<f:facet name="header">
 							Codigo Acceso
 						</f:facet>
+						<p:outputLabel value="#{ac.acceso.id}" />
 						</p:column>
 
 						<p:column>
@@ -78,7 +82,7 @@
 						</f:facet>
 							<p:commandButton
 								action="#{GestionAccesosRolController.quitar(a)}"
-								value="eliminar" update="gestion" process="@this" id="btnbuscar" />
+								value="eliminar" update="panelTablaEmp" process="@this" id="btnbuscar" />
 						</p:column>
 
 					</p:dataTable>

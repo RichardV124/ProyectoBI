@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import entidades.AccesoTipoUsuario;
+import entidades.AccesoTipoUsuarioPK;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 
@@ -54,6 +56,22 @@ public class Persistencia  implements Serializable{
 		}
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void crearAccesoTipoUsuario(AccesoTipoUsuario accesoTipo){
+		// TODO Auto-generated method stub
+		AccesoTipoUsuarioPK atuPK = new AccesoTipoUsuarioPK();
+//		System.out.println("ROL: " +accesoTipo.getTipoUsuario().getId());
+//		System.out.println("ACCESO: " +accesoTipo.getAcceso().getId());
+		
+		
+		atuPK.setAcceso(accesoTipo.getAcceso().getId());
+		atuPK.setTipoUsuario(accesoTipo.getTipoUsuario().getId());
+		AccesoTipoUsuario atu = (AccesoTipoUsuario) buscar(AccesoTipoUsuario.class,atuPK);
+		if (atu == null) {
+			emP.persist(accesoTipo);;
+		}
+	}
+	
 	/**
 	 * Edita en la base de datos
 	 */
@@ -88,7 +106,6 @@ public class Persistencia  implements Serializable{
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
 	}
-	
 	
 	/**
 	 * Busca en una base de datos determinada
