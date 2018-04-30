@@ -75,6 +75,8 @@ public class GestionUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar el apellido")
 	private String apellido;
 	
+	private String salario;
+	
 	private Date fechaNacimiento;
 	
 	private int generoSeleccionado;
@@ -121,8 +123,9 @@ public class GestionUsuarioController implements Serializable{
 			u.setCedula(cedula);
 			u.setNombre(nombre);
 			u.setApellido(apellido);
+			u.setSalario(Double.parseDouble(salario));
 
-			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			Genero gen = generoEJB.buscar(sesion.getBd(), generoSeleccionado);
 			u.setGenero(gen);
 			u.setAreaEmpresa(null);
 
@@ -130,21 +133,27 @@ public class GestionUsuarioController implements Serializable{
 			u.setSalario(0);
 			u.setTipoUsuario(null);
 
-			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
 			u.setMunicipio(mun);
 
+			AreaEmpresa area = areaEmpresaEJB.buscar(areaSeleccionada, sesion.getBd());
+			u.setAreaEmpresa(area);
+			
+			TipoUsuario rol = tipoUsuarioEJB.buscar(rolSeleccionado, sesion.getBd());
+			u.setTipoUsuario(rol);
+			
 			//creando Login
 			Login login = new Login();
 			login.setActivo(false);
 			login.setUsername(username);
 			login.setPassword(password);
-			loginEJB.crear(login, 2);
+			loginEJB.crear(login, sesion.getBd());
 			u.setLogin(login);
 
-			usuarioEJB.crear(u, 2);
+			usuarioEJB.crear(u, sesion.getBd());
 			
 			//creando auditoria
-			crearAuditoria(u, "Crear", 2);
+			crearAuditoria(u, "Crear", sesion.getBd());
 			
 			//limpiamos campos
 			limpiar();
@@ -157,23 +166,23 @@ public class GestionUsuarioController implements Serializable{
 	
 	public void buscar(){
 		try{
-			Usuario u = usuarioEJB.buscar(cedulab, 2);
+			Usuario u = usuarioEJB.buscar(cedulab, sesion.getBd());
 			cedula=u.getCedula();
 			nombre=u.getNombre();
 			apellido=u.getApellido();
 			fechaNacimiento=u.getfechaNacimiento();
-			areaSeleccionada=areaEmpresaEJB.buscar(u.getAreaEmpresa().getId(), 2).getId();
-			dptoSeleccionado=departamentoEJB.buscar(2,u.getMunicipio().getDepartamento().getId()).getId();
-			municipioSeleccionado=municipioEJB.buscar(2,u.getMunicipio().getId()).getId();
-			generoSeleccionado=generoEJB.buscar(2, u.getGenero().getId()).getId();
-			rolSeleccionado=tipoUsuarioEJB.buscar(u.getTipoUsuario().getId(), 2).getId();
+			areaSeleccionada=areaEmpresaEJB.buscar(u.getAreaEmpresa().getId(), sesion.getBd()).getId();
+			dptoSeleccionado=departamentoEJB.buscar(sesion.getBd(),u.getMunicipio().getDepartamento().getId()).getId();
+			municipioSeleccionado=municipioEJB.buscar(sesion.getBd(),u.getMunicipio().getId()).getId();
+			generoSeleccionado=generoEJB.buscar(sesion.getBd(), u.getGenero().getId()).getId();
+			rolSeleccionado=tipoUsuarioEJB.buscar(u.getTipoUsuario().getId(), sesion.getBd()).getId();
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
 	
 	public void eliminar(){
-		usuarioEJB.eliminar(usuarioEJB.buscar(cedula, 2), 2);
+		usuarioEJB.eliminar(usuarioEJB.buscar(cedula, sesion.getBd()), sesion.getBd());
 	}
 	
 	public void editar(){
@@ -183,7 +192,7 @@ public class GestionUsuarioController implements Serializable{
 	public void borrar(Usuario usu){
 		try {
 			Messages.addFlashGlobalInfo("borrando...");
-			usuarioEJB.eliminar(usu, 2);
+			usuarioEJB.eliminar(usu, sesion.getBd());
 			Messages.addFlashGlobalInfo("Borrado exitoso");
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
@@ -194,18 +203,19 @@ public class GestionUsuarioController implements Serializable{
 	public void crearAuditoria(Usuario u, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
 		AuditoriaUsuario auditoria = new AuditoriaUsuario();
-		auditoria.setUsuario(u);
+		auditoria.setEntidad("Usuario");
+		auditoria.setObjetoAuditado(u.getCedula());
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	
 	public void llenarCombos(){
 		try{
-			listaDptos = departamentoEJB.listar(2);
-			listaGeneros = generoEJB.listar(2);
-			listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
-			listaAreas = areaEmpresaEJB.listarUsuarios(2);
-			listaRoles = tipoUsuarioEJB.listar(2);
-			usuarios = usuarioEJB.listarUsuarios(2);
+			listaDptos = departamentoEJB.listar(sesion.getBd());
+			listaGeneros = generoEJB.listar(sesion.getBd());
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
+			listaAreas = areaEmpresaEJB.listarUsuarios(sesion.getBd());
+			listaRoles = tipoUsuarioEJB.listar(sesion.getBd());
+			usuarios = usuarioEJB.listarUsuarios(sesion.getBd());
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -213,8 +223,8 @@ public class GestionUsuarioController implements Serializable{
 	
 	public void listarMunicipios(){
 		if(dptoSeleccionado!=0){
-			Departamento dpto = departamentoEJB.buscar(2, dptoSeleccionado);
-			listaMunicipios = municipioEJB.listar(2, dpto);	
+			Departamento dpto = departamentoEJB.buscar(sesion.getBd(), dptoSeleccionado);
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), dpto);	
 		}
 	}
 	
@@ -226,7 +236,7 @@ public class GestionUsuarioController implements Serializable{
 		username="";
 		password="";
 		confirmarpassword="";
-		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
 	}
 
 	public String getCedula() {
@@ -379,6 +389,14 @@ public class GestionUsuarioController implements Serializable{
 
 	public void setCedulab(String cedulab) {
 		this.cedulab = cedulab;
+	}
+
+	public String getSalario() {
+		return salario;
+	}
+
+	public void setSalario(String salario) {
+		this.salario = salario;
 	}	
 		
 	

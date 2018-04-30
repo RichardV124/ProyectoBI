@@ -79,10 +79,10 @@ public class Persistencia  implements Serializable{
 	public void eliminar(Object objeto){
 		switch (this.bd) {
 		case 1:
-			emO.remove(objeto);
+			emO.remove(emO.merge(objeto));
 			break;
 		case 2:
-			emP.remove(objeto);
+			emP.remove(emP.merge(objeto));
 			break;
 		default:
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");

@@ -115,7 +115,6 @@ public class RegistroUsuarioController implements Serializable{
 			login.setActivo(false);
 			login.setUsername(username);
 			login.setPassword(password);
-			loginEJB.crear(login, 2);
 			u.setLogin(login);
 
 			usuarioEJB.crear(u, 2);
@@ -135,7 +134,8 @@ public class RegistroUsuarioController implements Serializable{
 	public void crearAuditoria(Usuario u, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
 		AuditoriaUsuario auditoria = new AuditoriaUsuario();
-		auditoria.setUsuario(u);
+		auditoria.setEntidad("Usuario");
+		auditoria.setObjetoAuditado(u.getCedula());
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	

@@ -80,7 +80,11 @@
 						<f:selectItems value="#{gestionUsuarioController.listaAreas}"
 							var="area" itemValue="#{area.id}" itemLabel="#{area.nombre}" />
 					</h:selectOneMenu>
-					<p:message for="lbareusuge" />		
+					<p:message for="lbareusuge" />	
+					
+					<p:outputLabel for="tfsalario" id="salario" value="Salario" />
+					<p:inputText id="tfsalario" class="form-control" placeholder="Salario"  value="#{gestionUsuarioController.salario}" />
+					<p:message for="tfsalario" />	
 					
 					<p:commandButton id="btregusuge" value="Registrar" action="#{gestionUsuarioController.registrar}"
 					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
@@ -122,6 +126,13 @@
 							Apellido
 						</f:facet>
 						<p:outputLabel value="#{usu.apellido}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Salario
+						</f:facet>
+						<p:outputLabel value="#{usu.salario}" />
 						</p:column>
 						
 						<p:column>
