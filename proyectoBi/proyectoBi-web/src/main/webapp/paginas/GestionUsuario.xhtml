@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+		
+		<p:fieldset legend="Buscar Usuario" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+					<p:outputLabel for="tfbususu" id="usu" value="Cedula" />
+					<p:inputText id="tfbususu" class="form-control" placeholder="cedula" value="#{GestionUsuarioController.cedula}" />
+					<p:message for="tfbususu" />
+	
+					<br></br>
+					
+				</h:panelGrid>
+				
+				<p:commandButton value="Buscar" ajax="false" action="#{GestionUsuarioController.buscar}" />
+			</p:fieldset>
+		
+			<p:fieldset legend="Gestion Usuarios" style="margin-top:10px">
+				<h:panelGrid columns="3" id="datogessusu">
+				
+					<p:outputLabel for="tfcedusuge" id="cedusug" value="Cedula" />
+					<p:inputText id="tfcedusuge" class="form-control" placeholder="cedula" value="#{GestionUsuarioController.cedula}" />
+					<p:message for="tfcedusuge" />
+	
+					<p:outputLabel for="tfnomusuge" id="nomusuge" value="Nombre" />
+					<p:inputText id="tfnomusuge" class="form-control" placeholder="nombre" value="#{GestionUsuarioController.nombre}" />
+					<p:message for="tfnomusuge" />
+					
+					<p:outputLabel for="tfapeusu" id="apeusu" value="Apellido" />
+					<p:inputText id="tfapeusu" class="form-control" placeholder="apellido"  value="#{GestionUsuarioController.apellido}" />
+					<p:message for="tfapeusu" />
+					
+					<h:outputLabel for="tftFechaNacimientog" value="Fecha Nacimiento" />
+					<h:inputText id="tftFechaNacimientog" value="#{GestionUsuarioController.fechaNacimiento}" mode="inline"
+									a:placeholder="dia-mes-año" class="form-control">
+									<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tftFechaNacimientog" />
+					
+					<p:outputLabel for="cbgenusuge" id="lbdptomedusuge" value="Genero"  />
+					<h:selectOneMenu id="cbgenusuge" class="form-control" value="#{GestionUsuarioController.generoSeleccionado}">
+					<f:selectItems value="#{GestionUsuarioController.listaGeneros}" var="genero"
+					itemValue="#{genero}" itemLabel="#{genero.nombre}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptomedusuge" />
+					
+					<p:outputLabel for="cbdptousuge" id="lbdptousuge" value="Departamento"  />
+					<h:selectOneMenu id="cbdptousuge" class="form-control" value="#{GestionUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{GestionUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.nombre}"/>
+					<f:ajax event="change" execute="@this" render="datosusu" listener="#{GestionUsuarioController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptousuge" />
+
+					<p:outputLabel for="cbmunicipiousu" id="lbmunicipiousu" value="Municipio" />
+					<h:selectOneMenu id="cbmunicipiousu" class="form-control" value="#{GestionUsuarioController.municipioSeleccionado}">
+						<f:selectItems value="#{GestionUsuarioController.listaMunicipios}"
+							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbmunicipiousu" />	
+					
+					<p:outputLabel for="tftelege" id="telusug" value="Telefono" />
+					<p:inputText id="tftelege" class="form-control" placeholder="telefono" value="#{GestionUsuarioController.telefono}" />
+					<p:message for="tftelege" />	
+					
+					<p:outputLabel for="cbrolusuge" id="lbrolusug" value="Rol" />
+					<h:selectOneMenu id="cbrolusuge" class="form-control" value="#{GestionUsuarioController.rolSeleccionado}">
+						<f:selectItems value="#{GestionUsuarioController.listaRoles}"
+							var="r" itemValue="#{r}" itemLabel="#{r.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbrolusug" />		
+					
+					<p:outputLabel for="cbareusuge" id="lbareusuge" value="Area Empresa" />
+					<h:selectOneMenu id="cbareusuge" class="form-control" value="#{GestionUsuarioController.areaSeleccionado}">
+						<f:selectItems value="#{GestionUsuarioController.listaAreas}"
+							var="area" itemValue="#{area}" itemLabel="#{area.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbareusuge" />		
+					
+					<p:commandButton id="btregusuge" value="Registrar" action="#{GestionUsuarioController.registrar}"
+					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
+					 
+					 <p:commandButton id="btediusuge" value="Editar" action="#{GestionUsuarioController.editar}"
+					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
+					 
+					 <p:commandButton id="bteliusu" value="Eliminar" action="#{GestionUsuarioController.eliminar}"
+					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
+					 
+					 
+					
+					
+				</h:panelGrid>
+				</p:fieldset>
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablaUsuGe"  style="margin-top:15px">
+					<p:tab title="Usuarios Registrados">
+					<p:dataTable value="#{GestionUsuarioController.usuario}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Cedula
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Apellido
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Usuario
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Contraseña
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Area Empresa
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Rol
+						</f:facet>
+						</p:column>
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>
+				
+				
+				
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>

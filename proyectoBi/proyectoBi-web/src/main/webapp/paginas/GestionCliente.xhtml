@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Registro Clientes" style="margin-top:10px">
+				<h:panelGrid columns="3" id="datosusu">
+				
+					<p:outputLabel for="tfcedcli" id="cedcli" value="Cedula" />
+					<p:inputText id="tfcedcli" class="form-control"  value="#{GestionClienteController.cedula}" />
+					<p:message for="tfcedcli" />
+	
+					<p:outputLabel for="tfnomcli" id="nomcli" value="Nombre" />
+					<p:inputText id="tfnomcli" class="form-control"  value="#{GestionClienteController.nombre}" />
+					<p:message for="tfnomcli" />
+					
+					<p:outputLabel for="tfapecli" id="apecli" value="Apellido" />
+					<p:inputText id="tfapecli" class="form-control"  value="#{GestionClienteController.apellido}" />
+					<p:message for="tfapecli" />
+					
+					<h:outputLabel for="tftFechaNacimientocli" value="Fecha Nacimiento" />
+					<h:inputText id="tftFechaNacimientocli" value="#{GestionClienteController.fechaNacimiento}" mode="inline"
+									a:placeholder="dia-mes-año" class="form-control">
+									<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tftFechaNacimientocli" />
+					
+					<p:outputLabel for="cbgencli" id="lbdptomedusu" value="Genero"  />
+					<h:selectOneMenu id="cbgencli" class="form-control" value="#{GestionClienteController.generoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaGeneros}" var="genero"
+					itemValue="#{genero}" itemLabel="#{genero.nombre}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptomedusu" />
+					
+					<p:outputLabel for="cbdptocli" id="lbdptocli" value="Departamento"  />
+					<h:selectOneMenu id="cbdptocli" class="form-control" value="#{GestionClienteController.dptoSeleccionado}">
+					<f:selectItems value="#{registroUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto}" itemLabel="#{dpto.nombre}"/>
+					<f:ajax event="change" execute="@this" render="datosusu" listener="#{GestionClienteController.listarMunicipios}"/>
+					</h:selectOneMenu>
+					<p:message for="lbdptocli" />
+
+					<p:outputLabel for="cbmunicipiocli" id="lbmunicipiocli"
+						value="Municipio" />
+					<h:selectOneMenu id="cbmunicipiocli" class="form-control"
+						value="#{GestionClienteController.municipioSeleccionado}">
+						<f:selectItems value="#{registroUsuarioController.listaMunicipios}"
+							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbmunicipiocli" />					
+					
+					
+				</h:panelGrid>
+				</p:fieldset>
+				</h:form>			
+				
+				<h:form prependId="false">
+				
+				<p:fieldset legend="Info inicio sesion" style="margin-top:10px">
+				<h:panelGrid columns="3" id="datocliente">
+				
+				<p:outputLabel for="tfrecli" id="recli" value="Usuario" />
+				<p:inputText id="tfrecli" class="form-control"  value="#{GestionClienteController.username}" />
+				<p:message for="tfrecli" />
+	
+				<p:outputLabel for="tfrepascli" id="repasscli" value="Contraseña" />
+				<h:inputSecret id="tfrepascli" class="form-control"  value="#{GestionClienteController.password}" />
+				<p:message for="tfrepascli" />
+				
+				<p:outputLabel for="tfrecopascli" id="rcopasscli" value="Confirmar contraseña" />
+				<h:inputSecret id="tfrecopascli" class="form-control"  value="#{GestionClienteController.confirmarpassword}" />
+				<p:message for="tfrecopascli" />
+				
+				<p:commandButton id="btcli" value="Registrarse" action="#{GestionClienteController.registrar}"
+					 process="@this " update="" />
+					
+				</h:panelGrid>
+				</p:fieldset>
+				
+				<p:accordionPanel id="panelTablacliente"  style="margin-top:15px">
+					<p:tab title="Tipos Registrados">
+					<p:dataTable value="#{GestionClienteController.tipoproducto}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Cedula
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Apellido
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Fecha
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Genero
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Municipio
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Usuario
+						</f:facet>
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>
