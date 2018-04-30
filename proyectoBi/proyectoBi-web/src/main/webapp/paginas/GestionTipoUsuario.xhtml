@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false" id="gestion">
+			<p:fieldset legend="Gestion Tipo Usuario" style="margin-top:10px">
+				<h:panelGrid columns="1" id="datostipousu">
+				
+					<p:accordionPanel id="panelTablatipo" >
+					<p:tab title="Tipos Usuarios">
+						<p:dataTable value="#{GestionTipoUsuario.tipousuario}" id="tablatipo"
+							var="a" border="1">
+							
+							<p:column>
+								<f:facet name="header">
+								Codigo
+							</f:facet>
+								<p:outputLabel value="#{a.codigo}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Nombre
+							</f:facet>
+								<p:outputLabel value="#{a.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Descripcion
+							</f:facet>
+								<p:outputLabel value="#{a.descripcion}" />
+							</p:column>
+													
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>		
+
+				</h:panelGrid>
+				</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
