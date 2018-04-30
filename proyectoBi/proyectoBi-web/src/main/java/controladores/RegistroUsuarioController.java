@@ -4,18 +4,28 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Encoded;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Messages;
 
+import beans.DepartamentoEJB;
+import beans.GeneroEJB;
+import beans.LoginEJB;
+import beans.MunicipioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
 import entidades.Departamento;
 import entidades.Genero;
+import entidades.Login;
 import entidades.Municipio;
+import entidades.TipoUsuario;
+import entidades.Usuario;
+import excepciones.ExcepcionNegocio;
 
 @ViewScoped
 @Named("registroUsuarioController")
@@ -23,6 +33,18 @@ public class RegistroUsuarioController implements Serializable{
 
 	@EJB
 	private UsuarioEJB usuarioEJB;
+	
+	@EJB
+	private DepartamentoEJB departamentoEJB;
+	
+	@EJB
+	private MunicipioEJB municipioEJB;
+	
+	@EJB
+	private GeneroEJB generoEJB;
+	
+	@EJB
+	private LoginEJB loginEJB;
 	
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
@@ -36,15 +58,15 @@ public class RegistroUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar la fecha")
 	private Date fechaNacimiento;
 	
-	private Genero generoSeleccionado;
+	private int generoSeleccionado;
 	
 	private List<Genero> listaGeneros;
 	
-	private Municipio municipioSeleccionado;
+	private int municipioSeleccionado;
 	
 	private List<Municipio> listaMunicipios;
 	
-	private Departamento dptoSeleccionado;
+	private int dptoSeleccionado;
 	
 	private List<Departamento> listaDptos;
 	
@@ -57,10 +79,62 @@ public class RegistroUsuarioController implements Serializable{
 	@NotNull(message = "Debe confirmar la contraseña")
 	private String confirmarpassword;
 	
+	@PostConstruct
+	public void inicializar(){
+		// TODO Auto-generated constructor stub
+		llenarCombos();
+	}
 	
-	public void registrar(){
-		
-		limpiar();
+	public void registrar() {
+
+		try {
+			Usuario u = new Usuario();
+			u.setCedula(cedula);
+			u.setNombre(nombre);
+			u.setApellido(apellido);
+
+			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			u.setGenero(gen);
+			u.setAreaEmpresa(null);
+
+			u.setfechaNacimiento(fechaNacimiento);
+			u.setSalario(0);
+			u.setTipoUsuario(null);
+
+			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			u.setMunicipio(mun);
+
+			Login login = new Login();
+			login.setActivo(false);
+			login.setUsername(username);
+			login.setPassword(password);
+			loginEJB.crear(login, 2);
+			u.setLogin(login);
+
+			usuarioEJB.crear(u, 2);
+			limpiar();
+			Messages.addFlashGlobalInfo("Registro exitoso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+
+	}
+	
+	public void llenarCombos(){
+		try{
+			listaDptos = departamentoEJB.listar(2);
+			listaGeneros = generoEJB.listar(2);
+			listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		}catch(ExcepcionNegocio e){
+			
+		}
+	}
+	
+	public void listarMunicipios(){
+		if(dptoSeleccionado!=0){
+			Departamento dpto = departamentoEJB.buscar(2, dptoSeleccionado);
+			listaMunicipios = municipioEJB.listar(2, dpto);	
+		}
 	}
 	
 	public void limpiar(){
@@ -68,14 +142,11 @@ public class RegistroUsuarioController implements Serializable{
 		nombre ="";
 		apellido ="";
 		fechaNacimiento =null;
-		generoSeleccionado= null;
-		municipioSeleccionado=null;
-		dptoSeleccionado=null;
 		username="";
 		password="";
 		confirmarpassword="";
+		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
 	}
-	
 
 	public String getCedula() {
 		return cedula;
@@ -109,11 +180,11 @@ public class RegistroUsuarioController implements Serializable{
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Genero getGeneroSeleccionado() {
+	public int getGeneroSeleccionado() {
 		return generoSeleccionado;
 	}
 
-	public void setGeneroSeleccionado(Genero generoSeleccionado) {
+	public void setGeneroSeleccionado(int generoSeleccionado) {
 		this.generoSeleccionado = generoSeleccionado;
 	}
 
@@ -125,11 +196,11 @@ public class RegistroUsuarioController implements Serializable{
 		this.listaGeneros = listaGeneros;
 	}
 
-	public Municipio getMunicipioSeleccionado() {
+	public int getMunicipioSeleccionado() {
 		return municipioSeleccionado;
 	}
 
-	public void setMunicipioSeleccionado(Municipio municipioSeleccionado) {
+	public void setMunicipioSeleccionado(int municipioSeleccionado) {
 		this.municipioSeleccionado = municipioSeleccionado;
 	}
 
@@ -141,11 +212,11 @@ public class RegistroUsuarioController implements Serializable{
 		this.listaMunicipios = listaMunicipios;
 	}
 
-	public Departamento getDptoSeleccionado() {
+	public int getDptoSeleccionado() {
 		return dptoSeleccionado;
 	}
 
-	public void setDptoSeleccionado(Departamento dptoSeleccionado) {
+	public void setDptoSeleccionado(int dptoSeleccionado) {
 		this.dptoSeleccionado = dptoSeleccionado;
 	}
 
