@@ -75,4 +75,21 @@ public class UsuarioEJB {
 		
 	}
 	
+
+	/**
+	 * Buscar un usuario por username
+	 * @param username el username del usuario a buscar
+	 * @param bd base de datos en la que buscara
+	 * @return el usuario en contrado, de lo contrario null
+	 */
+	public Usuario buscarPorUsername(String username, int bd){
+		em.setBd(bd);
+		List<Object> lista = em.listarConParametroString(Usuario.buscarPorUsername,username);
+		if(lista.size() > 0){
+			return (Usuario)lista.get(0);
+		}else{
+			return null;
+		}
+	}
+	
 }

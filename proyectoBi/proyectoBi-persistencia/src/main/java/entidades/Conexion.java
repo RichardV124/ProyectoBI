@@ -13,28 +13,34 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ACCESO")
+@Table(name="CONEXION")
 @NamedQueries({
-	@NamedQuery(name=Acceso.listarAccesos,query="SELECT a FROM Acceso a")
+	@NamedQuery(name=Conexion.listarTodas,query="SELECT c FROM Conexion c")		
 })
-public class Acceso implements Serializable{
+public class Conexion implements Serializable{
 	
-	public static final String listarAccesos = "Acceso.listarAccesos";
+	
+	public static final String listarTodas = "Conexion.listar";
 	
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCESO_SEQ")
-    @SequenceGenerator(sequenceName = "acceso_seq", allocationSize = 1, name = "ACCESO_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONEXION_SEQ")
+    @SequenceGenerator(sequenceName = "municipio_seq", allocationSize = 1, name = "CONEXION_SEQ")
 	private int id;
 	
-	@Column(name="url",length=40)
-	private String url;
-	
-	@Column(name="nombre",length=20)
+	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
 
-	public Acceso() {
+	
+	
+	public Conexion() {
 		super();
+	}
+
+	public Conexion(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
 	}
 
 	public int getId() {
@@ -43,14 +49,6 @@ public class Acceso implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public String getNombre() {
@@ -63,4 +61,6 @@ public class Acceso implements Serializable{
 	
 	
 	
+	
+
 }

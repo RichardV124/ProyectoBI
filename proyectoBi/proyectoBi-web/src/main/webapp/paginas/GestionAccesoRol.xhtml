@@ -11,7 +11,7 @@
 			<p:fieldset legend="Gestion Acceso Rol" style="margin-top:10px">
 				<h:panelGrid columns="3">
 				
-					<p:outputLabel for="cbgesrol" id="lbrol" value="Seleccione Rol"  />
+					<p:outputLabel for="cbgesrol" id="lbrol" value="Seleccione tipo de usuario"  />
 					<h:selectOneMenu id="cbgesrol" class="form-control" value="#{GestionAccesoRolController.rolSeleccionado}">
 					<f:selectItems value="#{GestionAccesoRolController.listaRol}" var="rol"
 					itemValue="#{rol}" itemLabel="#{rol.descripcion}"/>
