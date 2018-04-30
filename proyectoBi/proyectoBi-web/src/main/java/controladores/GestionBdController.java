@@ -11,9 +11,7 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Messages;
 
 import beans.ConexionEJB;
-import beans.TipoUsuarioEJB;
 import entidades.Conexion;
-import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
@@ -40,6 +38,7 @@ public class GestionBdController {
 		
 		try{
 			listabd = bdEJB.listar(sesion.getBd());
+			
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -47,8 +46,6 @@ public class GestionBdController {
 	}
 	
 	
-	
-
 	public int getBdSeleccionado() {
 		return bdSeleccionado;
 	}
