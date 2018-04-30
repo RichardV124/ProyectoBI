@@ -4,7 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui" 
 	template="/templates/index.xhtml"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="cuerpo">
 		<h:form prependId="false">
@@ -79,6 +79,58 @@
 					
 				</h:panelGrid>
 				</p:fieldset>
+				
+				<p:accordionPanel id="panelTablausuarios"  style="margin-top:15px">
+					<p:tab title="Tipos Registrados">
+					<p:dataTable value="#{registroUsuarioController.usuario}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Cedulae
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Apellidoo
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Fechaa
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Genero
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Municipio
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Usuario
+						</f:facet>
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
 				
 				
 		</h:form>
