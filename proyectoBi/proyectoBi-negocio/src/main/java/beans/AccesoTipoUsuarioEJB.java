@@ -121,4 +121,14 @@ public class AccesoTipoUsuarioEJB {
 		return (List<AccesoTipoUsuario>)(Object)conexion.listarConParametroInteger(AccesoTipoUsuario.listarAccesosPorRol, rol.getId());
 	}
 	
+	/**
+	 * Listar accesos por tipo de usuario
+	 */
+	public List<Acceso> listarAccesosPorTipo(TipoUsuario rol, int bd){
+		conexion.setBd(bd);
+		return (List<Acceso>)(Object)conexion.listarConParametroInteger(AccesoTipoUsuario.listarAccesosPorRol, rol.getId());
+	}
+	
+	
+	
 }

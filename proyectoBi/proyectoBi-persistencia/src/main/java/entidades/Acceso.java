@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name=Acceso.listarAccesos,query="SELECT a FROM Acceso a")
 })
+
 public class Acceso implements Serializable{
 	
 	public static final String listarAccesos = "Acceso.listarAccesos";
@@ -27,7 +28,7 @@ public class Acceso implements Serializable{
     @SequenceGenerator(sequenceName = "acceso_seq", allocationSize = 1, name = "ACCESO_SEQ")
 	private int id;
 	
-	@Column(name="url",length=40)
+	@Column(name="url",length=100)
 	private String url;
 	
 	@Column(name="nombre",length=20)

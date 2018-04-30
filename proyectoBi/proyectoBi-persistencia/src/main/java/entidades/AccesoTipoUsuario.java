@@ -15,11 +15,13 @@ import javax.persistence.Table;
 @Table(name="ACCESO_TIPO_USUARIO")
 @IdClass(AccesoTipoUsuarioPK.class)
 @NamedQueries({
-	@NamedQuery(name=AccesoTipoUsuario.listarAccesosPorRol,query="SELECT atu FROM AccesoTipoUsuario atu WHERE atu.tipoUsuario.id=?1")
+	@NamedQuery(name=AccesoTipoUsuario.listarAccesosPorRol,query="SELECT atu.acceso FROM AccesoTipoUsuario atu WHERE atu.tipoUsuario.id=?1"),
+	@NamedQuery(name=AccesoTipoUsuario.listarAccesosTipoPorRol,query="SELECT atu FROM AccesoTipoUsuario atu WHERE atu.tipoUsuario.id=?1")
 })
 public class AccesoTipoUsuario implements Serializable{
 	
 
+	public static final String listarAccesosTipoPorRol = "AccesoTipoUsuario.listarAccesosTipoPorRol";
 	public static final String listarAccesosPorRol = "AccesoTipoUsuario.listarAccesosPorRol";
 	
 	@Id

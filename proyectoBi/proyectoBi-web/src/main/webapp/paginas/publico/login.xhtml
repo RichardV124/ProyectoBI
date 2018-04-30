@@ -11,18 +11,18 @@
 				<h:panelGrid columns="3">
 				
 					<p:outputLabel for="tfusu" id="usu" value="Usuario" />
-					<p:inputText id="tfusu" class="form-control"  value="#{loginController.username}" />
+					<p:inputText id="tfusu" class="form-control"  value="#{sessionController.username}" />
 					<p:message for="tfusu" />
 	
 					<p:outputLabel for="tfpass" id="pass" value="Contraseña" />
-					<h:inputSecret id="tfpass" class="form-control"  value="#{loginController.password}" />
+					<h:inputSecret id="tfpass" class="form-control"  value="#{sessionController.password}" />
 					<p:message for="tfpass" />
 					
 					<br></br>
 					
 				</h:panelGrid>
 				
-				<p:commandButton value="Iniciar Sesion" ajax="false" action="#{loginController.login}" />
+				<p:commandButton value="Iniciar Sesion" ajax="false" action="#{sessionController.login}" />
 				<p:commandButton id="btregis" value="Registrarse" process="@this" action="/paginas/publico/login.xhtml?faces-redirect=false" />
 			</p:fieldset>
 			

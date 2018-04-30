@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
+import beans.AccesoTipoUsuarioEJB;
 import beans.ConexionEJB;
 import beans.LoginEJB;
+import beans.TipoUsuarioEJB;
 import beans.UsuarioEJB;
 import beansSeguridad.SeguridadEJB;
 import entidades.Acceso;
@@ -29,6 +31,10 @@ public class SessionController implements Serializable {
 	
 	@EJB
 	private UsuarioEJB usuarioEJB;
+	
+	@EJB
+	private AccesoTipoUsuarioEJB accesoTipoUsuarioEJB;
+	
 	
 	
 	@EJB
@@ -56,30 +62,53 @@ public class SessionController implements Serializable {
 	/**
 	 * Iniciar sesion
 	 */
-	public void login() {
-		if(username.isEmpty() || password.isEmpty()){
-			Messages.addFlashGlobalError("Por favor, ingrese todos los campos");
-		}else{
-			Usuario u = usuarioEJB.buscarPorUsername(username, bd);
-			if(u != null){
-				if(u.getLogin().getPassword().equals(password)){
-					usuario = u;
-					accesos = seguridadEJB.listarAccesosTipoUsuario(usuario.getTipoUsuario(), bd);
-					Faces.setSessionAttribute("usuario", usuario);
+	public String login() {
+		Usuario usu = usuarioEJB.buscarPorUsername(username, 2);
+		 
+		if (usu != null) {
+			
+			usuario = usu;
+			 
+			if(usu.getLogin().getPassword().equals(password)){
+				
+				if(usu.getTipoUsuario().getId()== 1){ // administrador
+					
+					Faces.setSessionAttribute("user", usuario);
+					System.out.println("Inicio sesion administrador");
+					
+					 // roles = rolEJB.ListaRolesPersona(persona.getIdentificacion());
+	                  accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(),bd);
 
-					bd = conexionEJB.buscar(1, 1).getId();
-					Faces.setSessionAttribute("bd", bd);
-					Messages.addFlashGlobalInfo("Ha iniciado sesion correctamente");
+	                return "/paginas/seguro/administrador/inicioAdministrador.xhtml?faces-redirect=true";
+										
+				}else if(usu.getTipoUsuario().getId() == 2){ // cliente
+					Faces.setSessionAttribute("user", usuario);
+					System.out.println("Inicio sesion cliente");
+					
+					// roles = rolEJB.ListaRolesPersona(persona.getIdentificacion());
+	                  accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(),bd);
+					
+					return "/paginas/seguro/administrador/inicioCliente.xhtml?faces-redirect=true";
+					
+				}else if(usu.getTipoUsuario().getId() == 3){ // el otro
+					Faces.setSessionAttribute("user", usuario);
+					System.out.println("Inicio sesion medico");
+					
+					// roles = rolEJB.ListaRolesPersona(persona.getIdentificacion());
+	                  accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(),bd);
+					
+					return "/paginas/seguro/medico/citaMedico.xhtml?faces-redirect=true";
 					
 				}else{
-					// Contraseña incorrecta
-					Messages.addFlashGlobalError("Username o contraseña incorrectos");
+					Messages.addFlashGlobalError("Usuario o Password incorrectos");
 				}
 			}else{
-				// Usuario no existe
-				Messages.addFlashGlobalError("Username o contraseña incorrectos");
+				Messages.addFlashGlobalError("Usuario o Password incorrectos");
 			}
+		}else{
+			Messages.addFlashGlobalError("Usuario o Password incorrectos");
 		}
+		return null;
 	}
 	
 	/**
@@ -92,6 +121,10 @@ public class SessionController implements Serializable {
 		sesion = (HttpSession) Faces.getSession();
 		sesion.invalidate();
 		return "/paginas/publico/login.xhtml?faces-redirect=true";
+	}
+	
+	public boolean isSesion() {
+		return usuario != null;
 	}
 	
 	
@@ -121,5 +154,32 @@ public class SessionController implements Serializable {
 	 */
 	public void setBd(int bd) {
 		this.bd = bd;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}	
+	
+	
+	
 }

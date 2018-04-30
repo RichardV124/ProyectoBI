@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.Acceso;
 import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -101,5 +102,6 @@ public class TipoUsuarioEJB {
 			return null;
 		}
 	}
+
 
 }
