@@ -8,6 +8,12 @@ public class AccesoTipoUsuarioPK implements Serializable{
 
 	private int acceso;
 
+	
+	
+	public AccesoTipoUsuarioPK() {
+		super();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

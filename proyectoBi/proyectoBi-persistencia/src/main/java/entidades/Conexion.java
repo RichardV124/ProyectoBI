@@ -25,11 +25,14 @@ public class Conexion implements Serializable{
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONEXION_SEQ")
-    @SequenceGenerator(sequenceName = "municipio_seq", allocationSize = 1, name = "CONEXION_SEQ")
+    @SequenceGenerator(sequenceName = "conexion_seq", allocationSize = 1, name = "CONEXION_SEQ")
 	private int id;
 	
 	@Column(name="NOMBRE", nullable=false, length=50)
 	private String nombre;
+	
+	@Column(name="ACTIVO", nullable=false)
+	private boolean activo;
 
 	
 	

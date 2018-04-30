@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Encoded;
@@ -29,11 +30,15 @@ import entidades.Municipio;
 import entidades.TipoUsuario;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
+import session.SessionController;
 
 @ViewScoped
 @Named("registroUsuarioController")
 public class RegistroUsuarioController implements Serializable{
 
+	@Inject
+	private SessionController sesion;
+	
 	@EJB
 	private UsuarioEJB usuarioEJB;
 	
@@ -99,7 +104,7 @@ public class RegistroUsuarioController implements Serializable{
 			u.setNombre(nombre);
 			u.setApellido(apellido);
 
-			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			Genero gen = generoEJB.buscar(sesion.getBd(), generoSeleccionado);
 			u.setGenero(gen);
 			u.setAreaEmpresa(null);
 
@@ -107,7 +112,7 @@ public class RegistroUsuarioController implements Serializable{
 			u.setSalario(0);
 			u.setTipoUsuario(null);
 
-			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
 			u.setMunicipio(mun);
 
 			//creando Login
@@ -115,13 +120,12 @@ public class RegistroUsuarioController implements Serializable{
 			login.setActivo(false);
 			login.setUsername(username);
 			login.setPassword(password);
-			loginEJB.crear(login, 2);
 			u.setLogin(login);
 
-			usuarioEJB.crear(u, 2);
+			usuarioEJB.crear(u, sesion.getBd());
 			
 			//creando auditoria
-			crearAuditoria(u, "Crear", 2);
+			crearAuditoria("Usuario",u.getCedula(),"Crear", sesion.getBd());
 			
 			//limpiamos campos
 			limpiar();
@@ -132,18 +136,19 @@ public class RegistroUsuarioController implements Serializable{
 
 	}
 	
-	public void crearAuditoria(Usuario u, String accion, int bd){
+	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
 		AuditoriaUsuario auditoria = new AuditoriaUsuario();
-		auditoria.setUsuario(u);
+		auditoria.setEntidad(entidad);
+		auditoria.setObjetoAuditado(objeto);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	
 	public void llenarCombos(){
 		try{
-			listaDptos = departamentoEJB.listar(2);
-			listaGeneros = generoEJB.listar(2);
-			listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+			listaDptos = departamentoEJB.listar(sesion.getBd());
+			listaGeneros = generoEJB.listar(sesion.getBd());
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
 		}catch(ExcepcionNegocio e){
 			
 		}
@@ -151,8 +156,8 @@ public class RegistroUsuarioController implements Serializable{
 	
 	public void listarMunicipios(){
 		if(dptoSeleccionado!=0){
-			Departamento dpto = departamentoEJB.buscar(2, dptoSeleccionado);
-			listaMunicipios = municipioEJB.listar(2, dpto);	
+			Departamento dpto = departamentoEJB.buscar(sesion.getBd(), dptoSeleccionado);
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), dpto);	
 		}
 	}
 	
@@ -164,7 +169,7 @@ public class RegistroUsuarioController implements Serializable{
 		username="";
 		password="";
 		confirmarpassword="";
-		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
 	}
 
 	public String getCedula() {

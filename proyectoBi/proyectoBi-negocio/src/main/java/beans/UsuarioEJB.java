@@ -42,12 +42,7 @@ public class UsuarioEJB {
 	 */
 	public Usuario buscar(String cedula, int bd){
 		em.setBd(bd);
-		Usuario u = (Usuario) em.buscar(Usuario.class, cedula);
-		if(u!=null){
-			return u;
-		}else{
-			throw new ExcepcionNegocio("El usuario no se encuentra registrado");
-		}
+		return (Usuario) em.buscar(Usuario.class, cedula);
 	}
 	
 	/**
@@ -67,7 +62,7 @@ public class UsuarioEJB {
 	 */
 	public void eliminar (Usuario usuario, int bd){
 		em.setBd(bd);
-		em.eliminar(buscar(usuario.getCedula(), bd));
+		em.eliminar(usuario);
 	}
 
 	/**

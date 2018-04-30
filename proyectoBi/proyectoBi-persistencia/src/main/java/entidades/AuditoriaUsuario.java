@@ -49,9 +49,11 @@ public class AuditoriaUsuario implements Serializable{
 	@Temporal(TemporalType.TIME)
 	private Date hora;
 	
-	@JoinColumn(name="USUARIO_CEDULA")
-	@ManyToOne(cascade={})
-	private Usuario usuario;
+	@Column(name="ENTIDAD", nullable=false)
+	private String entidad;
+	
+	@Column(name="OBJETO_AUDITADO", nullable=false)
+	private String objetoAuditado;
 	
 	public AuditoriaUsuario() {
 		// TODO Auto-generated constructor stub
@@ -105,12 +107,22 @@ public class AuditoriaUsuario implements Serializable{
 		this.hora = hora;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public String getEntidad() {
+		return entidad;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setEntidad(String entidad) {
+		this.entidad = entidad;
 	}
+
+	public String getObjetoAuditado() {
+		return objetoAuditado;
+	}
+
+	public void setObjetoAuditado(String objetoAuditado) {
+		this.objetoAuditado = objetoAuditado;
+	}
+	
+	
 	
 }

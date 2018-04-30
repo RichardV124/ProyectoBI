@@ -3,6 +3,7 @@ package controladores;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -75,6 +76,8 @@ public class GestionUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar el apellido")
 	private String apellido;
 	
+	private String salarioo;
+	
 	private Date fechaNacimiento;
 	
 	private int generoSeleccionado;
@@ -102,9 +105,6 @@ public class GestionUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar su nickname")
 	private String username;
 	
-	@NotNull(message = "Debe ingresar la contraseña")
-	private String password;
-	
 	@NotNull(message = "Debe confirmar la contraseña")
 	private String confirmarpassword;
 	
@@ -121,8 +121,9 @@ public class GestionUsuarioController implements Serializable{
 			u.setCedula(cedula);
 			u.setNombre(nombre);
 			u.setApellido(apellido);
+			u.setSalario(Double.parseDouble(salarioo));
 
-			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			Genero gen = generoEJB.buscar(sesion.getBd(), generoSeleccionado);
 			u.setGenero(gen);
 			u.setAreaEmpresa(null);
 
@@ -130,24 +131,30 @@ public class GestionUsuarioController implements Serializable{
 			u.setSalario(0);
 			u.setTipoUsuario(null);
 
-			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
 			u.setMunicipio(mun);
 
+			AreaEmpresa area = areaEmpresaEJB.buscar(areaSeleccionada, sesion.getBd());
+			u.setAreaEmpresa(area);
+			
+			TipoUsuario rol = tipoUsuarioEJB.buscar(rolSeleccionado, sesion.getBd());
+			u.setTipoUsuario(rol);
+			
 			//creando Login
 			Login login = new Login();
 			login.setActivo(false);
 			login.setUsername(username);
-			login.setPassword(password);
-			loginEJB.crear(login, 2);
+			login.setPassword(generarClave());
 			u.setLogin(login);
 
-			usuarioEJB.crear(u, 2);
+			usuarioEJB.crear(u, sesion.getBd());
 			
 			//creando auditoria
-			crearAuditoria(u, "Crear", 2);
+			crearAuditoria("Usuario",u.getCedula(),"Crear", sesion.getBd());
 			
 			//limpiamos campos
 			limpiar();
+			llenarCombos();
 			Messages.addFlashGlobalInfo("Registro exitoso");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
@@ -155,57 +162,111 @@ public class GestionUsuarioController implements Serializable{
 
 	}
 	
+	public String generarClave() {
+		String clave = UUID.randomUUID().toString().toUpperCase().substring(0, 8);
+		return clave;
+	}
+	
 	public void buscar(){
 		try{
-			Usuario u = usuarioEJB.buscar(cedulab, 2);
+			Usuario u = usuarioEJB.buscar(cedulab, sesion.getBd());
 			cedula=u.getCedula();
 			nombre=u.getNombre();
 			apellido=u.getApellido();
 			fechaNacimiento=u.getfechaNacimiento();
-			areaSeleccionada=areaEmpresaEJB.buscar(u.getAreaEmpresa().getId(), 2).getId();
-			dptoSeleccionado=departamentoEJB.buscar(2,u.getMunicipio().getDepartamento().getId()).getId();
-			municipioSeleccionado=municipioEJB.buscar(2,u.getMunicipio().getId()).getId();
-			generoSeleccionado=generoEJB.buscar(2, u.getGenero().getId()).getId();
-			rolSeleccionado=tipoUsuarioEJB.buscar(u.getTipoUsuario().getId(), 2).getId();
+			areaSeleccionada=areaEmpresaEJB.buscar(u.getAreaEmpresa().getId(), sesion.getBd()).getId();
+			dptoSeleccionado=departamentoEJB.buscar(sesion.getBd(),u.getMunicipio().getDepartamento().getId()).getId();
+			municipioSeleccionado=municipioEJB.buscar(sesion.getBd(),u.getMunicipio().getId()).getId();
+			generoSeleccionado=generoEJB.buscar(sesion.getBd(), u.getGenero().getId()).getId();
+			rolSeleccionado=tipoUsuarioEJB.buscar(u.getTipoUsuario().getId(), sesion.getBd()).getId();
+			username=u.getLogin().getUsername();
+			salarioo=String.valueOf(u.getSalario());
+			
+			//creando auditoria
+			crearAuditoria("Usuario",u.getCedula(),"Buscar", sesion.getBd());
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
 	
 	public void eliminar(){
-		usuarioEJB.eliminar(usuarioEJB.buscar(cedula, 2), 2);
+		usuarioEJB.eliminar(usuarioEJB.buscar(cedula, sesion.getBd()), sesion.getBd());
 	}
 	
 	public void editar(){
-		
+		try {
+			Usuario u = usuarioEJB.buscar(cedula, sesion.getBd());
+			u.setCedula(cedula);
+			u.setNombre(nombre);
+			u.setApellido(apellido);
+			u.setSalario(Double.parseDouble(salarioo));
+
+			Genero gen = generoEJB.buscar(sesion.getBd(), generoSeleccionado);
+			u.setGenero(gen);
+			u.setAreaEmpresa(null);
+
+			u.setfechaNacimiento(fechaNacimiento);
+			u.setSalario(Double.parseDouble(salarioo));
+			u.setTipoUsuario(null);
+
+			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
+			u.setMunicipio(mun);
+
+			AreaEmpresa area = areaEmpresaEJB.buscar(areaSeleccionada, sesion.getBd());
+			u.setAreaEmpresa(area);
+			
+			TipoUsuario rol = tipoUsuarioEJB.buscar(rolSeleccionado, sesion.getBd());
+			u.setTipoUsuario(rol);
+			
+			//creando Login
+			Login login = new Login();
+			login.setActivo(false);
+			login.setUsername(username);
+			login.setPassword(u.getLogin().getPassword());
+			u.setLogin(login);
+
+			usuarioEJB.editar(u, sesion.getBd());
+			
+			//creando auditoria
+			crearAuditoria("Usuario",u.getCedula(),"Editar", sesion.getBd());
+			
+			//limpiamos campos
+			limpiar();
+			llenarCombos();
+			Messages.addFlashGlobalInfo("Edicion exitoso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 	
 	public void borrar(Usuario usu){
 		try {
-			Messages.addFlashGlobalInfo("borrando...");
-			usuarioEJB.eliminar(usu, 2);
+			usuarioEJB.eliminar(usu, sesion.getBd());
 			Messages.addFlashGlobalInfo("Borrado exitoso");
+			//creando auditoria
+			crearAuditoria("Usuario",usu.getCedula(),"Eliminar", sesion.getBd());
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
 	
 	
-	public void crearAuditoria(Usuario u, String accion, int bd){
+	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
 		AuditoriaUsuario auditoria = new AuditoriaUsuario();
-		auditoria.setUsuario(u);
+		auditoria.setEntidad(entidad);
+		auditoria.setObjetoAuditado(objeto);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	
 	public void llenarCombos(){
 		try{
-			listaDptos = departamentoEJB.listar(2);
-			listaGeneros = generoEJB.listar(2);
-			listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
-			listaAreas = areaEmpresaEJB.listarUsuarios(2);
-			listaRoles = tipoUsuarioEJB.listar(2);
-			usuarios = usuarioEJB.listarUsuarios(2);
+			listaDptos = departamentoEJB.listar(sesion.getBd());
+			listaGeneros = generoEJB.listar(sesion.getBd());
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
+			listaAreas = areaEmpresaEJB.listarUsuarios(sesion.getBd());
+			listaRoles = tipoUsuarioEJB.listar(sesion.getBd());
+			usuarios = usuarioEJB.listarUsuarios(sesion.getBd());
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -213,8 +274,8 @@ public class GestionUsuarioController implements Serializable{
 	
 	public void listarMunicipios(){
 		if(dptoSeleccionado!=0){
-			Departamento dpto = departamentoEJB.buscar(2, dptoSeleccionado);
-			listaMunicipios = municipioEJB.listar(2, dpto);	
+			Departamento dpto = departamentoEJB.buscar(sesion.getBd(), dptoSeleccionado);
+			listaMunicipios = municipioEJB.listar(sesion.getBd(), dpto);	
 		}
 	}
 	
@@ -224,9 +285,9 @@ public class GestionUsuarioController implements Serializable{
 		apellido ="";
 		fechaNacimiento =null;
 		username="";
-		password="";
 		confirmarpassword="";
-		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		listaMunicipios = municipioEJB.listar(sesion.getBd(), listaDptos.get(0));
+		salarioo=null;
 	}
 
 	public String getCedula() {
@@ -317,14 +378,6 @@ public class GestionUsuarioController implements Serializable{
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getConfirmarpassword() {
 		return confirmarpassword;
 	}
@@ -379,7 +432,17 @@ public class GestionUsuarioController implements Serializable{
 
 	public void setCedulab(String cedulab) {
 		this.cedulab = cedulab;
-	}	
+	}
+
+	public String getSalarioo() {
+		return salarioo;
+	}
+
+	public void setSalarioo(String salarioo) {
+		this.salarioo = salarioo;
+	}
+
+	
 		
 	
 }
