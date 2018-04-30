@@ -67,13 +67,14 @@ public class GestionUsuarioController implements Serializable{
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
 	
+	private String cedulab;
+	
 	@NotNull(message = "Debe ingresar el nombre")
 	private String nombre;
 	
 	@NotNull(message = "Debe ingresar el apellido")
 	private String apellido;
 	
-	@NotNull(message = "Debe ingresar la fecha")
 	private Date fechaNacimiento;
 	
 	private int generoSeleccionado;
@@ -155,11 +156,24 @@ public class GestionUsuarioController implements Serializable{
 	}
 	
 	public void buscar(){
-		
+		try{
+			Usuario u = usuarioEJB.buscar(cedulab, 2);
+			cedula=u.getCedula();
+			nombre=u.getNombre();
+			apellido=u.getApellido();
+			fechaNacimiento=u.getfechaNacimiento();
+			areaSeleccionada=areaEmpresaEJB.buscar(u.getAreaEmpresa().getId(), 2).getId();
+			dptoSeleccionado=departamentoEJB.buscar(2,u.getMunicipio().getDepartamento().getId()).getId();
+			municipioSeleccionado=municipioEJB.buscar(2,u.getMunicipio().getId()).getId();
+			generoSeleccionado=generoEJB.buscar(2, u.getGenero().getId()).getId();
+			rolSeleccionado=tipoUsuarioEJB.buscar(u.getTipoUsuario().getId(), 2).getId();
+		} catch (Exception e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 	
 	public void eliminar(){
-		
+		usuarioEJB.eliminar(usuarioEJB.buscar(cedula, 2), 2);
 	}
 	
 	public void editar(){
@@ -167,14 +181,13 @@ public class GestionUsuarioController implements Serializable{
 	}
 	
 	public void borrar(Usuario usu){
-//		try {
-//			Usuario u = usuarioEJB.buscar(usu.getCedula(), 2);
-//			usuarioEJB.eliminar(u, 2);
-//			Messages.addFlashGlobalInfo("Borrado exitoso");
-//		} catch (ExcepcionNegocio e) {
-//			Messages.addFlashGlobalInfo(e.getMessage());
-//		}
-		Messages.addFlashGlobalInfo("Borrado exitoso");
+		try {
+			Messages.addFlashGlobalInfo("borrando...");
+			usuarioEJB.eliminar(usu, 2);
+			Messages.addFlashGlobalInfo("Borrado exitoso");
+		} catch (Exception e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 	
 	
@@ -358,6 +371,15 @@ public class GestionUsuarioController implements Serializable{
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public String getCedulab() {
+		return cedulab;
+	}
+
+	public void setCedulab(String cedulab) {
+		this.cedulab = cedulab;
 	}	
 		
+	
 }
