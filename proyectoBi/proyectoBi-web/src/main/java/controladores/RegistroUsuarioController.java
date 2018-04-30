@@ -86,47 +86,35 @@ public class RegistroUsuarioController implements Serializable{
 	}
 	
 	public void registrar() {
-		
+
 		try {
-			Usuario usu = usuarioEJB.buscar(cedula, 2);
-			if (usu == null) {
+			Usuario u = new Usuario();
+			u.setCedula(cedula);
+			u.setNombre(nombre);
+			u.setApellido(apellido);
 
-				Usuario u = new Usuario();
-				u.setCedula(cedula);
-				u.setNombre(nombre);
-				u.setApellido(apellido);
+			Genero gen = generoEJB.buscar(2, generoSeleccionado);
+			u.setGenero(gen);
+			u.setAreaEmpresa(null);
 
-				Genero gen = generoEJB.buscar(2, generoSeleccionado);
-				u.setGenero(gen);
-				u.setAreaEmpresa(null);
+			u.setfechaNacimiento(fechaNacimiento);
+			u.setSalario(0);
+			u.setTipoUsuario(null);
 
-				u.setfechaNacimiento(fechaNacimiento);
-				u.setSalario(0);
-				u.setTipoUsuario(null);
+			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
+			u.setMunicipio(mun);
 
-				Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
-				u.setMunicipio(mun);
+			Login login = new Login();
+			login.setActivo(false);
+			login.setUsername(username);
+			login.setPassword(password);
+			loginEJB.crear(login, 2);
+			u.setLogin(login);
 
-				Login log = loginEJB.buscar(username, 2);
-				if (log == null) {
-					Login login = new Login();
-					login.setActivo(false);
-					login.setUsername(username);
-					login.setPassword(password);
-					loginEJB.crear(login, 2);
-					u.setLogin(login);
-
-					usuarioEJB.crear(u, 2);
-					limpiar();
-					Messages.addFlashGlobalInfo("Registro exitoso");
-				} else {
-					Messages.addFlashGlobalInfo("El username ya se encuentra en uso");
-				}
-
-			} else {
-				Messages.addFlashGlobalInfo("el usuario ya se encuenra registrado");
-			}
-		} catch (Exception e) {
+			usuarioEJB.crear(u, 2);
+			limpiar();
+			Messages.addFlashGlobalInfo("Registro exitoso");
+		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 

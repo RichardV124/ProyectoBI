@@ -5,6 +5,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import entidades.Login;
+import excepciones.ExcepcionNegocio;
 import entidades.Login;
 import persistencia.Persistencia;
 
@@ -22,7 +23,13 @@ public class LoginEJB {
 	 */
 	public void crear(Login login, int bd){
 		em.setBd(bd);
-		em.crear(login);
+		Login log = buscar(login.getUsername(), bd);
+		if(log==null){
+			em.crear(login);
+		}else{
+			throw new ExcepcionNegocio("el nombre de usuario ya está en uso");
+		}
+		
 	}
 	
 	/**
