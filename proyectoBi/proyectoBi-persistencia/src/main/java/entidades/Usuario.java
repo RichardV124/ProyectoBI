@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 @Table(name="USUARIO")
 @NamedQueries({ 
 	@NamedQuery(name=Usuario.buscarPorUsername,query="SELECT u FROM Usuario u WHERE u.login=?1"),
-	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT u FROM Usuario u") 
+	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu") 
 	})
 public class Usuario implements Serializable{
 	
