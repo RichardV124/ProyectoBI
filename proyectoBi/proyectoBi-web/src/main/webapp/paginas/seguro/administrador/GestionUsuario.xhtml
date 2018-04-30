@@ -13,85 +13,81 @@
 				<h:panelGrid columns="3">
 				
 					<p:outputLabel for="tfbususu" id="usu" value="Cedula" />
-					<p:inputText id="tfbususu" class="form-control" placeholder="cedula" value="#{GestionUsuarioController.cedula}" />
+					<p:inputText id="tfbususu" class="form-control" placeholder="cedula" value="#{gestionUsuarioController.cedula}" />
 					<p:message for="tfbususu" />
 	
 					<br></br>
 					
 				</h:panelGrid>
 				
-				<p:commandButton value="Buscar" ajax="false" action="#{GestionUsuarioController.buscar}" />
+				<p:commandButton value="Buscar" ajax="false" action="#{gestionUsuarioController.buscar}" />
 			</p:fieldset>
 		
 			<p:fieldset legend="Gestion Usuarios" style="margin-top:10px">
 				<h:panelGrid columns="3" id="datogessusu">
 				
 					<p:outputLabel for="tfcedusuge" id="cedusug" value="Cedula" />
-					<p:inputText id="tfcedusuge" class="form-control" placeholder="cedula" value="#{GestionUsuarioController.cedula}" />
+					<p:inputText id="tfcedusuge" class="form-control" placeholder="cedula" value="#{gestionUsuarioController.cedula}" />
 					<p:message for="tfcedusuge" />
 	
 					<p:outputLabel for="tfnomusuge" id="nomusuge" value="Nombre" />
-					<p:inputText id="tfnomusuge" class="form-control" placeholder="nombre" value="#{GestionUsuarioController.nombre}" />
+					<p:inputText id="tfnomusuge" class="form-control" placeholder="nombre" value="#{gestionUsuarioController.nombre}" />
 					<p:message for="tfnomusuge" />
 					
 					<p:outputLabel for="tfapeusu" id="apeusu" value="Apellido" />
-					<p:inputText id="tfapeusu" class="form-control" placeholder="apellido"  value="#{GestionUsuarioController.apellido}" />
+					<p:inputText id="tfapeusu" class="form-control" placeholder="apellido"  value="#{gestionUsuarioController.apellido}" />
 					<p:message for="tfapeusu" />
 					
 					<h:outputLabel for="tftFechaNacimientog" value="Fecha Nacimiento" />
-					<h:inputText id="tftFechaNacimientog" value="#{GestionUsuarioController.fechaNacimiento}" mode="inline"
+					<h:inputText id="tftFechaNacimientog" value="#{gestionUsuarioController.fechaNacimiento}" mode="inline"
 									a:placeholder="dia-mes-año" class="form-control">
 									<f:convertDateTime pattern="dd-MM-yyyy" />
 					</h:inputText>
 					<p:message for="tftFechaNacimientog" />
 					
 					<p:outputLabel for="cbgenusuge" id="lbdptomedusuge" value="Genero"  />
-					<h:selectOneMenu id="cbgenusuge" class="form-control" value="#{GestionUsuarioController.generoSeleccionado}">
-					<f:selectItems value="#{GestionUsuarioController.listaGeneros}" var="genero"
-					itemValue="#{genero}" itemLabel="#{genero.nombre}"/>
+					<h:selectOneMenu id="cbgenusuge" class="form-control" value="#{gestionUsuarioController.generoSeleccionado}">
+					<f:selectItems value="#{gestionUsuarioController.listaGeneros}" var="genero"
+					itemValue="#{genero.id}" itemLabel="#{genero.nombre}"/>
 					</h:selectOneMenu>
 					<p:message for="lbdptomedusuge" />
 					
 					<p:outputLabel for="cbdptousuge" id="lbdptousuge" value="Departamento"  />
-					<h:selectOneMenu id="cbdptousuge" class="form-control" value="#{GestionUsuarioController.dptoSeleccionado}">
-					<f:selectItems value="#{GestionUsuarioController.listaDptos}" var="dpto"
-					itemValue="#{dpto}" itemLabel="#{dpto.nombre}"/>
-					<f:ajax event="change" execute="@this" render="datosusu" listener="#{GestionUsuarioController.listarMunicipios}"/>
+					<h:selectOneMenu id="cbdptousuge" class="form-control" value="#{gestionUsuarioController.dptoSeleccionado}">
+					<f:selectItems value="#{gestionUsuarioController.listaDptos}" var="dpto"
+					itemValue="#{dpto.id}" itemLabel="#{dpto.nombre}"/>
+					<f:ajax event="change" execute="@this" render="datosusu" listener="#{gestionUsuarioController.listarMunicipios}"/>
 					</h:selectOneMenu>
 					<p:message for="lbdptousuge" />
 
 					<p:outputLabel for="cbmunicipiousu" id="lbmunicipiousu" value="Municipio" />
-					<h:selectOneMenu id="cbmunicipiousu" class="form-control" value="#{GestionUsuarioController.municipioSeleccionado}">
-						<f:selectItems value="#{GestionUsuarioController.listaMunicipios}"
-							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
+					<h:selectOneMenu id="cbmunicipiousu" class="form-control" value="#{gestionUsuarioController.municipioSeleccionado}">
+						<f:selectItems value="#{gestionUsuarioController.listaMunicipios}"
+							var="mun" itemValue="#{mun.id}" itemLabel="#{mun.nombre}" />
 					</h:selectOneMenu>
-					<p:message for="lbmunicipiousu" />	
-					
-					<p:outputLabel for="tftelege" id="telusug" value="Telefono" />
-					<p:inputText id="tftelege" class="form-control" placeholder="telefono" value="#{GestionUsuarioController.telefono}" />
-					<p:message for="tftelege" />	
+					<p:message for="lbmunicipiousu" />		
 					
 					<p:outputLabel for="cbrolusuge" id="lbrolusug" value="Rol" />
-					<h:selectOneMenu id="cbrolusuge" class="form-control" value="#{GestionUsuarioController.rolSeleccionado}">
-						<f:selectItems value="#{GestionUsuarioController.listaRoles}"
-							var="r" itemValue="#{r}" itemLabel="#{r.nombre}" />
+					<h:selectOneMenu id="cbrolusuge" class="form-control" value="#{gestionUsuarioController.rolSeleccionado}">
+						<f:selectItems value="#{gestionUsuarioController.listaRoles}"
+							var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
 					</h:selectOneMenu>
 					<p:message for="lbrolusug" />		
 					
 					<p:outputLabel for="cbareusuge" id="lbareusuge" value="Area Empresa" />
-					<h:selectOneMenu id="cbareusuge" class="form-control" value="#{GestionUsuarioController.areaSeleccionado}">
-						<f:selectItems value="#{GestionUsuarioController.listaAreas}"
-							var="area" itemValue="#{area}" itemLabel="#{area.nombre}" />
+					<h:selectOneMenu id="cbareusuge" class="form-control" value="#{gestionUsuarioController.areaSeleccionada}">
+						<f:selectItems value="#{gestionUsuarioController.listaAreas}"
+							var="area" itemValue="#{area.id}" itemLabel="#{area.nombre}" />
 					</h:selectOneMenu>
 					<p:message for="lbareusuge" />		
 					
-					<p:commandButton id="btregusuge" value="Registrar" action="#{GestionUsuarioController.registrar}"
+					<p:commandButton id="btregusuge" value="Registrar" action="#{gestionUsuarioController.registrar}"
 					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
 					 
-					 <p:commandButton id="btediusuge" value="Editar" action="#{GestionUsuarioController.editar}"
+					 <p:commandButton id="btediusuge" value="Editar" action="#{gestionUsuarioController.editar}"
 					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
 					 
-					 <p:commandButton id="bteliusu" value="Eliminar" action="#{GestionUsuarioController.eliminar}"
+					 <p:commandButton id="bteliusu" value="Eliminar" action="#{gestionUsuarioController.eliminar}"
 					 process="@this panelTablaUsuGe " update="panelTablaUsuGe" />
 					 
 					 
@@ -104,50 +100,65 @@
 				
 				<p:accordionPanel id="panelTablaUsuGe"  style="margin-top:15px">
 					<p:tab title="Usuarios Registrados">
-					<p:dataTable value="#{GestionUsuarioController.usuario}" id="tabla"
-						var="a" border="1">
+					<p:dataTable value="#{gestionUsuarioController.usuarios}" id="tabla" var="usu" border="1">
 						
 						<p:column>
 							<f:facet name="header">
 							Cedula
 						</f:facet>
+						<p:outputLabel value="#{usu.cedula}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Nombre
 						</f:facet>
+						<p:outputLabel value="#{usu.nombre}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Apellido
 						</f:facet>
+						<p:outputLabel value="#{usu.apellido}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Usuario
 						</f:facet>
+						<p:outputLabel value="#{usu.login.username}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Contraseña
 						</f:facet>
+						<p:outputLabel value="#{usu.login.password}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Area Empresa
 						</f:facet>
+						<p:outputLabel value="#{usu.areaEmpresa.nombre}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Rol
 						</f:facet>
+						<p:outputLabel value="#{usu.tipoUsuario.nombre}" />
 						</p:column>
+						
+						<p:column>
+					<f:facet name="header">
+							Borrar
+						</f:facet>
+						<p:commandButton action="#{gestionUsuarioController.borrar(usu)}" value="Borrar"
+							process="@this" update="panelTablaUsuGe" />
+					<p:outputLabel value="" />
+				</p:column>
 												
 					</p:dataTable>
 				</p:tab>
