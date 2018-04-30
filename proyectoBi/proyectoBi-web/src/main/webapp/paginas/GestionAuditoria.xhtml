@@ -1,0 +1,332 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false" id="gestion">
+			<p:fieldset legend="Gestion Auditorias" style="margin-top:10px">
+				<h:panelGrid columns="1" id="datosaudi">
+				
+					<p:accordionPanel id="panelTablaAud1" >
+					<p:tab title="Auditoria Tipo Usuario">
+						<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla1"
+							var="a" border="1">
+							
+							<p:column>
+								<f:facet name="header">
+								Accioon
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+													
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>		
+				
+				<p:accordionPanel id="panelTablaEmpAud2" >
+					<p:tab title="Auditoria Acceso">
+						<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla2"
+							var="a" border="1">
+							
+							<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+													
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>		
+				
+				<p:accordionPanel id="panelTablaAud3"  style="margin-top:15px">
+					<p:tab title="Auditoria Login">
+					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla3"
+						var="a" border="1">
+						
+						<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud4"  style="margin-top:15px">
+					<p:tab title="Auditoria Usuario">
+					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla4"
+						var="a" border="1">
+						
+						<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud5"  style="margin-top:15px">
+					<p:tab title="Auditoria Area">
+					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla5"
+						var="a" border="1">
+						
+						<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud6"  style="margin-top:15px">
+					<p:tab title="Auditoria Producto">
+					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla6"
+						var="a" border="1">
+						
+						<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud7"  style="margin-top:15px">
+					<p:tab title="Auditoria Conexion">
+					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla7"
+						var="a" border="1">
+						
+						<p:column>
+								<f:facet name="header">
+								Accion
+							</f:facet>
+								<p:outputLabel value="#{a.accion}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{a.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Origen
+							</f:facet>
+								<p:outputLabel value="#{a.origen}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Navegador
+							</f:facet>
+								<p:outputLabel value="#{a.navegador}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Registro
+							</f:facet>
+								<p:outputLabel value="#{a.registro}" />
+							</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+					
+					
+				</h:panelGrid>
+				</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
