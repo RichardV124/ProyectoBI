@@ -6,42 +6,62 @@
 	template="/templates/index.xhtml">
 
 	<ui:define name="cuerpo">
-		<h:form prependId="false" id="gestion">
+		<h:form prependId="false">
+		
+		
 			<p:fieldset legend="Gestion Tipo Usuario" style="margin-top:10px">
-				<h:panelGrid columns="1" id="datostipousu">
+				<h:panelGrid columns="3" id="datotipousu">
 				
-					<p:accordionPanel id="panelTablatipo" >
-					<p:tab title="Tipos Usuarios">
-						<p:dataTable value="#{GestionTipoUsuario.tipousuario}" id="tablatipo"
-							var="a" border="1">
-							
-							<p:column>
-								<f:facet name="header">
-								Codigo
-							</f:facet>
-								<p:outputLabel value="#{a.codigo}" />
-							</p:column>
-							
-							<p:column>
-								<f:facet name="header">
-								Nombre
-							</f:facet>
-								<p:outputLabel value="#{a.nombre}" />
-							</p:column>
-							
-							<p:column>
-								<f:facet name="header">
-								Descripcion
-							</f:facet>
-								<p:outputLabel value="#{a.descripcion}" />
-							</p:column>
-													
-						</p:dataTable>
-					</p:tab>
-				</p:accordionPanel>		
-
+					<p:outputLabel for="tfnomtipousu" id="nombti" value="Nombre" />
+					<p:inputText id="tfnomtipousu" class="form-control" placeholder="nombre" value="#{gestionTipoUsuarioController.nombre}" />
+					<p:message for="tfnomtipousu" />
+	
+					<p:outputLabel for="tfDirecciontipousu" id="desctipousu" value="Descripcion" />
+					<p:inputTextarea id="tfDirecciontipousu" class="form-control"
+						value="#{gestionTipoUsuarioController.descripcion}" placeholder="Descripcion"/>
+					
 				</h:panelGrid>
+				
+				<p:commandButton id="bteliusu" value="Resgistar" action="#{gestionTipoUsuarioController.registrar}"
+					 process="@this datotipousu panelTablatipo" update="panelTablatipo datotipousu" />
+				
 				</p:fieldset>
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablatipo"  style="margin-top:15px">
+					<p:tab title="Usuarios Registrados">
+					<p:dataTable value="#{gestionTipoUsuarioController.tipoUsuarios}" id="tabla" 
+					var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Codigo
+						</f:facet>
+						<p:outputLabel value="#{a.id}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						<p:outputLabel value="#{a.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Descripciono
+						</f:facet>
+						<p:outputLabel value="#{a.descripcion}" />
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>
+				
 		</h:form>
 	</ui:define>
 
