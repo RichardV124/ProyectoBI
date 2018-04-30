@@ -42,7 +42,12 @@ public class UsuarioEJB {
 	 */
 	public Usuario buscar(String cedula, int bd){
 		em.setBd(bd);
-		return (Usuario) em.buscar(Usuario.class, cedula);
+		Usuario u = (Usuario) em.buscar(Usuario.class, cedula);
+		if(u!=null){
+			return u;
+		}else{
+			throw new ExcepcionNegocio("El usuario no se encuentra registrado");
+		}
 	}
 	
 	/**
@@ -60,9 +65,9 @@ public class UsuarioEJB {
 	 * @param Usuario, usuario que se desea eliminar en la bd
 	 * @param bd, base de datos en la cual se desea eliminar el usuario
 	 */
-	public void eliminar (Usuario Usuario, int bd){
+	public void eliminar (Usuario usuario, int bd){
 		em.setBd(bd);
-		em.eliminar(Usuario);
+		em.eliminar(buscar(usuario.getCedula(), bd));
 	}
 
 	/**

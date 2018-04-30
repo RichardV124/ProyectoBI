@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 
 @LocalBean
@@ -87,6 +88,7 @@ public class Persistencia  implements Serializable{
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
 	}
+	
 	
 	/**
 	 * Busca en una base de datos determinada

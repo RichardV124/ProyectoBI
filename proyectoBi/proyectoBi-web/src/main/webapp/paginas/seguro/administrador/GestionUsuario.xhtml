@@ -10,17 +10,18 @@
 		<h:form prependId="false">
 		
 		<p:fieldset legend="Buscar Usuario" style="margin-top:10px">
-				<h:panelGrid columns="3">
+				<h:panelGrid columns="3" id="panelbuscar">
 				
 					<p:outputLabel for="tfbususu" id="usu" value="Cedula" />
-					<p:inputText id="tfbususu" class="form-control" placeholder="cedula" value="#{gestionUsuarioController.cedula}" />
+					<p:inputText id="tfbususu" class="form-control" placeholder="cedula" value="#{gestionUsuarioController.cedulab}" />
 					<p:message for="tfbususu" />
 	
 					<br></br>
 					
 				</h:panelGrid>
 				
-				<p:commandButton value="Buscar" ajax="false" action="#{gestionUsuarioController.buscar}" />
+				<p:commandButton value="Buscar" id="btnbusaru" action="#{gestionUsuarioController.buscar}" 
+					process="@this panelbuscar" update="datogessusu panelbuscar"/>
 			</p:fieldset>
 		
 			<p:fieldset legend="Gestion Usuarios" style="margin-top:10px">
