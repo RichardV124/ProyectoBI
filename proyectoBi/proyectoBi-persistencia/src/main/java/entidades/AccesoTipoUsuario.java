@@ -37,6 +37,16 @@ public class AccesoTipoUsuario implements Serializable{
 	public AccesoTipoUsuario() {
 		super();
 	}
+	
+	
+
+	public AccesoTipoUsuario(TipoUsuario tipoUsuario, Acceso acceso) {
+		super();
+		this.tipoUsuario = tipoUsuario;
+		this.acceso = acceso;
+	}
+
+
 
 	public TipoUsuario getTipoUsuario() {
 		return tipoUsuario;

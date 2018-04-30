@@ -13,28 +13,28 @@
 					<p:outputLabel for="cbgesrol" id="lbrol"
 						value="Seleccione tipo de usuario" />
 					<h:selectOneMenu id="cbgesrol" class="form-control"
-						value="#{GestionAccesoRolController.rolSeleccionado}">
-						<f:selectItems value="#{GestionAccesoRolController.listaRol}"
+						value="#{GestionAccesoTipoUsuarioController.rolSeleccionado}">
+						<f:selectItems value="#{GestionAccesoTipoUsuarioController.roles}"
 							var="rol" itemValue="#{rol}" itemLabel="#{rol.descripcion}" />
 						<f:ajax event="change" execute="@this" render="datosmed"
-							listener="#{GestionAccesoRolController.listarRoles}" />
+							listener="#{GestionAccesoTipoUsuarioController.listarRoles}" />
 					</h:selectOneMenu>
 					<p:message for="lbrol" />
 
 					<p:outputLabel for="cbgeacces" id="lbacceso"
 						value="Seleccione Acceso" />
 					<h:selectOneMenu id="cbgeacces" class="form-control"
-						value="#{GestionAccesoRolController.accesoSeleccionado}">
-						<f:selectItems value="#{GestionAccesoRolController.listaDptos}"
+						value="#{GestionAccesoTipoUsuarioController.accesoSeleccionado}">
+						<f:selectItems value="#{GestionAccesoTipoUsuarioController.accesos}"
 							var="acceso" itemValue="#{acceso}"
 							itemLabel="#{dpto.descripcion}" />
 						<f:ajax event="change" execute="@this" render="datosmed"
-							listener="#{GestionAccesoRolController.listarAccesos}" />
+							listener="#{GestionAccesoTipoUsuarioController.listarAccesos}" />
 					</h:selectOneMenu>
 					<p:message for="lbacceso" />
 
 					<p:commandButton id="btAsignarPermi" value="Asignar permiso"
-						process="@this" action="#" />
+						process="@this" action="#{GestionAccesoTipoUsuarioController.asignar}" />
 
 
 				</h:panelGrid>
