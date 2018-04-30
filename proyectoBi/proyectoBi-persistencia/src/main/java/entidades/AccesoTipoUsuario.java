@@ -7,14 +7,21 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ACCESO_TIPO_USUARIO")
 @IdClass(AccesoTipoUsuarioPK.class)
+@NamedQueries({
+	@NamedQuery(name=AccesoTipoUsuario.listarAccesosPorRol,query="SELECT atu FROM AccesoTipoUsuario atu WHERE atu.tipoUsuario.id=?1")
+})
 public class AccesoTipoUsuario implements Serializable{
 	
 
+	public static final String listarAccesosPorRol = "AccesoTipoUsuario.listarAccesosPorRol";
+	
 	@Id
 	@ManyToOne(cascade={})
 	@JoinColumn(name = "ID_TIPO_USUARIO", nullable = false)

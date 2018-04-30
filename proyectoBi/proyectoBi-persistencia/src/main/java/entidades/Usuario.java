@@ -19,9 +19,12 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="USUARIO")
 @NamedQueries({ 
-	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT u FROM Usuario u") 
+	@NamedQuery(name=Usuario.buscarPorUsername,query="SELECT u FROM Usuario u WHERE u.login=?1"),
+	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu") 
 	})
 public class Usuario implements Serializable{
+	
+	public static final String buscarPorUsername = "Usuario.buscarPorUsername";
 	
 	public static final String CONSULTA_LISTAR_USUARIOS = "Usuario.listarUsuarios";
 	

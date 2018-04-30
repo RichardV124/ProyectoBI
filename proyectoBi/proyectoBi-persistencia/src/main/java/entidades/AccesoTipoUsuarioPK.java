@@ -34,5 +34,32 @@ public class AccesoTipoUsuarioPK implements Serializable{
 	}
 	
 	
+	
+
+	public AccesoTipoUsuarioPK(int tipoUsuario, int acceso) {
+		super();
+		this.tipoUsuario = tipoUsuario;
+		this.acceso = acceso;
+	}
+
+	public int getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(int tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public int getAcceso() {
+		return acceso;
+	}
+
+	public void setAcceso(int acceso) {
+		this.acceso = acceso;
+	}
+	
+	
+	
+	
 
 }
