@@ -33,7 +33,7 @@
 					<p:outputLabel for="cbgenusu" id="lbdptomedusu" value="Genero"  />
 					<h:selectOneMenu id="cbgenusu" class="form-control" value="#{registroUsuarioController.generoSeleccionado}">
 					<f:selectItems value="#{registroUsuarioController.listaGeneros}" var="genero"
-					itemValue="#{genero}" itemLabel="#{genero.nombre}"/>
+					itemValue="#{genero.id}" itemLabel="#{genero.nombre}"/>
 					</h:selectOneMenu>
 					<p:message for="lbdptomedusu" />
 					
@@ -50,16 +50,14 @@
 					<h:selectOneMenu id="cbmunicipiousu" class="form-control"
 						value="#{registroUsuarioController.municipioSeleccionado}">
 						<f:selectItems value="#{registroUsuarioController.listaMunicipios}"
-							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
+							var="mun" itemValue="#{mun.id}" itemLabel="#{mun.nombre}" />
 					</h:selectOneMenu>
 					<p:message for="lbmunicipiousu" />					
 					
 					
 				</h:panelGrid>
-				</p:fieldset>
-				</h:form>			
+				</p:fieldset>			
 				
-				<h:form prependId="false">
 				
 				<p:fieldset legend="Info inicio sesion" style="margin-top:10px">
 				<h:panelGrid columns="3" id="datossesionusu">
