@@ -15,8 +15,10 @@
 						<f:selectItems value="#{gestionUsuarioController.listaRoles}"
 							var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
 					</h:selectOneMenu>
+					<p:message for="lbconex" />
 					
-					<p:message for="lbrolusug" />
+					<p:commandButton id="btselec" value="Seleccionar" action="#{gestionUsuarioController.editar}"
+						process="@this datogessusu" update="datogessusu panelTablaUsuGe" />
 				
 					
 					
