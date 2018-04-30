@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+			<p:fieldset legend="Seleccion Conexion" style="margin-top:10px">
+				<h:panelGrid columns="3">
+				
+				<p:outputLabel for="cbconex" id="lbconex" value="Base de Datos" />
+					<h:selectOneMenu id="cbconex" class="form-control" value="#{gestionBdController.bdSeleccionado}">
+						<f:selectItems value="#{gestionUsuarioController.listaRoles}"
+							var="r" itemValue="#{r.id}" itemLabel="#{r.nombre}" />
+					</h:selectOneMenu>
+					
+					<p:message for="lbrolusug" />
+				
+					
+					
+				</h:panelGrid>
+			</p:fieldset>
+			
+		</h:form>
+	</ui:define>
+
+</ui:composition>
