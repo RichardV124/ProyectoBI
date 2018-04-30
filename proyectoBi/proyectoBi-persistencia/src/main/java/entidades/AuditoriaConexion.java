@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -15,8 +19,13 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AUDITORIA_CONEXION")
+@NamedQueries({ 
+	@NamedQuery(name = AuditoriaConexion.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM AuditoriaConexion a") 
+	})
 public class AuditoriaConexion implements Serializable{
 
+	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaConexion.ListarAuditorias";
+	
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_CONEXION_SEQ")
@@ -39,6 +48,10 @@ public class AuditoriaConexion implements Serializable{
 	@Column(name="HORA",nullable=false)
 	@Temporal(TemporalType.TIME)
 	private Date hora;
+	
+	@JoinColumn(name="CONEXION_ID")
+	@ManyToOne(cascade={})
+	private Conexion conexion;
 	
 	public AuditoriaConexion() {
 		// TODO Auto-generated constructor stub
@@ -90,6 +103,14 @@ public class AuditoriaConexion implements Serializable{
 
 	public void setHora(Date hora) {
 		this.hora = hora;
+	}
+
+	public Conexion getConexion() {
+		return conexion;
+	}
+
+	public void setConexion(Conexion conexion) {
+		this.conexion = conexion;
 	}
 	
 }

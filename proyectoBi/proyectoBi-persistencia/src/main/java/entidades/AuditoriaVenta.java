@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,8 +20,13 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AUDITORIA_VENTA")
+@NamedQueries({ 
+	@NamedQuery(name = AuditoriaVenta.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM AuditoriaVenta a") 
+	})
 public class AuditoriaVenta implements Serializable{
 
+	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaVenta.ListarAuditorias";
+	
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_VENTA_SEQ")
@@ -51,5 +58,62 @@ public class AuditoriaVenta implements Serializable{
 	public AuditoriaVenta() {
 		// TODO Auto-generated constructor stub
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getAccion() {
+		return accion;
+	}
+
+	public void setAccion(String accion) {
+		this.accion = accion;
+	}
+
+	public String getNavegador() {
+		return navegador;
+	}
+
+	public void setNavegador(String navegador) {
+		this.navegador = navegador;
+	}
+
+	public String getDispositivo() {
+		return dispositivo;
+	}
+
+	public void setDispositivo(String dispositivo) {
+		this.dispositivo = dispositivo;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public Date getHora() {
+		return hora;
+	}
+
+	public void setHora(Date hora) {
+		this.hora = hora;
+	}
+
+	public DetalleVenta getDetalleVenta() {
+		return detalleVenta;
+	}
+
+	public void setDetalleVenta(DetalleVenta detalleVenta) {
+		this.detalleVenta = detalleVenta;
+	}
+	
 	
 }

@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,8 +19,13 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AUDITORIA_PRODUCTO")
+@NamedQueries({ 
+	@NamedQuery(name = AuditoriaProducto.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM AuditoriaProducto a") 
+	})
 public class AuditoriaProducto implements Serializable{
 
+	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaProducto.ListarAuditorias";
+	
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_PRODUCTO_SEQ")
