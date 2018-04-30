@@ -25,7 +25,13 @@ public class UsuarioEJB {
 	 */
 	public void crear(Usuario usuario, int bd){
 		em.setBd(bd);
-		em.crear(usuario);
+		Usuario usu = buscar(usuario.getCedula(), bd);
+		if (usu == null) {
+			em.crear(usuario);
+		}else{
+			throw new ExcepcionNegocio("El usuario ya se encuentra registrado");
+		}
+		
 	}
 	
 	/**

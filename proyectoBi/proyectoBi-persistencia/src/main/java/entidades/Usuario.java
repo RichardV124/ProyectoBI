@@ -3,6 +3,7 @@ package entidades;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -61,7 +62,7 @@ public class Usuario implements Serializable{
 	private Genero genero;
 	
 	@JoinColumn(name="LOGIN_USERNAME")
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	private Login login;
 	
 	

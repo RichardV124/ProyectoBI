@@ -4,7 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui" 
 	template="/templates/index.xhtml"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="cuerpo">
 		<h:form prependId="false">
@@ -33,7 +33,7 @@
 					<p:outputLabel for="cbgenusu" id="lbdptomedusu" value="Genero"  />
 					<h:selectOneMenu id="cbgenusu" class="form-control" value="#{registroUsuarioController.generoSeleccionado}">
 					<f:selectItems value="#{registroUsuarioController.listaGeneros}" var="genero"
-					itemValue="#{genero}" itemLabel="#{genero.nombre}"/>
+					itemValue="#{genero.id}" itemLabel="#{genero.nombre}"/>
 					</h:selectOneMenu>
 					<p:message for="lbdptomedusu" />
 					
@@ -50,16 +50,14 @@
 					<h:selectOneMenu id="cbmunicipiousu" class="form-control"
 						value="#{registroUsuarioController.municipioSeleccionado}">
 						<f:selectItems value="#{registroUsuarioController.listaMunicipios}"
-							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
+							var="mun" itemValue="#{mun.id}" itemLabel="#{mun.nombre}" />
 					</h:selectOneMenu>
 					<p:message for="lbmunicipiousu" />					
 					
 					
 				</h:panelGrid>
-				</p:fieldset>
-				</h:form>			
+				</p:fieldset>			
 				
-				<h:form prependId="false">
 				
 				<p:fieldset legend="Info inicio sesion" style="margin-top:10px">
 				<h:panelGrid columns="3" id="datossesionusu">
@@ -81,6 +79,58 @@
 					
 				</h:panelGrid>
 				</p:fieldset>
+				
+				<p:accordionPanel id="panelTablausuarios"  style="margin-top:15px">
+					<p:tab title="Tipos Registrados">
+					<p:dataTable value="#{registroUsuarioController.usuario}" id="tabla"
+						var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Cedulae
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Apellidoo
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Fechaa
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Genero
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Municipio
+						</f:facet>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Usuario
+						</f:facet>
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
 				
 				
 		</h:form>

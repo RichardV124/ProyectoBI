@@ -11,18 +11,24 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Encoded;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Faces;
+import org.omnifaces.util.Messages;
 
+import beans.AuditoriaUsuarioEJB;
 import beans.DepartamentoEJB;
 import beans.GeneroEJB;
+import beans.LoginEJB;
 import beans.MunicipioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
+import entidades.AuditoriaUsuario;
 import entidades.Departamento;
 import entidades.Genero;
 import entidades.Login;
 import entidades.Municipio;
 import entidades.TipoUsuario;
 import entidades.Usuario;
+import excepciones.ExcepcionNegocio;
 
 @ViewScoped
 @Named("registroUsuarioController")
@@ -39,6 +45,12 @@ public class RegistroUsuarioController implements Serializable{
 	
 	@EJB
 	private GeneroEJB generoEJB;
+	
+	@EJB
+	private LoginEJB loginEJB;
+	
+	@EJB
+	private AuditoriaUsuarioEJB auditoriaEJB;
 	
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
@@ -79,43 +91,62 @@ public class RegistroUsuarioController implements Serializable{
 		llenarCombos();
 	}
 	
-	public void registrar(){
-		
-		Usuario usu = usuarioEJB.buscar(cedula, 2);
-		if(usu!=null){
-			
-			Usuario u =  new Usuario();
+	public void registrar() {
+
+		try {
+			Usuario u = new Usuario();
 			u.setCedula(cedula);
 			u.setNombre(nombre);
 			u.setApellido(apellido);
-			
+
 			Genero gen = generoEJB.buscar(2, generoSeleccionado);
 			u.setGenero(gen);
-			
-			AreaEmpresa area = new AreaEmpresa();
-			u.setAreaEmpresa(area);
-			
+			u.setAreaEmpresa(null);
+
 			u.setfechaNacimiento(fechaNacimiento);
 			u.setSalario(0);
-			
-			TipoUsuario tipo = new TipoUsuario();
-			u.setTipoUsuario(tipo);
-			
+			u.setTipoUsuario(null);
+
 			Municipio mun = municipioEJB.buscar(2, municipioSeleccionado);
 			u.setMunicipio(mun);
-			
-//			Login login = 
-			
+
+			//creando Login
+			Login login = new Login();
+			login.setActivo(false);
+			login.setUsername(username);
+			login.setPassword(password);
+			loginEJB.crear(login, 2);
+			u.setLogin(login);
+
 			usuarioEJB.crear(u, 2);
+			
+			//creando auditoria
+			crearAuditoria(u, "Crear", 2);
+			
+			//limpiamos campos
+			limpiar();
+			Messages.addFlashGlobalInfo("Registro exitoso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
 		}
-		
-		limpiar();
+
+	}
+	
+	public void crearAuditoria(Usuario u, String accion, int bd){
+		String browserDetails = Faces.getRequestHeader("User-Agent");
+		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		auditoria.setUsuario(u);
+		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 	
 	public void llenarCombos(){
-		listaDptos = departamentoEJB.listar(2);
-		listaGeneros = generoEJB.listar(2);
-		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		try{
+			listaDptos = departamentoEJB.listar(2);
+			listaGeneros = generoEJB.listar(2);
+			listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
+		}catch(ExcepcionNegocio e){
+			
+		}
 	}
 	
 	public void listarMunicipios(){
@@ -135,7 +166,109 @@ public class RegistroUsuarioController implements Serializable{
 		confirmarpassword="";
 		listaMunicipios = municipioEJB.listar(2, listaDptos.get(0));
 	}
-	
-	
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public int getGeneroSeleccionado() {
+		return generoSeleccionado;
+	}
+
+	public void setGeneroSeleccionado(int generoSeleccionado) {
+		this.generoSeleccionado = generoSeleccionado;
+	}
+
+	public List<Genero> getListaGeneros() {
+		return listaGeneros;
+	}
+
+	public void setListaGeneros(List<Genero> listaGeneros) {
+		this.listaGeneros = listaGeneros;
+	}
+
+	public int getMunicipioSeleccionado() {
+		return municipioSeleccionado;
+	}
+
+	public void setMunicipioSeleccionado(int municipioSeleccionado) {
+		this.municipioSeleccionado = municipioSeleccionado;
+	}
+
+	public List<Municipio> getListaMunicipios() {
+		return listaMunicipios;
+	}
+
+	public void setListaMunicipios(List<Municipio> listaMunicipios) {
+		this.listaMunicipios = listaMunicipios;
+	}
+
+	public int getDptoSeleccionado() {
+		return dptoSeleccionado;
+	}
+
+	public void setDptoSeleccionado(int dptoSeleccionado) {
+		this.dptoSeleccionado = dptoSeleccionado;
+	}
+
+	public List<Departamento> getListaDptos() {
+		return listaDptos;
+	}
+
+	public void setListaDptos(List<Departamento> listaDptos) {
+		this.listaDptos = listaDptos;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getConfirmarpassword() {
+		return confirmarpassword;
+	}
+
+	public void setConfirmarpassword(String confirmarpassword) {
+		this.confirmarpassword = confirmarpassword;
+	}
 		
 }
