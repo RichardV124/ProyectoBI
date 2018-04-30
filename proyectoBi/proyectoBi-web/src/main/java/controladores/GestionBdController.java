@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +18,7 @@ import session.SessionController;
 
 @ViewScoped
 @Named("gestionBdController")
-public class GestionBdController {
+public class GestionBdController implements Serializable{
 	
 	@Inject
 	private SessionController sesion;
@@ -42,6 +43,10 @@ public class GestionBdController {
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
+		
+	}
+	
+	public void aceptar(){
 		
 	}
 	

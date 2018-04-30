@@ -17,8 +17,8 @@
 					</h:selectOneMenu>
 					<p:message for="lbconex" />
 					
-					<p:commandButton id="btselec" value="Seleccionar" action="#{gestionUsuarioController.editar}"
-						process="@this datogessusu" update="datogessusu panelTablaUsuGe" />
+					<p:commandButton id="btselec" value="Seleccionar" action="#{gestionBdController.aceptar}"
+						process="@this lbconex" update="lbconex" />
 				
 					
 					
