@@ -16,6 +16,7 @@ import beans.ConexionEJB;
 import beans.UsuarioEJB;
 import beansSeguridad.SeguridadEJB;
 import entidades.Acceso;
+import entidades.Conexion;
 import entidades.Usuario;
 
 @Named("sessionController")
@@ -71,7 +72,11 @@ public class SessionController implements Serializable {
 					System.out.println("Inicio sesion administrador");
 
 					accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(), bd);
-					//bd = conexionEJB.buscar(1, bd).getId();
+					
+					Conexion c = conexionEJB.buscar(2, bd);
+					
+					this.bd=c.getId();
+					
 					Faces.setSessionAttribute("bd", bd);
 
 					Messages.addFlashGlobalInfo("Ha iniciado sesion correctamente");
@@ -84,7 +89,7 @@ public class SessionController implements Serializable {
 
 					accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(), bd);
 
-					//bd = conexionEJB.buscar(1, bd).getId();
+					bd = conexionEJB.buscar(2, bd).getId();
 					Faces.setSessionAttribute("bd", bd);
 
 					Messages.addFlashGlobalInfo("Ha iniciado sesion correctamente");
@@ -97,7 +102,7 @@ public class SessionController implements Serializable {
 
 					accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(), bd);
 
-					//bd = conexionEJB.buscar(1, bd).getId();
+					bd = conexionEJB.buscar(2, bd).getId();
 					Faces.setSessionAttribute("bd", bd);
 
 					Messages.addFlashGlobalInfo("Ha iniciado sesion correctamente");
@@ -152,7 +157,7 @@ public class SessionController implements Serializable {
 	 * @return the bd
 	 */
 	public int getBd() {
-		return 1;
+		return bd;
 	}
 
 	/**

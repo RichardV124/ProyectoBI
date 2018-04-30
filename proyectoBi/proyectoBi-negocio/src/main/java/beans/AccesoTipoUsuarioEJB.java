@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import entidades.Acceso;
 import entidades.AccesoTipoUsuario;
 import entidades.AccesoTipoUsuarioPK;
+import entidades.Departamento;
 import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -38,24 +39,24 @@ public class AccesoTipoUsuarioEJB {
 	 */
 	public void crear(AccesoTipoUsuario tipoUsuarioAcceso, int bd){
 		conexion.setBd(bd);
-		TipoUsuario rol = tipoUsuarioEJB.buscar(tipoUsuarioAcceso.getTipoUsuario().getId(), bd);
-		if(rol != null){
-			Acceso acceso = accesoEJB.buscar(tipoUsuarioAcceso.getAcceso().getId(), bd);
-			if(acceso != null){
+//		TipoUsuario rol = tipoUsuarioEJB.buscar(tipoUsuarioAcceso.getTipoUsuario().getId(), bd);
+//		if(rol != null){
+//			Acceso acceso = accesoEJB.buscar(tipoUsuarioAcceso.getAcceso().getId(), bd);
+//			if(acceso != null){
 				AccesoTipoUsuario ra = buscar(tipoUsuarioAcceso, bd);
 				if(ra == null){
-					tipoUsuarioAcceso.setAcceso(acceso);
-					tipoUsuarioAcceso.setTipoUsuario(rol);
-					conexion.crear(tipoUsuarioAcceso);
+					tipoUsuarioAcceso.setAcceso(tipoUsuarioAcceso.getAcceso());
+					tipoUsuarioAcceso.setTipoUsuario(tipoUsuarioAcceso.getTipoUsuario());
+					conexion.crearAccesoTipoUsuario(tipoUsuarioAcceso);
 				}else{
 					throw new ExcepcionNegocio("Ya existe este acceso en el tipo usuario "+tipoUsuarioAcceso.getTipoUsuario().getNombre());
 				}
-			}else{
-				throw new ExcepcionNegocio("No existe el acceso");
-			}
-		}else{
-			throw new ExcepcionNegocio("No existe el rol");
-		}
+//			}else{
+//				throw new ExcepcionNegocio("No existe el acceso");
+//			}
+//		}else{
+//			throw new ExcepcionNegocio("No existe el rol");
+//		}
 	}
 	
 	/**
@@ -93,25 +94,6 @@ public class AccesoTipoUsuarioEJB {
 		return (AccesoTipoUsuario) conexion.buscar(AccesoTipoUsuario.class, pk);
 	}
 	
-	/**
-	 * Listar Accesos por Rol
-	 * @param bd base de datos en la que obtendra los accesos por rol
-	 * @return lista de accesos de un determinado rol
-	 */
-	public List<Acceso> listarByRol(TipoUsuario tipo, int bd){
-		conexion.setBd(bd);
-		// Lista de roles a retornar
-		List<Acceso> listado = new ArrayList<Acceso>();
-		// obtenemos la lista de objetos rol de la base de datos
-		List<Object> lista = conexion.listarConParametroInteger(AccesoTipoUsuario.listarAccesosPorRol, tipo.getId());
-		// recorremos la lista de objetos rol
-		for (Object object : lista) {
-			AccesoTipoUsuario ra = (AccesoTipoUsuario)object;
-			// agregamos a la lista de roles, el objeto lo casteamos como objeto rol
-			listado.add(ra.getAcceso());
-		}
-		return listado;
-	}
 	
 	/**
 	 * Listar accsos tipo usuario por tipo usuario
@@ -129,6 +111,36 @@ public class AccesoTipoUsuarioEJB {
 		return (List<Acceso>)(Object)conexion.listarConParametroInteger(AccesoTipoUsuario.listarAccesosPorRol, rol.getId());
 	}
 	
+	/**
+	 * metodo para listar los accesotipousuario registrados
+	 */
+	public List<AccesoTipoUsuario> listar(int bd) {
+		conexion.setBd(bd);	
+		List<AccesoTipoUsuario> dptos =  (List<AccesoTipoUsuario>)(Object)conexion.listar(AccesoTipoUsuario.listarTodosAccesosTipoUsuario);
+		if (dptos.isEmpty()) {
+			throw new ExcepcionNegocio("No hay accesos asignados a ningun rol registrados en la base de datos");
+		} else {
+			return dptos;
+		}
+	}
+	
+	/**
+	 * Listar Accesos por Rol
+	 * @param bd base de datos en la que obtendra los accesos por rol
+	 * @return lista de accesos de un determinado rol
+	 */
+	public List<Acceso> listarByRol(TipoUsuario tipo, int bd){
+		conexion.setBd(bd);
+	
+		List<Acceso> listado = new ArrayList<Acceso>();
+		List<Object> lista = conexion.listarConParametroInteger(AccesoTipoUsuario.listarAccesosPorRol, tipo.getId());
+		for (Object object : lista) {
+			AccesoTipoUsuario ra = (AccesoTipoUsuario)object;
+
+			listado.add(ra.getAcceso());
+		}
+		return listado;
+	}
 	
 	
 }
