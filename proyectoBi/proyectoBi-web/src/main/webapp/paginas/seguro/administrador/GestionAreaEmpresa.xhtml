@@ -3,78 +3,66 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui" 
-	template="/templates/index.xhtml"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
+	template="/templates/index.xhtml">
 
 	<ui:define name="cuerpo">
 		<h:form prependId="false">
-			<p:fieldset legend="Buscar Area" style="margin-top:10px">
-			
-			<h:panelGrid columns="3">
-				<p:outputLabel for="tfbusarea" id="busarea" value="Buscar Area" />
-				<h:inputSecret id="tfbusarea" class="form-control"  value="#{GestionAreaEmpresaController.buscar}" />
-				<p:message for="busarea" />
-				<br></br>
-				<p:commandButton id="btbuscar" style="display:block" value="Buscar Area" process="@this" action="#" />
-				</h:panelGrid>
-				</p:fieldset>
-					
-				<p:fieldset legend="Gestion Area Empresa" style="margin-top:10px">
-			
-				<h:panelGrid columns="3">
+		
+		
+			<p:fieldset legend="Gestion Area Empresa" style="margin-top:10px">
+				<h:panelGrid columns="3" id="datoareaem">
 				
-				<p:outputLabel for="tfgesarea" id="gesarea" value="Nombre Area" />
-				<h:inputSecret id="tfgesarea" class="form-control"  value="#{GestionAreaEmpresaController.nombre}" />
-				<p:message for="gesarea" />
-				
-				<p:outputLabel for="tfDireccionEmp" id="dirEmpre" value="Descripcion" />
-					<p:inputTextarea id="tfDireccionEmp" class="form-control"
-						value="#{GestionAreaEmpresaController.descripcion}" placeholder="Descripcion"/>
+					<p:outputLabel for="tfnomareaem" id="nomarea" value="Nombre" />
+					<p:inputText id="tfnomareaem" class="form-control" placeholder="nombre" value="#{gestionAreaEmpresaController.nombre}" />
+					<p:message for="tfnomareaem" />
+	
+					<p:outputLabel for="tfDescripareem" id="desctiparea" value="Descripcion" />
+					<p:inputTextarea id="tfDescripareem" class="form-control"
+						value="#{gestionAreaEmpresaController.descripcion}" placeholder="Descripcion"/>
 					
 				</h:panelGrid>
-				<br></br>
-				<h:panelGrid columns="3">
-					<p:commandButton id="btregarea" value="Registrar" process="@this" action="#" />
-					<p:commandButton id="bteditarea" value="Editar" process="@this" action="#" />
-					<p:commandButton id="btelimarea" value="Eliminar" process="@this" action="#" />
-					</h:panelGrid>
-					
-				</p:fieldset>
-				</h:form>
 				
+				<p:commandButton id="btregaare" value="Resgistar" action="#{gestionAreaEmpresaController.registrar}"
+					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
+				
+				</p:fieldset>
 				<h:form prependId="false">
 				
 				
-				<p:accordionPanel id="panelTablaEmp"  style="margin-top:15px">
-					<p:tab title="Areas Registradas">
-					<p:dataTable value="#{GestionAreaEmpresaController.rolAccesos}" id="tabla"
-						var="a" border="1">
+				<p:accordionPanel id="panelTablaarea"  style="margin-top:15px">
+					<p:tab title="Usuarios Registrados">
+					<p:dataTable value="#{gestionAreaEmpresaController.tipoAreas}" id="tabla" 
+					var="a" border="1">
 						
 						<p:column>
 							<f:facet name="header">
 							Codigo
 						</f:facet>
+						<p:outputLabel value="#{a.id}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Nombre
 						</f:facet>
+						<p:outputLabel value="#{a.nombre}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
-							Descripcion
+							Descripciono
 						</f:facet>
-						
+						<p:outputLabel value="#{a.descripcion}" />
 						</p:column>
+						
 												
 					</p:dataTable>
 				</p:tab>
 				</p:accordionPanel>
 				
-				</h:form>			
-
+				</h:form>
+				
+		</h:form>
 	</ui:define>
 
 </ui:composition>

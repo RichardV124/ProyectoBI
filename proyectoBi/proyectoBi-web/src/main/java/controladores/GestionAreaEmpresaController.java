@@ -12,20 +12,22 @@ import javax.validation.constraints.NotNull;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Messages;
 
-import beans.TipoUsuarioEJB;
+import beans.AreaEmpresaEJB;
+import entidades.AreaEmpresa;
 import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
 @ViewScoped
-@Named("gestionTipoUsuarioController")
-public class GestionTipoUsuarioController implements Serializable {
-	
+@Named("gestionAreaEmpresaController")
+public class GestionAreaEmpresaController implements Serializable {
+
+
 	@Inject
 	private SessionController sesion;
 	
 	@EJB
-	private TipoUsuarioEJB rolEJB;
+	private AreaEmpresaEJB areaEJB;
 	
 	@NotNull(message = "Debe ingresar el nombre")
 	private String nombre;
@@ -33,7 +35,7 @@ public class GestionTipoUsuarioController implements Serializable {
 	@NotNull(message = "Debe añadir una descripcion")
 	private String descripcion;
 	
-	private List<TipoUsuario> tipoUsuarios;
+	private List<AreaEmpresa> tipoAreas;
 	
 	@PostConstruct
 	public void inicializar(){
@@ -43,13 +45,13 @@ public class GestionTipoUsuarioController implements Serializable {
 	public void registrar() {
 
 		try {
-			TipoUsuario u = new TipoUsuario();
+			AreaEmpresa u = new AreaEmpresa();
 			u.setNombre(nombre);
 			u.setDescripcion(descripcion);
 
 				//creando tipo del usuario
 
-				rolEJB.crear(u, 2);
+				areaEJB.crear(u, sesion.getBd());
 				llenarTabla();
 				limpiar();
 				Messages.addFlashGlobalInfo("Registro exitoso");
@@ -65,7 +67,7 @@ public class GestionTipoUsuarioController implements Serializable {
 	 */
 	public void llenarTabla(){
 		try{
-			tipoUsuarios = rolEJB.listar(2);
+			tipoAreas = areaEJB.listarUsuarios(sesion.getBd());
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -75,14 +77,6 @@ public class GestionTipoUsuarioController implements Serializable {
 		
 		nombre = "";
 		descripcion = "";
-	}
-
-	public SessionController getSesion() {
-		return sesion;
-	}
-
-	public void setSesion(SessionController sesion) {
-		this.sesion = sesion;
 	}
 
 	public String getNombre() {
@@ -101,12 +95,14 @@ public class GestionTipoUsuarioController implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public List<TipoUsuario> getTipoUsuarios() {
-		return tipoUsuarios;
+	public List<AreaEmpresa> getTipoAreas() {
+		return tipoAreas;
 	}
 
-	public void setTipoUsuarios(List<TipoUsuario> tipoUsuarios) {
-		this.tipoUsuarios = tipoUsuarios;
+	public void setTipoAreas(List<AreaEmpresa> tipoAreas) {
+		this.tipoAreas = tipoAreas;
 	}
+
+	
 	
 }

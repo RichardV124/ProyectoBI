@@ -65,7 +65,7 @@ public class Usuario implements Serializable{
 	private Genero genero;
 	
 	
-	@JoinColumn(name="LOGIN_USERNAME")
+	@JoinColumn(name="LOGIN_USERNAME", nullable=true)
 	@OneToOne(cascade=CascadeType.ALL)
 	private Login login;
 	
