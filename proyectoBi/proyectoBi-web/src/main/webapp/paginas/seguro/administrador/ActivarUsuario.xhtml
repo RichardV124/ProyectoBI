@@ -49,8 +49,9 @@
 							<f:facet name="header">
 							Estado
 						</f:facet>
-							<p:commandButton action="#{ActivarUsuarioController.activarUsuario(ac)}" value="Activar" update="panelTablaEmp" process="@this" id="btnbuscar"/>
-						</p:column>
+						<p:commandButton rendered="#{ac.estado == false}" action="#{ActivarUsuarioController.cambiarEstado(u,true)}" value="Activar" update="tabla" process="@this,gestion" id="btnactivar"/>
+								<p:commandButton rendered="#{ac.estado == true}" action="#{ActivarUsuarioController.cambiarEstado(u,false)}" value="Desactivar" update="tabla" process="@this,gestion" id="btndesactivar"/>
+							</p:column>
 												
 					</p:dataTable>
 				</p:tab>

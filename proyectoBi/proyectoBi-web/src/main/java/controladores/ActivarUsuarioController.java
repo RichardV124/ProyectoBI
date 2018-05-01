@@ -52,9 +52,9 @@ public class ActivarUsuarioController implements Serializable{
 	}
 		}
 	
-	public void activarUsuario(Usuario u){
+	public void activarUsuario(Usuario u,boolean activo){
 		try{
-	u.getLogin().setActivo(true);
+	u.getLogin().setActivo(activo);
 	usuarioEJB.editar(u, sesion.getBd());
 	//creando la auditoria
 	crearAuditoria(u.getCedula()+"", "Activar Usuario", 2);
