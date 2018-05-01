@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="USUARIO")
 @NamedQueries({ 
+	@NamedQuery(name=Usuario.CONSULTA_LISTAR_USUARIOS_INACTIVOS,query="SELECT u FROM Usuario u WHERE u.login.activo=?1"),
 	@NamedQuery(name=Usuario.buscarPorUsername,query="SELECT u FROM Usuario u WHERE u.login.username=?1"),
 	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu") 
 	})
@@ -27,6 +28,7 @@ public class Usuario implements Serializable{
 	public static final String buscarPorUsername = "Usuario.buscarPorUsername";
 	
 	public static final String CONSULTA_LISTAR_USUARIOS = "Usuario.listarUsuarios";
+	public static final String CONSULTA_LISTAR_USUARIOS_INACTIVOS = "Usuario.listarUsuariosInactivos";
 	
 	@Id
 	@Column(name="CEDULA",length=40,nullable=false)
@@ -37,6 +39,7 @@ public class Usuario implements Serializable{
 	
 	@Column(name="APELLIDO",length=40,nullable=false)
 	private String apellido;
+	
 	
 	@Column(name="FECHA_NACIMIENTO",nullable=false)
 	@Temporal(TemporalType.DATE)
@@ -60,6 +63,7 @@ public class Usuario implements Serializable{
 	@JoinColumn(name="GENERO_ID")
 	@ManyToOne(cascade = {})
 	private Genero genero;
+	
 	
 	@JoinColumn(name="LOGIN_USERNAME")
 	@OneToOne(cascade=CascadeType.ALL)
@@ -179,7 +183,7 @@ public class Usuario implements Serializable{
 	public void setLogin(Login login) {
 		this.login = login;
 	}
-	
+
 	
 	
 }
