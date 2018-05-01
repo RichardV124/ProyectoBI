@@ -62,14 +62,36 @@ public class Persistencia  implements Serializable{
 		AccesoTipoUsuarioPK atuPK = new AccesoTipoUsuarioPK();
 //		System.out.println("ROL: " +accesoTipo.getTipoUsuario().getId());
 //		System.out.println("ACCESO: " +accesoTipo.getAcceso().getId());
+//		
+//		
+//		atuPK.setAcceso(accesoTipo.getAcceso().getId());
+//		atuPK.setTipoUsuario(accesoTipo.getTipoUsuario().getId());
+//		AccesoTipoUsuario atu = (AccesoTipoUsuario) buscar(AccesoTipoUsuario.class,atuPK);
+//		if (atu == null) {
+//			emP.persist(accesoTipo);;
+//		}
 		
 		
-		atuPK.setAcceso(accesoTipo.getAcceso().getId());
-		atuPK.setTipoUsuario(accesoTipo.getTipoUsuario().getId());
-		AccesoTipoUsuario atu = (AccesoTipoUsuario) buscar(AccesoTipoUsuario.class,atuPK);
-		if (atu == null) {
-			emP.persist(accesoTipo);;
-		}
+		Query q = emP.createNativeQuery("INSERT INTO ACCESO_TIPO_USUARIO (ID_TIPO_USUARIO,ID_ACCESO) VALUES (?1,?2)");
+		
+		q.setParameter(1, accesoTipo.getTipoUsuario().getId());
+		q.setParameter(2, accesoTipo.getAcceso().getId());
+		
+		q.executeUpdate();
+		
+	}
+	
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void eliminarAccesoTipoUsuario(AccesoTipoUsuario accesoTipo){		
+		
+		Query q = emP.createNativeQuery("DELETE FROM ACCESO_TIPO_USUARIO ac WHERE ac.ID_TIPO_USUARIO=?1 AND ac.ID_ACCESO=?2)");
+		
+		q.setParameter(1, accesoTipo.getTipoUsuario().getId());
+		q.setParameter(2, accesoTipo.getAcceso().getId());
+		
+		q.executeUpdate();
+		
 	}
 	
 	/**

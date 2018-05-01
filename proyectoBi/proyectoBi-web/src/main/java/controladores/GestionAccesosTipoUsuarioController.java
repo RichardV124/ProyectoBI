@@ -102,6 +102,11 @@ public class GestionAccesosTipoUsuarioController implements Serializable {
 		}
 
 	}
+	
+	public void quitar(AccesoTipoUsuario ac) {
+		accesoTipoUsuarioEJB.eliminar(tipoUsuarioAcceso, bd);
+
+	}
 
 	/**
 	 * Lista de accesosRol de un determinado rol
