@@ -7,25 +7,14 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
 
 	<ui:define name="cuerpo">
-		<h:form prependId="false">
-			<p:fieldset legend="Activar/Desactivar Usuario" style="margin-top:10px">
-			
-				<h:panelGrid columns="3">
-				<p:outputLabel for="tfbususu" id="bususu" value="Buscar Usuario" />
-				<h:inputSecret id="tfbususu" class="form-control"  value="#{ActivarUsuarioController.usernameBuscar}" />
-				<p:message for="bususu" />
-				<br></br>
-				<p:commandButton id="btbuscarusu" style="display:block" value="Buscar Usuario" process="@this" action="#{ActivarUsuarioController.buscar}" />
-				</h:panelGrid>
-				</p:fieldset>
-				</h:form>
+
 				
 				<h:form prependId="false">
 				
 				
 				<p:accordionPanel id="panelTablaEmp"  style="margin-top:15px">
 					<p:tab title="Estado Usuario">
-					<p:dataTable value="#{ActivarUsuarioController.usuarios}" id="tabla"
+					<p:dataTable value="#{ActivarUsuarioController.usuarios}" filterBy="#{ActivarUsuarioController.usenameBuscar}" id="tabla"
 						var="ac" border="1">
 						
 						<p:column>
@@ -53,7 +42,7 @@
 							<f:facet name="header">
 							Estado
 						</f:facet>
-							<p:commandButton action="#{ActivarUsuarioController.activarUsuario(ac)}" value="eliminar" update="panelTablaEmp" process="@this" id="btnbuscar"/>
+							<p:commandButton action="#{ActivarUsuarioController.activarUsuario(ac)}" value="Activar" update="panelTablaEmp" process="@this" id="btnbuscar"/>
 						</p:column>
 												
 					</p:dataTable>
