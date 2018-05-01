@@ -36,15 +36,7 @@ public class AreaEmpresa implements Serializable{
 	public AreaEmpresa() {
 		super();
 		// TODO Auto-generated constructor stub
-	}	
-	
-
-	public AreaEmpresa(int id, String nombre) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
 	}
-
 
 	public int getId() {
 		return id;
@@ -61,6 +53,15 @@ public class AreaEmpresa implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}	
+	
 	
 	
 }
