@@ -85,7 +85,7 @@ public class Persistencia  implements Serializable{
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void eliminarAccesoTipoUsuario(AccesoTipoUsuario accesoTipo){		
 		
-		Query q = emP.createNativeQuery("DELETE FROM ACCESO_TIPO_USUARIO ac WHERE ac.ID_TIPO_USUARIO=?1 AND ac.ID_ACCESO=?2)");
+		Query q = emP.createNativeQuery("DELETE FROM ACCESO_TIPO_USUARIO ac WHERE ac.ID_TIPO_USUARIO=?1 AND ac.ID_ACCESO=?2");
 		
 		q.setParameter(1, accesoTipo.getTipoUsuario().getId());
 		q.setParameter(2, accesoTipo.getAcceso().getId());

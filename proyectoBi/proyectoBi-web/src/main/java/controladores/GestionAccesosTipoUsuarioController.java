@@ -104,7 +104,7 @@ public class GestionAccesosTipoUsuarioController implements Serializable {
 	}
 	
 	public void quitar(AccesoTipoUsuario ac) {
-		accesoTipoUsuarioEJB.eliminar(tipoUsuarioAcceso, bd);
+		accesoTipoUsuarioEJB.eliminar(ac, sesion.getBd());
 
 	}
 
