@@ -42,6 +42,13 @@
 							<f:facet name="header">
 							Estado
 						</f:facet>
+						<p:outputLabel value="#{ac.login.activo}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Estado
+						</f:facet>
 							<p:commandButton action="#{ActivarUsuarioController.activarUsuario(ac)}" value="Activar" update="panelTablaEmp" process="@this" id="btnbuscar"/>
 						</p:column>
 												
