@@ -20,6 +20,7 @@ import beans.DepartamentoEJB;
 import beans.GeneroEJB;
 import beans.LoginEJB;
 import beans.MunicipioEJB;
+import beans.TipoUsuarioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
 import entidades.AuditoriaUsuario;
@@ -53,6 +54,9 @@ public class RegistroUsuarioController implements Serializable{
 	
 	@EJB
 	private LoginEJB loginEJB;
+	
+	@EJB
+	private TipoUsuarioEJB tipoUsuarioEJB;
 	
 	@EJB
 	private AuditoriaUsuarioEJB auditoriaEJB;
@@ -110,7 +114,7 @@ public class RegistroUsuarioController implements Serializable{
 
 			u.setfechaNacimiento(fechaNacimiento);
 			u.setSalario(0);
-			u.setTipoUsuario(null);
+			u.setTipoUsuario(tipoUsuarioEJB.buscar(2, sesion.getBd()));
 
 			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
 			u.setMunicipio(mun);
