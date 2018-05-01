@@ -20,11 +20,14 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="AUDITORIA_USUARIO")
 @NamedQueries({ 
-	@NamedQuery(name = AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT au FROM AuditoriaUsuario au") 
+	@NamedQuery(name = AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT au FROM AuditoriaUsuario au"),
+	@NamedQuery(name = AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, query = "SELECT au "
+			+ "FROM AuditoriaUsuario au WHERE au.entidad=?1")
 	})
 public class AuditoriaUsuario implements Serializable{
 
 	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaUsuario.ListarAuditorias";
+	public static final String CONSULTA_LISTAR_AUDITORIAS_ENTIDAD = "AuditoriaUsuario.ListarAuditoriasEntidad";
 	
 	@Id
 	@Column(name="ID")

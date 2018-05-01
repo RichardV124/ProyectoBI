@@ -10,6 +10,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import entidades.AuditoriaUsuario;
+import entidades.Departamento;
+import entidades.Municipio;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
 
@@ -121,5 +123,19 @@ public class AuditoriaUsuarioEJB {
 			return auditorias;
 		}
 		
+	}
+	
+	/**
+	 * metodo para listar las auditorias registrados
+	 */
+	public List<AuditoriaUsuario> listarParametro(int bd, String entidad) {
+		em.setBd(bd);	
+		
+		List<AuditoriaUsuario> muns =  (List<AuditoriaUsuario>)(Object)em.listarConUnParametro(AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, entidad);
+		if (muns.isEmpty()) {
+			throw new ExcepcionNegocio("No hay auditorias registrados en la base de datos");
+		} else {
+			return muns;
+		}
 	}
 }
