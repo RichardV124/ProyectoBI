@@ -98,4 +98,14 @@ public class UsuarioEJB {
 		}
 	}
 	
+	public List<Usuario> listarUsuariosInactivos(int bd){
+		em.setBd(bd);	
+		List<Usuario> usuarios= (List<Usuario>)(Object)em.listarConUnParametro(Usuario.CONSULTA_LISTAR_USUARIOS_INACTIVOS,false);
+		if (usuarios.isEmpty()) {
+			throw new ExcepcionNegocio("No hay usuarios registrados en la base de datos");
+		} else {
+			return usuarios;
+		}
+	}
+	
 }

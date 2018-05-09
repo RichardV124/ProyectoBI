@@ -15,12 +15,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TIPO_PRODUCTO")
-@NamedQueries({ 
-	@NamedQuery(name = TipoProducto.CONSULTA_LISTAR_TIPOS_PRODUCTO, query = "SELECT tp FROM TipoProducto tp") 
-	})
+@NamedQueries({
+	@NamedQuery(name=TipoProducto.listarTipos,query="SELECT tu FROM TipoProducto tu"),
+	@NamedQuery(name=TipoProducto.buscarPorNombre,query="SELECT tu FROM TipoProducto tu WHERE tu.nombre=?1")
+})
 public class TipoProducto implements Serializable{
 
-	public static final String CONSULTA_LISTAR_TIPOS_PRODUCTO = "TipoProducto.ListarTiposProducto";
+	public static final String listarTipos = "TipoProducto.listarTipos";
+	public static final String buscarPorNombre = "TipoProducto.buscarPorNombre";
 	
 	@Id
 	@Column(name="ID")

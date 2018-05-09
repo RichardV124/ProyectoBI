@@ -7,51 +7,51 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">>
 
 	<ui:define name="cuerpo">
-		<h:form prependId="false">
-			<p:fieldset legend="Activar/Desactivar Usuario" style="margin-top:10px">
-			
-				<h:panelGrid columns="3">
-				<p:outputLabel for="tfbususu" id="bususu" value="Buscar Usuario" />
-				<h:inputSecret id="tfbususu" class="form-control"  value="#{ActivarUsuarioController.buscar}" />
-				<p:message for="bususu" />
-				<br></br>
-				<p:commandButton id="btbuscarusu" style="display:block" value="Buscar Usuario" process="@this" action="#" />
-				</h:panelGrid>
-				</p:fieldset>
-				</h:form>
+
 				
 				<h:form prependId="false">
 				
 				
 				<p:accordionPanel id="panelTablaEmp"  style="margin-top:15px">
 					<p:tab title="Estado Usuario">
-					<p:dataTable value="#{ActivarUsuarioController.rolAccesos}" id="tabla"
-						var="a" border="1">
+					<p:dataTable value="#{ActivarUsuarioController.usuarios}" filterBy="#{ActivarUsuarioController.usenameBuscar}" id="tabla"
+						var="ac" border="1">
 						
 						<p:column>
 							<f:facet name="header">
 							Cedula
 						</f:facet>
+						<p:outputLabel value="#{ac.cedula}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Nombre
 						</f:facet>
+						<p:outputLabel value="#{ac.nombre}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Apellido
 						</f:facet>
+						<p:outputLabel value="#{ac.apellido}" />
 						</p:column>
 						
 						<p:column>
 							<f:facet name="header">
 							Estado
 						</f:facet>
-							<p:commandButton action="#{GestionAccesosRolController.quitar(a)}" value="eliminar" update="gestion" process="@this" id="btnbuscar"/>
+						<p:outputLabel value="#{ac.login.activo}" />
 						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Estado
+						</f:facet>
+						<p:commandButton rendered="#{ac.estado == false}" action="#{ActivarUsuarioController.activarUsuario(u,true)}" value="Activar" update="tabla" process="@this,gestion" id="btnactivar"/>
+								<p:commandButton rendered="#{ac.estado == true}" action="#{ActivarUsuarioController.activarUsuario(u,false)}" value="Desactivar" update="tabla" process="@this,gestion" id="btndesactivar"/>
+							</p:column>
 												
 					</p:dataTable>
 				</p:tab>

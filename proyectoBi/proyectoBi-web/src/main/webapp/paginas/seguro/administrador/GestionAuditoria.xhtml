@@ -12,7 +12,7 @@
 				
 					<p:accordionPanel id="panelTablaAud1" >
 					<p:tab title="Auditoria Tipo Usuario">
-						<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla1"
+						<p:dataTable value="#{gestionAuditoriaController.audi_1}" id="tabla1"
 							var="a" border="1">
 							
 							<p:column>
@@ -31,9 +31,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -45,9 +52,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 													
 						</p:dataTable>
@@ -56,12 +70,12 @@
 				
 				<p:accordionPanel id="panelTablaEmpAud2" >
 					<p:tab title="Auditoria Acceso">
-						<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla2"
+						<p:dataTable value="#{gestionAuditoriaController.audi_2}" id="tabla2"
 							var="a" border="1">
 							
 							<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -75,9 +89,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -89,9 +110,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 													
 						</p:dataTable>
@@ -100,12 +128,12 @@
 				
 				<p:accordionPanel id="panelTablaAud3"  style="margin-top:15px">
 					<p:tab title="Auditoria Login">
-					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla3"
+					<p:dataTable value="#{gestionAuditoriaController.audi_3}" id="tabla3"
 						var="a" border="1">
 						
 						<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -119,9 +147,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -133,9 +168,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 						
 												
@@ -145,12 +187,12 @@
 				
 				<p:accordionPanel id="panelTablaAud4"  style="margin-top:15px">
 					<p:tab title="Auditoria Usuario">
-					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla4"
+					<p:dataTable value="#{gestionAuditoriaController.audi_4}" id="tabla4"
 						var="a" border="1">
 						
 						<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -164,9 +206,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -178,9 +227,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 						
 												
@@ -190,12 +246,12 @@
 				
 				<p:accordionPanel id="panelTablaAud5"  style="margin-top:15px">
 					<p:tab title="Auditoria Area">
-					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla5"
+					<p:dataTable value="#{gestionAuditoriaController.audi_5}" id="tabla5"
 						var="a" border="1">
 						
 						<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -209,9 +265,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -223,9 +286,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 						
 												
@@ -235,12 +305,12 @@
 				
 				<p:accordionPanel id="panelTablaAud6"  style="margin-top:15px">
 					<p:tab title="Auditoria Producto">
-					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla6"
+					<p:dataTable value="#{gestionAuditoriaController.audi_6}" id="tabla6"
 						var="a" border="1">
 						
 						<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -254,9 +324,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -268,9 +345,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 						
 												
@@ -280,12 +364,12 @@
 				
 				<p:accordionPanel id="panelTablaAud7"  style="margin-top:15px">
 					<p:tab title="Auditoria Conexion">
-					<p:dataTable value="#{GestionAuditoria.auditorias}" id="tabla7"
+					<p:dataTable value="#{gestionAuditoriaController.audi_7}" id="tabla7"
 						var="a" border="1">
 						
 						<p:column>
 								<f:facet name="header">
-								Accion
+								Accioon
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -299,9 +383,16 @@
 							
 							<p:column>
 								<f:facet name="header">
+								Hora
+							</f:facet>
+								<p:outputLabel value="#{a.hora}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
 								Origen
 							</f:facet>
-								<p:outputLabel value="#{a.origen}" />
+								<p:outputLabel value="#{a.dispositivo}" />
 							</p:column>
 							
 							<p:column>
@@ -313,9 +404,16 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Registro
+								Entidad
 							</f:facet>
-								<p:outputLabel value="#{a.registro}" />
+								<p:outputLabel value="#{a.entidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Auditado
+							</f:facet>
+								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
 						
 												
