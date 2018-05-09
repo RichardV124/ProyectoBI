@@ -12,9 +12,9 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
-import beans.AuditoriaUsuarioEJB;
+import beans.AuditoriaEJB;
 import beans.UsuarioEJB;
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
@@ -32,7 +32,7 @@ public class ActivarUsuarioController implements Serializable{
 	private List<Usuario> usuarios;
 	
 	@EJB
-	private AuditoriaUsuarioEJB auditoriaEJB;
+	private AuditoriaEJB auditoriaEJB;
 	
 	
 	private String usernameBuscar;
@@ -88,7 +88,7 @@ public class ActivarUsuarioController implements Serializable{
 	
 	public void crearAuditoria(String u, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
-		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		Auditoria auditoria = new Auditoria();
 		auditoria.setEntidad("Usuario");
 		auditoria.setObjetoAuditado(u);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);

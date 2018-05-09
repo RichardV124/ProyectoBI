@@ -16,7 +16,7 @@ import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
 import beans.AreaEmpresaEJB;
-import beans.AuditoriaUsuarioEJB;
+import beans.AuditoriaEJB;
 import beans.DepartamentoEJB;
 import beans.GeneroEJB;
 import beans.LoginEJB;
@@ -24,7 +24,7 @@ import beans.MunicipioEJB;
 import beans.TipoUsuarioEJB;
 import beans.UsuarioEJB;
 import entidades.AreaEmpresa;
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import entidades.Departamento;
 import entidades.Genero;
 import entidades.Login;
@@ -63,7 +63,7 @@ public class GestionUsuarioController implements Serializable{
 	private AreaEmpresaEJB areaEmpresaEJB;
 	
 	@EJB
-	private AuditoriaUsuarioEJB auditoriaEJB;
+	private AuditoriaEJB auditoriaEJB;
 	
 	@NotNull(message = "Debe ingresar la cedula")
 	private String cedula;
@@ -253,7 +253,7 @@ public class GestionUsuarioController implements Serializable{
 	
 	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
-		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		Auditoria auditoria = new Auditoria();
 		auditoria.setEntidad(entidad);
 		auditoria.setObjetoAuditado(objeto);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
