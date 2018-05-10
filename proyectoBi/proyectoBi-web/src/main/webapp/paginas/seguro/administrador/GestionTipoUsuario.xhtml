@@ -10,6 +10,18 @@
 		
 		
 			<p:fieldset legend="Gestion Tipo Usuario" style="margin-top:10px">
+			
+			<h:panelGrid columns="3" id="datobus">
+				
+					<p:outputLabel for="tfbuscod" id="buscod" value="Codigo" />
+					<p:inputText id="tfbuscod" class="form-control" placeholder="nombre" value="#{gestionTipoUsuarioController.id}" />
+					<p:message for="tfbuscod" />
+					
+					<p:commandButton id="btbu" value="Buscar" action="#{gestionTipoUsuarioController.buscar}"
+					 process="@this datobus" update="datotipousu"  />
+					
+				</h:panelGrid>
+			
 				<h:panelGrid columns="3" id="datotipousu">
 				
 					<p:outputLabel for="tfnomtipousu" id="nombti" value="Nombre" />
@@ -23,7 +35,10 @@
 				</h:panelGrid>
 				
 				<p:commandButton id="bteliusu" value="Resgistar" action="#{gestionTipoUsuarioController.registrar}"
-					 process="@this datotipousu" update="panelTablatipo datotipousu" />
+					 process="@this datotipousu panelTablatipo" update="panelTablatipo datotipousu" />
+					 
+					 <p:commandButton id="bted" value="Editar" action="#{gestionTipoUsuarioController.editar}"
+					 process="@this datotipousu panelTablatipo" update="panelTablatipo datotipousu" />
 				
 				</p:fieldset>
 				<h:form prependId="false">

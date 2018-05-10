@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+		
+		
+			<p:fieldset legend="Gestion Inventario" style="margin-top:10px">
+			
+			<h:panelGrid columns="3" id="datoinven">
+				
+					<p:outputLabel for="tfnominven" id="inven" value="Nombre" />
+					<p:inputText id="tfnominven" class="form-control" placeholder="nombre" value="#{gestionGestionInventario.nombre}" />
+					<p:message for="tfnominven" />
+					
+					<p:outputLabel for="tfdescrinventa" id="desctiinventario" value="Descripcion" />
+					<p:inputTextarea id="tfdescrinventa" class="form-control"
+						value="#{gestionGestionInventario.descripcion}" placeholder="Descripcion"/>
+					
+				</h:panelGrid>
+			
+				
+				<p:commandButton id="btregisinven" value="Resgistar" action="#{gestionGestionInventario.registrar}"
+					 process="@this " update="" />
+					 
+					 <p:commandButton id="btbuscarinven" value="Buscar" action="#{gestionGestionInventario.buscar}"
+					 process="@this " update="" />
+					 
+					 <p:commandButton id="bteditinve" value="Editar" action="#{gestionGestionInventario.editar}"
+					 process="@this " update="" />
+				
+				</p:fieldset>
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelinventario"  style="margin-top:15px">
+					<p:tab title="Inventarios Registrados">
+					<p:dataTable value="#{gestionGestionInventario.inventarios}" id="tablainven" 
+					var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Codigo
+						</f:facet>
+						<p:outputLabel value="#{a.id}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						<p:outputLabel value="#{a.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Descripcion
+						</f:facet>
+						<p:outputLabel value="#{a.descripcion}" />
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>

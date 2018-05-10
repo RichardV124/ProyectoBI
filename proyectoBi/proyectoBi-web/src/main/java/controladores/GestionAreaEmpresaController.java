@@ -35,6 +35,8 @@ public class GestionAreaEmpresaController implements Serializable {
 	@NotNull(message = "Debe añadir una descripcion")
 	private String descripcion;
 	
+	private int id;
+	
 	private List<AreaEmpresa> tipoAreas;
 	
 	@PostConstruct
@@ -59,7 +61,36 @@ public class GestionAreaEmpresaController implements Serializable {
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
+		
 
+	}
+	
+	public void buscar(){
+		try{
+			
+			AreaEmpresa u = areaEJB.buscar(id, sesion.getBd());
+			nombre=u.getNombre();
+			descripcion = u.getDescripcion();
+			
+			Messages.addFlashGlobalInfo("buscando");
+		} catch (Exception e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+	}
+	
+	public void editar(){
+		try {
+			AreaEmpresa u = areaEJB.buscar(id, sesion.getBd());
+			u.setNombre(nombre);
+			u.setDescripcion(descripcion);
+
+			areaEJB.editar(u, sesion.getBd());
+			limpiar();
+			
+			Messages.addFlashGlobalInfo("Edicion exitoso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 	
 	/**
@@ -102,6 +133,16 @@ public class GestionAreaEmpresaController implements Serializable {
 	public void setTipoAreas(List<AreaEmpresa> tipoAreas) {
 		this.tipoAreas = tipoAreas;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 
 	
 	

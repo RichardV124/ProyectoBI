@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+		
+		
+			<p:fieldset legend="Gestion Producto" style="margin-top:10px">
+			
+		<h:panelGrid columns="3" id="datoprod">
+				
+					<p:outputLabel for="tfbnompro" id="nomprod" value="Nombre" />
+					<p:inputText id="tfbnompro" class="form-control" placeholder="nombre" value="#{gestionProducto.nombre}" />
+					<p:message for="tfbnompro" />
+					
+					<p:commandButton id="btbuscararea" value="Buscar" action="#{gestionAreaEmpresaController.buscar}"
+					 process="@this datobus" update="datoareaem "  />
+					
+				</h:panelGrid>
+			
+				<h:panelGrid columns="3" id="datoareaem">
+				
+					<p:outputLabel for="tfnomareaem" id="nomarea" value="Nombre" />
+					<p:inputText id="tfnomareaem" class="form-control" placeholder="nombre" value="#{gestionAreaEmpresaController.nombre}" />
+					<p:message for="tfnomareaem" />
+	
+					<p:outputLabel for="tfDescripareem" id="desctiparea" value="Descripcion" />
+					<p:inputTextarea id="tfDescripareem" class="form-control"
+						value="#{gestionAreaEmpresaController.descripcion}" placeholder="Descripcion"/>
+					
+				</h:panelGrid>
+				
+				<p:commandButton id="btppp" value="Resgistar" action="#{gestionAreaEmpresaController.registrar}"
+					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
+					 
+					 <p:commandButton id="btregaare" value="Editar" action="#{gestionAreaEmpresaController.editar}"
+					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
+				
+				</p:fieldset>
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablaarea"  style="margin-top:15px">
+					<p:tab title="Usuarios Registrados">
+					<p:dataTable value="#{gestionAreaEmpresaController.tipoAreas}" id="tabla" 
+					var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Codigo
+						</f:facet>
+						<p:outputLabel value="#{a.id}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						<p:outputLabel value="#{a.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Descripciono
+						</f:facet>
+						<p:outputLabel value="#{a.descripcion}" />
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>

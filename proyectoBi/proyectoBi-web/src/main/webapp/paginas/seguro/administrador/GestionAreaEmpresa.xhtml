@@ -10,6 +10,18 @@
 		
 		
 			<p:fieldset legend="Gestion Area Empresa" style="margin-top:10px">
+			
+		<h:panelGrid columns="3" id="datobus">
+				
+					<p:outputLabel for="tfbuscodare" id="buscoda" value="Codigo" />
+					<p:inputText id="tfbuscodare" class="form-control" placeholder="nombre" value="#{gestionAreaEmpresaController.id}" />
+					<p:message for="tfbuscodare" />
+					
+					<p:commandButton id="btbuscararea" value="Buscar" action="#{gestionAreaEmpresaController.buscar}"
+					 process="@this datobus" update="datoareaem"  />
+					
+				</h:panelGrid>
+			
 				<h:panelGrid columns="3" id="datoareaem">
 				
 					<p:outputLabel for="tfnomareaem" id="nomarea" value="Nombre" />
@@ -22,7 +34,10 @@
 					
 				</h:panelGrid>
 				
-				<p:commandButton id="btregaare" value="Resgistar" action="#{gestionAreaEmpresaController.registrar}"
+				<p:commandButton id="btppp" value="Resgistar" action="#{gestionAreaEmpresaController.registrar}"
+					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
+					 
+					 <p:commandButton id="btregaare" value="Editar" action="#{gestionAreaEmpresaController.editar}"
 					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
 				
 				</p:fieldset>

@@ -13,7 +13,12 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Messages;
 
 import beans.TipoUsuarioEJB;
+import entidades.AreaEmpresa;
+import entidades.Genero;
+import entidades.Login;
+import entidades.Municipio;
 import entidades.TipoUsuario;
+import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
@@ -32,6 +37,8 @@ public class GestionTipoUsuarioController implements Serializable {
 	
 	@NotNull(message = "Debe añadir una descripcion")
 	private String descripcion;
+	
+	private int id;
 	
 	private List<TipoUsuario> tipoUsuarios;
 	
@@ -58,6 +65,34 @@ public class GestionTipoUsuarioController implements Serializable {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 
+	}
+	
+	public void buscar(){
+		try{
+			
+			TipoUsuario u = rolEJB.buscar(id, sesion.getBd());
+			nombre=u.getNombre();
+			descripcion = u.getDescripcion();
+			
+			Messages.addFlashGlobalInfo("buscando");
+		} catch (Exception e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+	}
+	
+	public void editar(){
+		try {
+			TipoUsuario u = rolEJB.buscar(id, sesion.getBd());
+			u.setNombre(nombre);
+			u.setDescripcion(descripcion);
+
+			rolEJB.editar(u, sesion.getBd());
+			limpiar();
+			
+			Messages.addFlashGlobalInfo("Edicion exitoso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 	
 	/**
@@ -108,5 +143,15 @@ public class GestionTipoUsuarioController implements Serializable {
 	public void setTipoUsuarios(List<TipoUsuario> tipoUsuarios) {
 		this.tipoUsuarios = tipoUsuarios;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 }
