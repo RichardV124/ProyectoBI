@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.Auditoria;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -105,6 +106,20 @@ public class UsuarioEJB {
 			throw new ExcepcionNegocio("No hay usuarios registrados en la base de datos");
 		} else {
 			return usuarios;
+		}
+	}
+	
+	/**
+	 * metodo para listar usuarios pro su tipo
+	 */
+	public List<Usuario> listarParametro(int bd, String tipo) {
+		em.setBd(bd);	
+		
+		List<Usuario> usus =  (List<Usuario>)(Object)em.listarConUnParametro(Usuario.CONSULTA_LISTAR_TIPO_USUARIO, tipo);
+		if (usus.isEmpty()) {
+			throw new ExcepcionNegocio("No hay datos registrados en la base de datos");
+		} else {
+			return usus;
 		}
 	}
 	
