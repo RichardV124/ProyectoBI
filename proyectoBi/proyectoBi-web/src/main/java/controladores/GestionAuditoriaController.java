@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Messages;
 
 import beans.AuditoriaEJB;
 import entidades.Auditoria;
@@ -48,14 +49,44 @@ public class GestionAuditoriaController implements Serializable {
 	public void llenarTablas() {
 		try {
 			audi_1 = auditoriaEJB.listarParametro(sesion.getBd(), "TipoUsuario");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
 			audi_2 = auditoriaEJB.listarParametro(sesion.getBd(), "Acceso");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
 			audi_3 = auditoriaEJB.listarParametro(sesion.getBd(), "Login");
-			audi_4 = auditoriaEJB.listarParametro(2, "Usuario");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
+			audi_4 = auditoriaEJB.listarParametro(sesion.getBd(), "Usuario");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
 			audi_5 = auditoriaEJB.listarParametro(sesion.getBd(), "AreaEmpresa");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
 			audi_6 = auditoriaEJB.listarParametro(sesion.getBd(), "Producto");
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		
+		try {
 			audi_7 = auditoriaEJB.listarParametro(sesion.getBd(), "Conexion");
 		} catch (ExcepcionNegocio e) {
-
+			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
 

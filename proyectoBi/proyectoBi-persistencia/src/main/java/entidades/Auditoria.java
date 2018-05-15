@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="AUDITORIA_USUARIO")
+@Table(name="AUDITORIA")
 @NamedQueries({ 
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM Auditoria a"),
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, query = "SELECT a "
@@ -26,13 +26,13 @@ import javax.persistence.TemporalType;
 	})
 public class Auditoria implements Serializable{
 
-	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaUsuario.ListarAuditorias";
-	public static final String CONSULTA_LISTAR_AUDITORIAS_ENTIDAD = "AuditoriaUsuario.ListarAuditoriasEntidad";
+	public static final String CONSULTA_LISTAR_AUDITORIAS = "Auditoria.ListarAuditorias";
+	public static final String CONSULTA_LISTAR_AUDITORIAS_ENTIDAD = "Auditoria.ListarAuditoriasEntidad";
 	
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_USUARIO_SEQ")
-    @SequenceGenerator(sequenceName = "auditoria_usuario_seq", allocationSize = 1, name = "AUDITORIA_USUARIO_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_SEQ")
+    @SequenceGenerator(sequenceName = "auditoria_seq", allocationSize = 1, name = "AUDITORIA_SEQ")
 	private int id;
 	
 	@Column(name="ACCION",length=40,nullable=false)
