@@ -10,10 +10,14 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
 import beans.AreaEmpresaEJB;
+import beans.AuditoriaEJB;
 import entidades.AreaEmpresa;
+import entidades.Auditoria;
+import entidades.Cargo;
 import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
@@ -28,6 +32,9 @@ public class GestionAreaEmpresaController implements Serializable {
 	
 	@EJB
 	private AreaEmpresaEJB areaEJB;
+	
+	@EJB
+	private AuditoriaEJB auditoriaEJB;
 	
 	@NotNull(message = "Debe ingresar el nombre")
 	private String nombre;
@@ -56,6 +63,8 @@ public class GestionAreaEmpresaController implements Serializable {
 				areaEJB.crear(u, sesion.getBd());
 				llenarTabla();
 				limpiar();
+				//Creando auditoria
+				crearAuditoria("AreaEmpresa",u.getId()+"","Crear", sesion.getBd());
 				Messages.addFlashGlobalInfo("Registro exitoso");
 			
 		} catch (ExcepcionNegocio e) {
@@ -71,8 +80,10 @@ public class GestionAreaEmpresaController implements Serializable {
 			AreaEmpresa u = areaEJB.buscar(id, sesion.getBd());
 			nombre=u.getNombre();
 			descripcion = u.getDescripcion();
+
+			//Creando auditoria
+			crearAuditoria("AreaEmpresa",u.getId()+"","Buscar", sesion.getBd());
 			
-			Messages.addFlashGlobalInfo("buscando");
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -86,12 +97,31 @@ public class GestionAreaEmpresaController implements Serializable {
 
 			areaEJB.editar(u, sesion.getBd());
 			limpiar();
+			//Creando auditoria
+			crearAuditoria("AreaEmpresa",u.getId()+"","Editar", sesion.getBd());
 			
 			Messages.addFlashGlobalInfo("Edicion exitoso");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
+	
+	//Meetodo para eliminar un cargo 
+		public void eliminar(){
+			AreaEmpresa a = new AreaEmpresa();
+			a.setId(id);
+			a.setNombre(nombre);
+			a.setDescripcion(descripcion);
+			
+			areaEJB.eliminar(a, sesion.getBd());
+			limpiar();
+			//creando la auditoria
+			crearAuditoria("AreaEmpresa",a.getId()+"", "Eliminar", 2);
+			llenarTabla();
+			Messages.addFlashGlobalInfo("Se ha eliminado correctamente");
+			
+		}
+	
 	
 	/**
 	 * Llenamos la tabla de tipos usuarios
@@ -104,8 +134,23 @@ public class GestionAreaEmpresaController implements Serializable {
 		}
 	}
 	
+	/**
+	 * Metodo para crear la auditoria
+	 * @param entidad
+	 * @param objeto
+	 * @param accion
+	 * @param bd
+	 */
+	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
+		String browserDetails = Faces.getRequestHeader("User-Agent");
+		Auditoria auditoria = new Auditoria();
+		auditoria.setEntidad(entidad);
+		auditoria.setObjetoAuditado(objeto);
+		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
+	}
+	
 	public void limpiar(){
-		
+		id =0;
 		nombre = "";
 		descripcion = "";
 	}
