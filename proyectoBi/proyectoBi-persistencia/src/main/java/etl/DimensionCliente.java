@@ -23,9 +23,6 @@ public class DimensionCliente implements Serializable{
     @SequenceGenerator(sequenceName = "dimension_cliente_seq", allocationSize = 1, name = "DIMENSION_CLIENTE_SEQ")
 	private int id;
 	
-	@Column(name="CEDULA")
-	private int cedula;
-	
 	@Column(name="FECHA_NACIMIENTO")
 	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
@@ -49,14 +46,6 @@ public class DimensionCliente implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getCedula() {
-		return cedula;
-	}
-
-	public void setCedula(int cedula) {
-		this.cedula = cedula;
 	}
 
 	public Date getFechaNacimiento() {

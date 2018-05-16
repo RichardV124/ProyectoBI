@@ -34,6 +34,11 @@ public class Persistencia  implements Serializable{
 	@PersistenceContext(unitName = "postgres")
 	private EntityManager emP;
 	
+	/**
+	 * Instancia a MySQL (3)
+	 */
+	@PersistenceContext(unitName = "mysql")
+	private EntityManager emM;
 	
 	/**
 	 * Es la base de dato en la cual esta funcionando el sistema actualmente

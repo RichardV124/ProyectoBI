@@ -14,6 +14,8 @@ import org.omnifaces.util.Messages;
 import beans.AuditoriaEJB;
 import beansETL.ExtracionEJB;
 import entidades.Auditoria;
+import entidades.DetalleVenta;
+import entidades.Venta;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
@@ -21,13 +23,13 @@ import session.SessionController;
 @Named("gestionExtraccionController")
 public class GestionExtraccionController implements Serializable {
 
-	@Inject
-	private SessionController sesion;
 
 	@EJB
 	private ExtracionEJB extracionEJB;
 
 	public static List<Auditoria> listaAuditorias;
+	
+	public static List<DetalleVenta> listaVentas;
 
 
 	@PostConstruct
@@ -42,6 +44,12 @@ public class GestionExtraccionController implements Serializable {
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
+		
+		try {
+			listaVentas = extracionEJB.listarVentas();
+		} catch (ExcepcionNegocio e) {
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
 	}
 
 	public List<Auditoria> getListaAuditorias() {
@@ -52,5 +60,13 @@ public class GestionExtraccionController implements Serializable {
 		this.listaAuditorias = listaAuditorias;
 	}
 
+	public List<DetalleVenta> getListaVentas() {
+		return listaVentas;
+	}
+
+	public void setListaVentas(List<DetalleVenta> listaVentas) {
+		GestionExtraccionController.listaVentas = listaVentas;
+	}
+	
 	
 }

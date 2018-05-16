@@ -66,7 +66,59 @@
 													
 						</p:dataTable>
 					</p:tab>
-				</p:accordionPanel>		
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud2" >
+					<p:tab title="Ventas">
+						<p:dataTable value="#{gestionExtraccionController.listaVentas}" id="tabla2"
+							var="dv" border="1">
+							
+							<p:column>
+								<f:facet name="header">
+								ID
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.id}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Cliente
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.cliente.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Usuario
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.usuario.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Producto
+							</f:facet>
+								<p:outputLabel value="#{dv.producto.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Cantidad
+							</f:facet>
+								<p:outputLabel value="#{dv.cantidad}" />
+							</p:column>
+													
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>
+						
 				<p:commandButton id="btregis" value="ETL - TRANSFORMACION" process="@this" action="/paginas/seguro/administrador/etl/GestionTransformacion.xhtml?faces-redirect=true" />								
 				</h:panelGrid>
 				</p:fieldset>

@@ -3,6 +3,7 @@ package controladores;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -87,7 +88,7 @@ public class VentasController implements Serializable {
 	private int municipioSeleccionado;
 	private List<Genero> generos;
 	private String accion;
-	private String fechaNacimiento;
+	private Date fechaNacimiento;
 	private Usuario usuario;
 
 	private List<Departamento> departamentos;
@@ -516,11 +517,13 @@ public class VentasController implements Serializable {
 		this.mostrarDatosCliente = mostrarDatosCliente;
 	}
 
-	public String getFechaNacimiento() {
+	
+
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(String fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 

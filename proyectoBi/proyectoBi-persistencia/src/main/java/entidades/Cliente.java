@@ -1,6 +1,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "CLIENTE")
@@ -36,8 +39,9 @@ public class Cliente implements Serializable{
 	@Column(name = "CORREO")
 	protected String correo;
 
-	@Column(name = "FECHA_NACIMIENTO")
-	protected String fechaNacimiento;
+	@Column(name="FECHA_NACIMIENTO")
+	@Temporal(TemporalType.DATE)
+	protected Date fechaNacimiento;
 
 	@JoinColumn(name="MUNICIPIO_ID")
 	@ManyToOne(cascade = {})
@@ -51,7 +55,7 @@ public class Cliente implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(String cedula, String nombre, String apellido, String telefono, String correo, String fechaNacimiento,
+	public Cliente(String cedula, String nombre, String apellido, String telefono, String correo, Date fechaNacimiento,
 			Municipio municipio, Genero genero) {
 		super();
 		this.cedula = cedula;
@@ -83,16 +87,13 @@ public class Cliente implements Serializable{
 		this.correo = correo;
 	}
 
-
-	public String getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-
-	public void setFechaNacimiento(String fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-
 
 	public Genero getGenero() {
 		return genero;

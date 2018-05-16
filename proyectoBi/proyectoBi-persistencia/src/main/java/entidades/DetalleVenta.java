@@ -18,11 +18,15 @@ import javax.persistence.Table;
 @IdClass(DetalleVentaPK.class)
 @NamedQueries({
 	@NamedQuery(name = DetalleVenta.LISTAR_DETALLES_FACTURA, query = "SELECT dv FROM DetalleVenta dv"
-			+ " WHERE dv.venta = ?1") })
+			+ " WHERE dv.venta = ?1"),
+	@NamedQuery(name = DetalleVenta.CONSULTA_LISTAR, query = "SELECT dv FROM DetalleVenta dv") 
+	})
 public class DetalleVenta implements Serializable{
 	
 	
 	public static final String LISTAR_DETALLES_FACTURA = "detalle.listarDetalleFactura";
+	
+	public static final String CONSULTA_LISTAR = "DetalleVenta.Listar";
 	
 	@Id
 	@ManyToOne(cascade={})

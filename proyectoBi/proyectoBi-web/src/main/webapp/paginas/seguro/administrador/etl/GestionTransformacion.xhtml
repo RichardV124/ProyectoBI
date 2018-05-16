@@ -7,12 +7,12 @@
 
 	<ui:define name="cuerpo">
 		<h:form prependId="false" id="gestion">
-			<p:fieldset legend="ETL - Gestion de Extracion" style="margin-top:10px">
+			<p:fieldset legend="ETL - Gestion de Transformacion" style="margin-top:10px">
 				<h:panelGrid columns="1" id="datosaudi">
 				
 					<p:accordionPanel id="panelTablaAud1" >
 					<p:tab title="Auditorias">
-						<p:dataTable value="#{gestionExtraccionController.listaAuditorias}" id="tabla1"
+						<p:dataTable value="#{gestionTransformacionController.listaAuditoriasTrans}" id="tabla1"
 							var="a" border="1">
 							
 							<p:column>
@@ -66,8 +66,67 @@
 													
 						</p:dataTable>
 					</p:tab>
-				</p:accordionPanel>		
-				<p:commandButton id="btregis" value="ETL - CARGA" process="@this" action="/paginas/seguro/etl/RegistroUsuario.xhtml?faces-redirect=false" />								
+				</p:accordionPanel>
+				
+				<p:accordionPanel id="panelTablaAud2" >
+					<p:tab title="Ventas">
+						<p:dataTable value="#{gestionTransformacionController.listaVentasTrans}" id="tabla2"
+							var="dv" border="1">
+							
+							<p:column>
+								<f:facet name="header">
+								ID
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.id}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Fecha
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.fecha}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Cliente
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.cliente.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Usuario
+							</f:facet>
+								<p:outputLabel value="#{dv.venta.usuario.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Producto
+							</f:facet>
+								<p:outputLabel value="#{dv.producto.nombre}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Cantidad
+							</f:facet>
+								<p:outputLabel value="#{dv.cantidad}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">
+								Valor Total
+							</f:facet>
+								<p:outputLabel value="#{dv.valorTotal}" />
+							</p:column>
+													
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>
+						
+				<p:commandButton id="btregis" value="ETL - CARGA" process="@this" action="none" />								
 				</h:panelGrid>
 				</p:fieldset>
 		</h:form>
