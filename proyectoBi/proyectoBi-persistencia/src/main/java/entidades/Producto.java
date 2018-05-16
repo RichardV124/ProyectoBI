@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,7 +19,15 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="PRODUCTO")
+@NamedQueries({
+	@NamedQuery(name=Producto.LISTAR, query="SELECT p FROM Producto p")
+})
 public class Producto implements Serializable{
+	
+	/**
+	 * Lista los productos registrados
+	 */
+	public static final String LISTAR = "producto.listar";
 
 	@Id
 	@Column(name="ID")
@@ -38,8 +48,9 @@ public class Producto implements Serializable{
 	@Column(name="CANTIDAD", nullable=false)
 	private int cantidad;
 	
-	@Column(name="CODIGO_LOTE", nullable=false)
-	private int codigoLote;
+	@JoinColumn(name="LOTE_ID")
+	@ManyToOne(cascade = {})
+	private Lote lote;
 	
 	@Column(name="PESO", nullable=false)
 	private double peso;
@@ -102,14 +113,6 @@ public class Producto implements Serializable{
 		this.cantidad = cantidad;
 	}
 
-	public int getCodigoLote() {
-		return codigoLote;
-	}
-
-	public void setCodigoLote(int codigoLote) {
-		this.codigoLote = codigoLote;
-	}
-
 	public double getPeso() {
 		return peso;
 	}
@@ -148,6 +151,14 @@ public class Producto implements Serializable{
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Lote getLote() {
+		return lote;
+	}
+
+	public void setLote(Lote lote) {
+		this.lote = lote;
 	}
 	
 	

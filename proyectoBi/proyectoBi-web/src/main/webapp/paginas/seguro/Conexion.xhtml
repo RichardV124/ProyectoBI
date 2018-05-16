@@ -12,6 +12,7 @@
 				
 				<p:outputLabel for="cbconex" id="lbconex" value="Base de Datos" />
 					<h:selectOneMenu id="cbconex" class="form-control" value="#{gestionBdController.bdSeleccionado}">
+					<f:selectItem itemValue="0" itemLabel="Seleccione..."> </f:selectItem>
 						<f:selectItems value="#{gestionBdController.listabd}"
 							var="l" itemValue="#{l.id}" itemLabel="#{l.nombre}" />
 					</h:selectOneMenu>

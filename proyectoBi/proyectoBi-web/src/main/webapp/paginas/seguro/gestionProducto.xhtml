@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+		
+			<p:fieldset legend="Buscar Producto" style="margin-top:10px">
+				<h:panelGrid id="panelCodigo" columns="3">
+
+					<h:outputLabel id="lblCodigoProducto" value="Código: " />
+					<h:inputText id="tfCodigoProducto"
+						value="#{gestionProductoController.codigo}" />
+
+					<p:commandButton id="btnBuscarProd" value="Buscar"
+						process="@this,panelCodigo" update="@this,panelDatos"
+						action="#{gestionProductoController.buscar}" />
+
+				</h:panelGrid>
+
+			</p:fieldset>
+
+			<br />
+
+			<p:fieldset legend="Gestion Productos" style="margin-top:10px">
+
+				<h:panelGrid id="panelDatos" columns="2">
+
+					<h:outputLabel id="lblNombreProducto" value="Nombre: " />
+					<h:inputText id="tfNombreProducto"
+						value="#{gestionProductoController.nombre}" />
+
+					<h:outputLabel id="lblDescripcion" value="Descripción: " />
+					<h:inputTextarea id="tfDescripcion"
+						value="#{gestionProductoController.descripcion}" />
+
+					<h:outputLabel id="lblPeso" value="Peso: " />
+					<h:inputText id="tfPeso" value="#{gestionProductoController.peso}" />
+
+					<h:outputLabel id="lblDimension" value="Dimensión: " />
+					<h:inputText id="tfDimension"
+						value="#{gestionProductoController.dimension}" />
+
+					<h:outputLabel id="lblPrecio" value="Precio: " />
+					<h:inputText id="tfPrecio"
+						value="#{gestionProductoController.valor}" />
+
+					<h:outputLabel for="cblote" id="lbLote" value="Seleccione el lote " />
+					<h:selectOneMenu id="cblote"
+						value="#{gestionProductoController.loteSeleccionado}">
+
+						<f:selectItem itemValue="0" itemLabel="Seleccione...">
+						</f:selectItem>
+						<f:selectItems value="#{gestionProductoController.lotes}"
+							var="lote" itemValue="#{lote.id}" itemLabel="#{lote.descripcion}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel id="lblCantidad" value="Cantidad: " />
+					<h:inputText id="tfCantidad"
+						value="#{gestionProductoController.cantidad}" />
+
+					<h:outputLabel for="cbtipoProds" id="lbtiposProd"
+						value="Seleccione el tipo de producto " />
+					<h:selectOneMenu id="cbtipoProds"
+						value="#{gestionProductoController.tipoProductoSeleccionado}">
+
+						<f:selectItem itemValue="0" itemLabel="Seleccione...">
+						</f:selectItem>
+						<f:selectItems value="#{gestionProductoController.tiposProducto}"
+							var="tipo" itemValue="#{tipo.id}" itemLabel="#{tipo.nombre}" />
+
+					</h:selectOneMenu>
+
+				</h:panelGrid>
+				<br />
+			</p:fieldset>
+
+			<h:panelGrid id="panelBotones" columns="3">
+
+				<p:commandButton id="btnRegistrar" value="Registrar"
+					process="@this,panelDatos,panelCodigo"
+					update="panelDatos,panelCodigo,panelTabla"
+					action="#{gestionProductoController.registrar}" />
+
+				<p:commandButton id="btnEditar" value="Editar"
+					process="@this,panelDatos" update="panelDatos,panelTabla"
+					action="#{gestionProductoController.editar}" />
+
+			</h:panelGrid>
+			<br />
+
+			<p:accordionPanel id="panelTabla" style="margin-top:15px">
+				<p:tab title="Usuarios Registrados">
+
+					<p:dataTable id="tablaProductos"
+						value="#{gestionProductoController.productos}" var="producto"
+						border="1">
+
+						<p:column headerText="Id " filterBy="#{producto.id}">
+							<h:outputLabel value="#{producto.id}" />
+						</p:column>
+
+						<p:column headerText="Nombre " filterBy="#{producto.nombre}">
+							<h:outputLabel value="#{producto.nombre}" />
+						</p:column>
+
+						<p:column headerText="Precio ">
+							<h:outputLabel value="#{producto.valor}" />
+						</p:column>
+
+						<p:column headerText="Lote">
+							<h:outputLabel value="#{producto.lote.descripcion}" />
+						</p:column>
+
+						<p:column headerText="Tipo Producto">
+							<h:outputLabel value="#{producto.tipoProducto.nombre}" />
+						</p:column>
+
+						<p:column headerText="Cantidad">
+							<h:outputLabel value="#{producto.cantidad}" />
+						</p:column>
+
+						<p:column headerText="Acción">
+							<p:commandButton value="Eliminar" process="@this,tablaProductos"
+								update="tablaProductos"
+								action="#{gestionProductoController.eliminarProducto(producto)}" />
+						</p:column>
+
+					</p:dataTable>
+
+				</p:tab>
+			</p:accordionPanel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

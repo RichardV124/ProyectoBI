@@ -14,6 +14,7 @@ import javax.persistence.Query;
 
 import entidades.AccesoTipoUsuario;
 import entidades.AccesoTipoUsuarioPK;
+import entidades.DetalleVenta;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 
@@ -54,6 +55,31 @@ public class Persistencia  implements Serializable{
 		default:
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
+	}
+	
+	public void eliminarDetalleVenta(DetalleVenta dv) {
+
+		String sql = "DELETE FROM DETALLE_VENTA WHERE factura_venta_id = ?1 AND producto_id = ?2";
+		
+		Query q;
+
+		switch (this.bd) {
+		case 1:
+			q = emO.createNativeQuery(sql);
+			break;
+
+		case 2:
+			q = emP.createNativeQuery(sql);
+			break;
+
+		default:
+			throw new ExcepcionNegocio("La base de datos a la cual intenta acceder no existe");
+		}
+		
+		q.setParameter(1, dv.getVenta().getId());
+		q.setParameter(2, dv.getProducto().getId());
+		q.executeUpdate();
+
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -252,6 +278,31 @@ public class Persistencia  implements Serializable{
 			throw new ExcepcionNegocio(ex.getMessage());
 		}
 	}
+	
+	/**
+	 * Listar objetos usando un parametro de tipo objeto y la sql
+	 * 
+	 * @param sql
+	 *            consulta que se desea ejectar
+	 * @param objeto
+	 *            El objeto parámetro
+	 * @return lista de los objetos encontrados
+	 */
+	public List<Object> listarConParametroObjeto(String sql, Object objeto) {
+		switch (this.bd) {
+		case 1:
+			Query q = emO.createNamedQuery(sql);
+			q.setParameter(1, objeto);
+			return q.getResultList();
+		case 2:
+			Query p = emP.createNamedQuery(sql);
+			p.setParameter(1, objeto);
+			return p.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos a la cual intenta acceder no existe");
+		}
+	}
+	
 	
 
 	/**

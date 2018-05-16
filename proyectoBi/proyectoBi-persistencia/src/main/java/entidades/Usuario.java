@@ -21,11 +21,13 @@ import javax.persistence.TemporalType;
 @NamedQueries({ 
 	@NamedQuery(name=Usuario.CONSULTA_LISTAR_USUARIOS_INACTIVOS,query="SELECT u FROM Usuario u WHERE u.login.activo=?1"),
 	@NamedQuery(name=Usuario.buscarPorUsername,query="SELECT u FROM Usuario u WHERE u.login.username=?1"),
+	@NamedQuery(name=Usuario.buscarCliente,query="SELECT u FROM Usuario u WHERE u.cedula=?1 and u.cargo.id='"+3+"'"),
 	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu") 
 	})
 public class Usuario implements Serializable{
 	
 	public static final String buscarPorUsername = "Usuario.buscarPorUsername";
+	public static final String buscarCliente = "Usuario.buscarCliente";
 	
 	public static final String CONSULTA_LISTAR_USUARIOS = "Usuario.listarUsuarios";
 	public static final String CONSULTA_LISTAR_USUARIOS_INACTIVOS = "Usuario.listarUsuariosInactivos";
@@ -44,6 +46,10 @@ public class Usuario implements Serializable{
 	@Column(name="FECHA_NACIMIENTO",nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
+	
+	@JoinColumn(name="cargo")
+	@ManyToOne
+	private Cargo cargo;
 	
 	@JoinColumn(name="MUNICIPIO_ID")
 	@ManyToOne(cascade = {})

@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.Cliente;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -43,6 +44,34 @@ public class UsuarioEJB {
 	public Usuario buscar(String cedula, int bd){
 		em.setBd(bd);
 		return (Usuario) em.buscar(Usuario.class, cedula);
+	}
+	
+
+	/**
+	 * metodo para buscar un Cliente en una base de datos determinada
+	 * @param cedula, cedula del Cliente a buscar
+	 * @param bd, base de datos en la cual se desea buscar 
+	 * @return el Cliente si está en la bd, d elo contrario retornará null
+	 */
+	public Cliente buscarCliente(String cedula, int bd){
+		em.setBd(bd);
+		return (Cliente) em.buscar(Cliente.class, cedula);
+	}
+	
+	/**
+	 * Método para crear un usuario en una base de datos determinada
+	 * @param usuario, usuario que se desea crear
+	 * @param bd base de datos en la cual se desea persistir
+	 */
+	public void crearCliente(Cliente usuario, int bd){
+		em.setBd(bd);
+		Cliente usu = buscarCliente(usuario.getCedula(), bd);
+		if (usu == null) {
+			em.crear(usuario);
+		}else{
+			throw new ExcepcionNegocio("El cliente ya se encuentra registrado");
+		}
+		
 	}
 	
 	/**

@@ -8,13 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="DETALLE_VENTA")
 @IdClass(DetalleVentaPK.class)
+@NamedQueries({
+	@NamedQuery(name = DetalleVenta.LISTAR_DETALLES_FACTURA, query = "SELECT dv FROM DetalleVenta dv"
+			+ " WHERE dv.venta = ?1") })
 public class DetalleVenta implements Serializable{
+	
+	
+	public static final String LISTAR_DETALLES_FACTURA = "detalle.listarDetalleFactura";
 	
 	@Id
 	@ManyToOne(cascade={})

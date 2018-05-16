@@ -3,6 +3,7 @@ package session;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -42,7 +43,7 @@ public class SessionController implements Serializable {
 	/**
 	 * Es la base de datos que el sistema esta usando actualmente
 	 */
-	private int bd = 2;
+	private int bd;
 
 	/**
 	 * El usuario que ha iniciado sesion en la aplicacion
@@ -53,6 +54,22 @@ public class SessionController implements Serializable {
 	 * Listado de accesos que tiene el usuario que inicio sesion
 	 */
 	private List<Acceso> accesos;
+
+	@PostConstruct
+	public void inicializar() {
+		saberBd();
+	}
+
+	public void saberBd() {
+		List<Conexion> listabd = conexionEJB.listar(2);
+
+		for (Conexion conex : listabd) {
+
+			if (conex.isActivo()) {
+				this.bd = conex.getId();
+			}
+		}
+	}
 
 	/**
 	 * Iniciar sesion
@@ -72,11 +89,11 @@ public class SessionController implements Serializable {
 					System.out.println("Inicio sesion administrador");
 
 					accesos = accesoTipoUsuarioEJB.listarAccesosPorTipo(usu.getTipoUsuario(), bd);
-					
+
 					Conexion c = conexionEJB.buscar(2, bd);
-					
-					this.bd=c.getId();
-					
+
+					this.bd = c.getId();
+
 					Faces.setSessionAttribute("bd", bd);
 
 					Messages.addFlashGlobalInfo("Ha iniciado sesion correctamente");
