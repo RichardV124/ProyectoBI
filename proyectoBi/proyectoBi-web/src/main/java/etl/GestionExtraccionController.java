@@ -27,7 +27,7 @@ public class GestionExtraccionController implements Serializable {
 	@EJB
 	private ExtracionEJB extracionEJB;
 
-	private List<Auditoria> audi_1;
+	public static List<Auditoria> listaAuditorias;
 
 
 	@PostConstruct
@@ -38,18 +38,19 @@ public class GestionExtraccionController implements Serializable {
 
 	public void llenarTablas() {
 		try {
-			audi_1 = extracionEJB.listarAuditorias();
+			listaAuditorias = extracionEJB.listarAuditorias();
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
 
-	public List<Auditoria> getAudi_1() {
-		return audi_1;
+	public List<Auditoria> getListaAuditorias() {
+		return listaAuditorias;
 	}
 
-	public void setAudi_1(List<Auditoria> audi_1) {
-		this.audi_1 = audi_1;
+	public void setListaAuditorias(List<Auditoria> listaAuditorias) {
+		this.listaAuditorias = listaAuditorias;
 	}
 
+	
 }

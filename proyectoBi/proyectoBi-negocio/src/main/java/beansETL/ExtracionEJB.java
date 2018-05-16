@@ -18,9 +18,6 @@ public class ExtracionEJB {
 	
 	@EJB
 	private Persistencia em;
-	
-	@EJB
-	private Persistencia em2;
 
 	/**
 	 * Listar Auditorias de la base de datos oracle
@@ -43,7 +40,7 @@ public class ExtracionEJB {
 	 * @return lista de auditorias
 	 */
 	public List<Auditoria> listarAuditoriasPostgres(){
-		em2.setBd(2);
+		em.setBd(2);
 		List<Auditoria> auditorias= (List<Auditoria>)(Object)em.listar(Auditoria.CONSULTA_LISTAR_AUDITORIAS);
 		if (auditorias.isEmpty()) {
 			throw new ExcepcionNegocio("No hay auditorias registradas en la BD Oracle");

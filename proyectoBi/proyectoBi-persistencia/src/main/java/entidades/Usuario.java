@@ -73,6 +73,8 @@ public class Usuario implements Serializable{
 	@ManyToOne(cascade = {})
 	private Genero genero;
 	
+	@Column(name="TIPO",nullable=true)
+	private double tipo;
 	
 	@JoinColumn(name="LOGIN_USERNAME", nullable=true)
 	@OneToOne(cascade=CascadeType.ALL)
@@ -191,6 +193,26 @@ public class Usuario implements Serializable{
 
 	public void setLogin(Login login) {
 		this.login = login;
+	}
+
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+
+	public double getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(double tipo) {
+		this.tipo = tipo;
 	}
 
 	
