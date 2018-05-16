@@ -7,6 +7,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import entidades.AreaEmpresa;
+import entidades.Cargo;
 import entidades.Usuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -60,9 +61,14 @@ public class AreaEmpresaEJB {
 	 * @param AreaEmpresa, AreaEmpresa que se desea eliminar en la bd
 	 * @param bd, base de datos en la cual se desea eliminar el AreaEmpresa
 	 */
-	public void eliminar (AreaEmpresa AreaEmpresa, int bd){
+	public void eliminar(AreaEmpresa area, int bd){
 		em.setBd(bd);
-		em.eliminar(AreaEmpresa);
+		AreaEmpresa tu = buscar(area.getId(), bd);
+		if(tu != null){
+			em.eliminar(area);
+		}else{
+			throw new ExcepcionNegocio("No existe un area con el codigo "+area.getId());
+		}
 	}
 	
 	/**

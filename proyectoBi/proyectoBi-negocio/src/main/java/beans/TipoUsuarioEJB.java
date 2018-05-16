@@ -6,7 +6,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import entidades.Acceso;
 import entidades.TipoUsuario;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
@@ -22,6 +21,12 @@ public class TipoUsuarioEJB {
 	
 	@EJB
 	private Persistencia conexion;
+	
+	private String userAgent = "";
+	private String os = "";
+	private String browser = "";
+	private String user2 = "";
+	private String browserDetails = "";
 	
 	/**
 	 * Registrar un tipo de usuario en la base de datos
@@ -102,6 +107,6 @@ public class TipoUsuarioEJB {
 			return null;
 		}
 	}
-
+	
 
 }

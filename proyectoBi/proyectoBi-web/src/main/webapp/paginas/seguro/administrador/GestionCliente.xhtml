@@ -57,30 +57,13 @@
 					
 				</h:panelGrid>
 				</p:fieldset>
-				</h:form>			
+						
 				
-				<h:form prependId="false">
-				
-				<p:fieldset legend="Info inicio sesion" style="margin-top:10px">
-				<h:panelGrid columns="3" id="datocliente">
-				
-				<p:outputLabel for="tfrecli" id="recli" value="Usuario" />
-				<p:inputText id="tfrecli" class="form-control"  value="#{GestionClienteController.username}" />
-				<p:message for="tfrecli" />
-	
-				<p:outputLabel for="tfrepascli" id="repasscli" value="Contraseña" />
-				<h:inputSecret id="tfrepascli" class="form-control"  value="#{GestionClienteController.password}" />
-				<p:message for="tfrepascli" />
-				
-				<p:outputLabel for="tfrecopascli" id="rcopasscli" value="Confirmar contraseña" />
-				<h:inputSecret id="tfrecopascli" class="form-control"  value="#{GestionClienteController.confirmarpassword}" />
-				<p:message for="tfrecopascli" />
 				
 				<p:commandButton id="btcli" value="Registrarse" action="#{GestionClienteController.registrar}"
 					 process="@this " update="" />
 					
-				</h:panelGrid>
-				</p:fieldset>
+				
 				
 				<p:accordionPanel id="panelTablacliente"  style="margin-top:15px">
 					<p:tab title="Tipos Registrados">

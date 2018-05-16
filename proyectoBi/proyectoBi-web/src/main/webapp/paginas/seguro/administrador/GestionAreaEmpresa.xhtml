@@ -14,7 +14,7 @@
 		<h:panelGrid columns="3" id="datobus">
 				
 					<p:outputLabel for="tfbuscodare" id="buscoda" value="Codigo" />
-					<p:inputText id="tfbuscodare" class="form-control" placeholder="nombre" value="#{gestionAreaEmpresaController.id}" />
+					<p:inputText id="tfbuscodare" class="form-control" placeholder="codigo" value="#{gestionAreaEmpresaController.id}" />
 					<p:message for="tfbuscodare" />
 					
 					<p:commandButton id="btbuscararea" value="Buscar" action="#{gestionAreaEmpresaController.buscar}"
@@ -38,6 +38,9 @@
 					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
 					 
 					 <p:commandButton id="btregaare" value="Editar" action="#{gestionAreaEmpresaController.editar}"
+					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
+					 
+					 <p:commandButton id="btelimiare" value="Eliminar" action="#{gestionAreaEmpresaController.eliminar}"
 					 process="@this datoareaem panelTablaarea" update="datoareaem panelTablaarea" />
 				
 				</p:fieldset>

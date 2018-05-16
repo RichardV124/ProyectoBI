@@ -6,7 +6,9 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.AreaEmpresa;
 import entidades.Cargo;
+import entidades.TipoProducto;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
 
@@ -24,11 +26,11 @@ public class CargoEJB {
 	 */
 	public void crear(Cargo cargo, int bd){
 		em.setBd(bd);
-		Cargo c = buscar(cargo.getNombre(), bd);
-		if (c == null) {
+		Cargo a = buscar(cargo.getId(), bd);
+		if(a==null){
 			em.crear(cargo);
 		}else{
-			throw new ExcepcionNegocio("El cargo ya se encuentra registrado");
+			throw new ExcepcionNegocio("Este cargo ya existe");
 		}
 		
 	}
@@ -39,9 +41,9 @@ public class CargoEJB {
 	 * @param bd, base de datos en la cual se desea buscar 
 	 * @return el Cargo si está en la bd, de lo contrario retornará null
 	 */
-	public Cargo buscar(String nombre, int bd){
+	public Cargo buscar(int id, int bd){
 		em.setBd(bd);
-		return (Cargo) em.buscar(Cargo.class, nombre);
+		return (Cargo) em.buscar(Cargo.class, id);
 	}
 	
 	/**
@@ -59,9 +61,14 @@ public class CargoEJB {
 	 * @param cargo, cargo que se desea eliminar en la bd
 	 * @param bd, base de datos en la cual se desea eliminar el usuario
 	 */
-	public void eliminar (Cargo cargo, int bd){
+	public void eliminar(Cargo cargo, int bd){
 		em.setBd(bd);
-		em.eliminar(cargo);
+		Cargo tu = buscar(cargo.getId(), bd);
+		if(tu != null){
+			em.eliminar(cargo);
+		}else{
+			throw new ExcepcionNegocio("No existe un tipo de producto con el codigo "+cargo.getId());
+		}
 	}
 
 	/**

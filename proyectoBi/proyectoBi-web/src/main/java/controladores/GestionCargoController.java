@@ -14,26 +14,26 @@ import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
 import beans.AuditoriaEJB;
-import beans.TipoUsuarioEJB;
+import beans.CargoEJB;
 import entidades.Auditoria;
 import entidades.Cargo;
-import entidades.TipoUsuario;
+import entidades.TipoProducto;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
 @ViewScoped
-@Named("gestionTipoUsuarioController")
-public class GestionTipoUsuarioController implements Serializable {
+@Named("gestionCargoController")
+public class GestionCargoController implements Serializable{
 	
 	@Inject
 	private SessionController sesion;
 	
 	@EJB
-	private TipoUsuarioEJB rolEJB;
+	private AuditoriaEJB auditoriaEJB;
 	
 	@EJB
-	private AuditoriaEJB auditoriaEJB;
-		
+	private CargoEJB cargoEJB;
+	
 	@NotNull(message = "Debe ingresar el nombre")
 	private String nombre;
 	
@@ -42,7 +42,7 @@ public class GestionTipoUsuarioController implements Serializable {
 	
 	private int id;
 	
-	private List<TipoUsuario> tipoUsuarios;
+	private List<Cargo> tipoCargo;
 	
 	@PostConstruct
 	public void inicializar(){
@@ -52,36 +52,36 @@ public class GestionTipoUsuarioController implements Serializable {
 	public void registrar() {
 
 		try {
-			TipoUsuario u = new TipoUsuario();
+			Cargo u = new Cargo();
 			u.setNombre(nombre);
 			u.setDescripcion(descripcion);
 
 				//creando tipo del usuario
 
-				rolEJB.crear(u, 2);
+				cargoEJB.crear(u, sesion.getBd());
 				llenarTabla();
 				limpiar();
+				//Creando auditoria
+				crearAuditoria("Cargo",u.getId()+"","Crear", sesion.getBd());
 				Messages.addFlashGlobalInfo("Registro exitoso");
-				//creando auditoria
-				crearAuditoria("TipoUsuario",u.getId()+"","Crear", sesion.getBd());
 			
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
+		
 
 	}
 	
-		
 	public void buscar(){
 		try{
 			
-			TipoUsuario u = rolEJB.buscar(id, sesion.getBd());
+			Cargo u = cargoEJB.buscar(id, sesion.getBd());
 			nombre=u.getNombre();
 			descripcion = u.getDescripcion();
+
 			//Creando auditoria
-			crearAuditoria("TipoUsuario",u.getId()+"","Buscar", sesion.getBd());
+			crearAuditoria("Cargo",u.getId()+"","Buscar", sesion.getBd());
 			
-			Messages.addFlashGlobalInfo("buscando");
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -89,44 +89,43 @@ public class GestionTipoUsuarioController implements Serializable {
 	
 	public void editar(){
 		try {
-			TipoUsuario u = rolEJB.buscar(id, sesion.getBd());
+			Cargo u = cargoEJB.buscar(id, sesion.getBd());
 			u.setNombre(nombre);
 			u.setDescripcion(descripcion);
 
-			rolEJB.editar(u, sesion.getBd());
+			cargoEJB.editar(u, sesion.getBd());
 			limpiar();
+			llenarTabla();
 			//Creando auditoria
-			crearAuditoria("TipoUsuario",u.getId()+"","Editar", sesion.getBd());
+			crearAuditoria("Cargo",u.getId()+"","Editar", sesion.getBd());
 			
 			Messages.addFlashGlobalInfo("Edicion exitoso");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
 	}
-	
-	//Meetodo para eliminar un tipo de usuario
+	//Meetodo para eliminar un cargo 
 	public void eliminar(){
-		TipoUsuario c = new TipoUsuario();
+		Cargo c = new Cargo();
 		c.setId(id);
 		c.setNombre(nombre);
 		c.setDescripcion(descripcion);
 		
-		rolEJB.eliminar(c, sesion.getBd());
+		cargoEJB.eliminar(c, sesion.getBd());
 		limpiar();
 		//creando la auditoria
-		crearAuditoria("TipoUsuario",c.getId()+"", "Eliminar", 2);
+		crearAuditoria("Cargo",c.getId()+"", "Eliminar", 2);
 		llenarTabla();
 		Messages.addFlashGlobalInfo("Se ha eliminado correctamente");
 		
 	}
-	
 	
 	/**
 	 * Llenamos la tabla de tipos usuarios
 	 */
 	public void llenarTabla(){
 		try{
-			tipoUsuarios = rolEJB.listar(2);
+			tipoCargo = cargoEJB.listar(sesion.getBd());
 		}catch(ExcepcionNegocio e){
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -148,17 +147,10 @@ public class GestionTipoUsuarioController implements Serializable {
 	}
 	
 	public void limpiar(){
+		
 		id = 0;
 		nombre = "";
 		descripcion = "";
-	}
-
-	public SessionController getSesion() {
-		return sesion;
-	}
-
-	public void setSesion(SessionController sesion) {
-		this.sesion = sesion;
 	}
 
 	public String getNombre() {
@@ -177,12 +169,12 @@ public class GestionTipoUsuarioController implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public List<TipoUsuario> getTipoUsuarios() {
-		return tipoUsuarios;
+	public List<Cargo> getTipoCargo() {
+		return tipoCargo;
 	}
 
-	public void setTipoUsuarios(List<TipoUsuario> tipoUsuarios) {
-		this.tipoUsuarios = tipoUsuarios;
+	public void setTipoAreas(List<Cargo> tipoCargo) {
+		this.tipoCargo = tipoCargo;
 	}
 
 	public int getId() {
@@ -194,5 +186,5 @@ public class GestionTipoUsuarioController implements Serializable {
 	}
 	
 	
-	
+
 }
