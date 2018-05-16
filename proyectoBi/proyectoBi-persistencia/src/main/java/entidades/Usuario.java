@@ -74,7 +74,7 @@ public class Usuario implements Serializable{
 	private Genero genero;
 	
 	@Column(name="TIPO",nullable=true)
-	private double tipo;
+	private String tipo;
 	
 	@JoinColumn(name="LOGIN_USERNAME", nullable=true)
 	@OneToOne(cascade=CascadeType.ALL)
@@ -206,14 +206,15 @@ public class Usuario implements Serializable{
 	}
 
 
-	public double getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
 
-	public void setTipo(double tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 
 	
 	
