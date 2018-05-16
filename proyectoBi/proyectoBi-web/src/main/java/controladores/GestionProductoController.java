@@ -14,13 +14,13 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
-import beans.AuditoriaUsuarioEJB;
+import beans.AuditoriaEJB;
 import beans.ProductoEJB;
 import beans.TipoProductoEJB;
 import entidades.Producto;
 import entidades.TipoProducto;
 import excepciones.ExcepcionNegocio;
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import entidades.Lote;
 import session.SessionController;
 
@@ -47,7 +47,7 @@ public class GestionProductoController implements Serializable{
 	private int tipoProductoSeleccionado;
 	
 	@EJB
-	private AuditoriaUsuarioEJB auditoriaEJB;
+	private AuditoriaEJB auditoriaEJB;
 
 	@EJB
 	private ProductoEJB productoEJB;
@@ -80,7 +80,7 @@ public class GestionProductoController implements Serializable{
 	
 	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
 		String browserDetails = Faces.getRequestHeader("User-Agent");
-		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		Auditoria auditoria = new Auditoria();
 		auditoria.setEntidad(entidad);
 		auditoria.setObjetoAuditado(objeto);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
@@ -372,11 +372,11 @@ public class GestionProductoController implements Serializable{
 		this.productoBuscado = productoBuscado;
 	}
 
-	public AuditoriaUsuarioEJB getAuditoriaEJB() {
+	public AuditoriaEJB getAuditoriaEJB() {
 		return auditoriaEJB;
 	}
 
-	public void setAuditoriaEJB(AuditoriaUsuarioEJB auditoriaEJB) {
+	public void setAuditoriaEJB(AuditoriaEJB auditoriaEJB) {
 		this.auditoriaEJB = auditoriaEJB;
 	}
 

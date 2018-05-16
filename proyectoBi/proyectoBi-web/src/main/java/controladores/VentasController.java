@@ -17,13 +17,13 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
-import beans.AuditoriaUsuarioEJB;
+import beans.AuditoriaEJB;
 import beans.DepartamentoEJB;
 import beans.GeneroEJB;
 import beans.MunicipioEJB;
 import beans.ProductoEJB;
 import beans.UsuarioEJB;
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import entidades.Cliente;
 import entidades.Departamento;
 import entidades.DetalleVenta;
@@ -45,7 +45,7 @@ public class VentasController implements Serializable {
 	private ProductoEJB productoEJB;
 
 	@EJB
-	private AuditoriaUsuarioEJB auditoriaEJB;
+	private AuditoriaEJB auditoriaEJB;
 
 	@EJB
 	private UsuarioEJB usuarioEJB;
@@ -197,7 +197,7 @@ public class VentasController implements Serializable {
 
 	public void crearAuditoria(String entidad, String objeto, String accion, int bd) {
 		String browserDetails = Faces.getRequestHeader("User-Agent");
-		AuditoriaUsuario auditoria = new AuditoriaUsuario();
+		Auditoria auditoria = new Auditoria();
 		auditoria.setEntidad(entidad);
 		auditoria.setObjetoAuditado(objeto);
 		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
