@@ -1,0 +1,190 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+
+			<p:fieldset legend="Buscar " style="margin-top:10px">
+				<h:panelGrid columns="3" id="panelbuscarre">
+
+					<p:outputLabel for="tfbusrec" id="usu" value="Cedula" />
+					<p:inputText id="tfbusrec" class="form-control"
+						placeholder="cedula" value="#{gestionRecursosHumanosController.cedulab}" />
+					<p:message for="tfbusrec" />
+
+					<br></br>
+
+				</h:panelGrid>
+
+				<p:commandButton value="Buscar" id="btnbusrec" action="#{gestionRecursosHumanosController.buscar}"
+					process="@this panelbuscarre" update="datorecur panelbuscarre" />
+			</p:fieldset>
+
+			<p:fieldset legend="Gestion Recursos Humanos" style="margin-top:10px">
+				<h:panelGrid columns="3" id="datorecur">
+
+					<p:outputLabel for="tfcedrec" id="cedurec" value="Cedula" />
+					<p:inputText id="tfcedrec" class="form-control"
+						placeholder="cedula" value="#{gestionRecursosHumanosController.cedula}" />
+					<p:message for="cedurec" />
+
+					<p:outputLabel for="tfnomrec" id="nomrec" value="Nombre" />
+					<p:inputText id="tfnomrec" class="form-control" placeholder="nombre" value="#{gestionRecursosHumanosController.nombre}" />
+					<p:message for="tfnomrec" />
+
+					<p:outputLabel for="tfaperec" id="apeusu" value="Apellido" />
+					<p:inputText id="tfaperec" class="form-control"
+						placeholder="apellido" value="#{gestionRecursosHumanosController.apellido}" />
+					<p:message for="tfaperec" />
+
+					<h:outputLabel for="tftFechaNacimientor" value="Fecha Nacimiento" />
+					<h:inputText id="tftFechaNacimientor"
+						value="#{gestionRecursosHumanosController.fechaNacimiento}" mode="inline"
+						a:placeholder="dia-mes-año" class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tftFechaNacimientor" />
+
+					<p:outputLabel for="cbgenrege" id="lbrecge" value="Genero" />
+					<h:selectOneMenu id="cbgenrege" class="form-control"
+						value="#{gestionRecursosHumanosController.generoSeleccionado}">
+						<f:selectItems value="#{gestionRecursosHumanosController.listaGeneros}"
+							var="genero" itemValue="#{genero.id}"
+							itemLabel="#{genero.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="cbgenrege" />
+
+					<p:outputLabel for="cbdptorec" id="lbdptorec"
+						value="Departamento" />
+					<h:selectOneMenu id="cbdptorec" class="form-control"
+						value="#{gestionRecursosHumanosController.dptoSeleccionado}">
+						<f:selectItems value="#{gestionRecursosHumanosController.listaDptos}"
+							var="dpto" itemValue="#{dpto.id}" itemLabel="#{dpto.nombre}" />
+						<f:ajax event="change" execute="@this" render="cbmunicipiousu"
+							listener="#{gestionRecursosHumanosController.listarMunicipios}" />
+					</h:selectOneMenu>
+					<p:message for="lbdptorec" />
+
+					<p:outputLabel for="cbmunicipiorec" id="lbmunicipiorec"
+						value="Municipio" />
+					<h:selectOneMenu id="cbmunicipiorec" class="form-control"
+						value="#{gestionRecursosHumanosController.municipioSeleccionado}">
+						<f:selectItems value="#{gestionRecursosHumanosController.listaMunicipios}"
+							var="mun" itemValue="#{mun.id}" itemLabel="#{mun.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbmunicipiorec" />
+
+					<p:outputLabel for="cbarearec" id="lbarearec" value="Area Empresa" />
+					<h:selectOneMenu id="cbarearec" class="form-control" value="#{gestionRecursosHumanosController.areaSeleccionada}">
+						<f:selectItems value="#{gestionRecursosHumanosController.listaAreas}" var="area" itemValue="#{area.id}" itemLabel="#{area.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbarearec" />
+					
+					<p:outputLabel for="cbcargorec" id="lbcargorec" value="Cargo" />
+					<h:selectOneMenu id="cbcargorec" class="form-control" value="#{gestionRecursosHumanosController.cargoSeleccionado}">
+						<f:selectItems value="#{gestionRecursosHumanosController.listaCargos}" var="cargo" itemValue="#{cargo.id}" itemLabel="#{cargo.nombre}" />
+					</h:selectOneMenu>
+					<p:message for="lbcargorec" />
+
+					<p:outputLabel for="tfsalariorec" id="salario" value="Salario" />
+					<p:inputText id="tfsalariorec" class="form-control"
+						placeholder="Salario" value="#{gestionRecursosHumanosController.salarioo}" />
+					<p:message for="tfsalariorec" />
+					
+					<h:outputLabel for="tftFechaIngresor" value="Fecha Ingreso" />
+					<h:inputText id="tftFechaIngresor"
+						value="#{gestionRecursosHumanosController.fechaIngreso}" mode="inline"
+						a:placeholder="dia-mes-año" class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tftFechaIngresor" />
+
+					<p:commandButton id="btregrec" value="Registrar"
+						action="#{gestionRecursosHumanosController.registrar}"
+						process="@this datorecur" update="datorecur panelTablaRec" />
+
+					<p:commandButton id="btedirec" value="Editar"
+						action="#{gestionRecursosHumanosController.editar}"
+						process="@this datorecur" update="datorecur panelTablaRec" />
+
+				</h:panelGrid>
+			</p:fieldset>
+
+
+			<p:accordionPanel id="panelTablaRec" style="margin-top:15px">
+				<p:tab title="Recursos Humanos Registrados">
+					<p:dataTable value="#{gestionRecursosHumanosController.usuarios}"
+						id="tabla" var="usu" border="1">
+
+						<p:column>
+							<f:facet name="header">
+							Cedula
+						</f:facet>
+							<p:outputLabel value="#{usu.cedula}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+							<p:outputLabel value="#{usu.nombre}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+							Apellido
+						</f:facet>
+							<p:outputLabel value="#{usu.apellido}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+							Salario
+						</f:facet>
+							<p:outputLabel value="#{usu.salario}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+							Area Empresa
+						</f:facet>
+							<p:outputLabel value="#{usu.areaEmpresa.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Cargo
+						</f:facet>
+							<p:outputLabel value="#{usu.cargo.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Fecha Ingreso
+						</f:facet>
+							<p:outputLabel value="#{usu.fechaIngreso}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+							Borrar
+						</f:facet>
+							<p:commandButton action="#{gestionRecursosHumanosController.borrar(usu)}"
+								value="Borrar" process="@this" update="panelTablaRec" />
+							<p:outputLabel value="" />
+						</p:column>
+
+						
+
+					</p:dataTable>
+				</p:tab>
+			</p:accordionPanel>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
