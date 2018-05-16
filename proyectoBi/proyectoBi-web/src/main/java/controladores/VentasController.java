@@ -3,6 +3,7 @@ package controladores;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -19,10 +20,12 @@ import org.omnifaces.util.Messages;
 
 import beans.AuditoriaEJB;
 import beans.DepartamentoEJB;
+import beans.DetalleVentaEJB;
 import beans.GeneroEJB;
 import beans.MunicipioEJB;
 import beans.ProductoEJB;
 import beans.UsuarioEJB;
+import beans.VentaEJB;
 import entidades.Auditoria;
 import entidades.Cliente;
 import entidades.Departamento;
@@ -31,6 +34,7 @@ import entidades.Genero;
 import entidades.Municipio;
 import entidades.Producto;
 import entidades.Usuario;
+import entidades.Venta;
 import excepciones.ExcepcionNegocio;
 import session.SessionController;
 
@@ -51,6 +55,9 @@ public class VentasController implements Serializable {
 	private UsuarioEJB usuarioEJB;
 
 	@EJB
+	private VentaEJB ventaEJB;
+
+	@EJB
 	private DepartamentoEJB departamentoEJB;
 
 	@EJB
@@ -58,6 +65,9 @@ public class VentasController implements Serializable {
 	
 	@EJB
 	private GeneroEJB generoEJB;
+	
+	@EJB
+	private DetalleVentaEJB detalleEJB;
 
 	private List<Producto> productos;
 
@@ -70,11 +80,12 @@ public class VentasController implements Serializable {
 	private boolean mostrarDatosCliente;
 
 	// Datos venta
-	private int cantidad;
+	private int cantidadAgregar =12;
 	private List<DetalleVenta> productosCompra;
 	private Producto inventarioProductoComprar;
 	double totalVenta = 0;
 	boolean agregado = false;
+	Venta factura;
 
 	// Datos cliente
 	private String cedula;
@@ -82,7 +93,7 @@ public class VentasController implements Serializable {
 	private String apellido;
 	private String correo;
 	private String telefono;
-	private Genero tipoGenero;
+	private int tipoGenero;
 	private int deptoSeleccionado;
 	private int municipioSeleccionado;
 	private List<Genero> generos;
@@ -98,6 +109,8 @@ public class VentasController implements Serializable {
 
 		listarProductos();
 		generos = generoEJB.listar(sesion.getBd());
+		productosCompra = new ArrayList<DetalleVenta>();
+		inventariosEditar = new ArrayList<Producto>();
 		listarDepartamentos();
 		listarMunicipios();
 	}
@@ -137,28 +150,28 @@ public class VentasController implements Serializable {
 		if(detalleAgregar!=null){
 			agregado = true;
 		}
-		System.out.println("ASDASDASDADDKKKKKKK");
-		System.out.println("BOOLEAN: "+agregado);
 		inventarioProductoComprar = p;
+		//reload();
 	}
 
 	/**
 	 * Se agrega la cantidad del producto que se desea vender
 	 */
-	public void agregarCantidad() {
-		if (cantidad > 0) {
-			System.out.println("CANTIDAD:"+cantidad);
-			System.out.println("CANTIDAD INVENTARIO:"+inventarioProductoComprar.getCantidad());
-			if (cantidad <= inventarioProductoComprar.getCantidad()) {
-				detalleAgregar.setCantidad(cantidad);
-				inventarioProductoComprar.setCantidad(inventarioProductoComprar.getCantidad() - cantidad);
-				sumarTotalVenta(cantidad, detalleAgregar.getProducto().getValor());
+	public void agregarCantidad(Producto p) {
+		crearDetalleVenta(p);
+		if (cantidadAgregar > 0) {
+			if (cantidadAgregar <= inventarioProductoComprar.getCantidad()) {
+				detalleAgregar.setCantidad(cantidadAgregar);
+				inventarioProductoComprar.setCantidad(inventarioProductoComprar.getCantidad() - cantidadAgregar);
+				sumarTotalVenta(cantidadAgregar, detalleAgregar.getProducto().getValor());
+				System.out.println("CANTIDAD:"+ detalleAgregar.getCantidad());
+				System.out.println("BOOLEAN:" + detalleAgregar==null);
 				productosCompra.add(detalleAgregar);
 				inventariosEditar.add(inventarioProductoComprar);
 				detalleAgregar = null;
+				
 
 			} else {
-				System.out.println(" NO HAY CANTIDAD");
 				Messages.addFlashGlobalInfo("No existe esta cantidad en el inventario");
 			}
 		} else {
@@ -166,6 +179,7 @@ public class VentasController implements Serializable {
 			Messages.addFlashGlobalInfo("La cantidad debe ser mayor a 0");
 		}
 	}
+
 	
 
 	/**
@@ -223,6 +237,8 @@ public class VentasController implements Serializable {
 		cliente = usuarioEJB.buscarCliente(cedula, sesion.getBd());
 
 		mostrarDatosCliente = true;
+//		reload();
+//		System.out.println("DEPUSES DEL RELOAD MANO");
 
 		if (cliente != null) {
 
@@ -242,7 +258,7 @@ public class VentasController implements Serializable {
 			deptoSeleccionado = cliente.getMunicipio().getDepartamento().getId();
 
 			municipioSeleccionado = cliente.getMunicipio().getId();
-			tipoGenero = cliente.getGenero();
+			tipoGenero=generoEJB.buscar(sesion.getBd(), cliente.getGenero().getId()).getId();
 			fechaNacimiento = cliente.getFechaNacimiento();
 
 		} else {
@@ -253,7 +269,18 @@ public class VentasController implements Serializable {
 					"El cliente no se encuentra registrado, debe registrarlo para continuar con la venta");
 
 		}
+		System.out.println("BOOLEAN:"+mostrarDatosCliente);
 
+	}
+	
+	private void reload() {
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void limpiarCampos() {
@@ -292,7 +319,9 @@ public class VentasController implements Serializable {
 			cliente.setCedula(cedula);
 			cliente.setCorreo(correo);
 			cliente.setTelefono(telefono);
-			cliente.setGenero(tipoGenero);
+			
+			Genero gen = generoEJB.buscar(sesion.getBd(), tipoGenero);
+			cliente.setGenero(gen);
 			cliente.setFechaNacimiento(fechaNacimiento);
 
 			Municipio mun = municipioEJB.buscar(sesion.getBd(), municipioSeleccionado);
@@ -328,62 +357,85 @@ public class VentasController implements Serializable {
 
 	}
 	
-//	
-//	/**
-//	 * Crea la factura que se asiganar� a los detalle venta
-//	 */
-//	public void vender() {
-//
-//		if (cliente != null) {
-//
-//			if (productosCompra.size() == 0) {
-//
-//				Messages.addFlashGlobalInfo(
-//						"No hay productos en el carrito de compras");
-//
-//			} else {
-//
-//				//factura = new FacturaVenta();
-//
-//				if (cliente != null) {
-//					factura.setClienteId(cliente);
-//
-//					String nuevaFecha = ventaEJB.obtenerFechaActual();
-//
-//					factura.setFechaVenta(nuevaFecha);
-//					factura.setTotal(totalVenta);
-//					factura.setEmpleadoId(sesion.getUser());
-//					ventaEJB.registrarVenta(factura);
-//
-//					accion = "Registar FacturaVenta";
-//					String browserDetail = Faces.getRequest().getHeader("User-Agent");
-//					auditoriaEJB.crearAuditoria("AuditoriaFacturaVenta", accion, "FV creada: " + factura.getId(), sesion.getUser().getNombreUsuario(), browserDetail);
-//
-//					factura.setId(ventaEJB.codigoUltimaFacturaCliente(cliente.getCedula()));
-//					registrarDetallesVenta();
-//					actualizarInventarios();
-//
-//					Messages.addFlashGlobalInfo(
-//							"La venta se ha registrado correctamente");
-//
-//					limpiarCampos();
-//					mostrarDatosCliente = false;
-//					productosCompra = new ArrayList<DetalleVenta>();
-//
-//				} else {
-//
-//					Messages.addFlashGlobalInfo(
-//							"Debe buscar o registrar un cliente previamente");
-//
-//				}
-//			}
-//
-//		} else {
-//			Messages.addFlashGlobalInfo(
-//					"Debe buscar el cliente");
-//		}
-//
-//	}
+	
+	/**
+	 * Crea la factura que se asiganar� a los detalle venta
+	 */
+	public void vender() {
+
+		if (cliente != null) {
+
+			if (productosCompra.size() == 0) {
+
+				Messages.addFlashGlobalInfo(
+						"No hay productos en el carrito de compras");
+
+			} else {
+
+				factura = new Venta();
+
+				if (cliente != null) {
+					factura.setCliente(cliente);
+
+					//String nuevaFecha = ventaEJB.obtenerFechaActual();
+
+					factura.setFecha(new Date());
+					factura.setUsuario(sesion.getUsuario());
+					ventaEJB.crear(factura,sesion.getBd());
+
+					//creando auditoria
+					crearAuditoria("Venta",factura.getId()+"","Crear", sesion.getBd());
+					
+					registrarDetallesVenta();
+					actualizarInventarios();
+
+					Messages.addFlashGlobalInfo(
+							"La venta se ha registrado correctamente");
+
+					limpiarCampos();
+					mostrarDatosCliente = false;
+					productosCompra = new ArrayList<DetalleVenta>();
+
+				} else {
+
+					Messages.addFlashGlobalInfo(
+							"Debe buscar o registrar un cliente previamente");
+
+				}
+			}
+
+		} else {
+			Messages.addFlashGlobalInfo(
+					"Debe buscar el cliente");
+		}
+
+	}
+	
+	/**
+	 * Se asigna la fatura a cada uno de los detalles de venta
+	 */
+	private void registrarDetallesVenta() {
+		detalleEJB.registrarDetalleVenta(productosCompra, factura,sesion.getBd());
+
+		try {
+
+			//creando auditoria
+			crearAuditoria("DetalleVenta",factura.getId()+"","Editar", sesion.getBd());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/**
+		 * for (DetalleVenta detalleVenta : productosCompra) {
+		 * detalleVenta.setFacturaVenta(factura); try { accion = "Registrar Detalle
+		 * Venta"; String browserDetail = Faces.getRequest().getHeader("User-Agent");
+		 * auditoriaDetalleVentasEJB.crearAuditoriaDetalleVenta(detalleVenta, accion,
+		 * browserDetail);
+		 * 
+		 * }catch (Exception e) { e.printStackTrace(); } // Registramos cada uno de los
+		 * detalles venta detalleEJB.registrarDetalleVenta(productosCompra, factura); }
+		 **/
+	}
 	
 	
 	/**
@@ -392,6 +444,8 @@ public class VentasController implements Serializable {
 	private void actualizarInventarios() {
 		for (Producto inventarioProducto : inventariosEditar) {
 			productoEJB.editarProducto(inventarioProducto,sesion.getBd());
+			// creando auditoria
+			crearAuditoria("Producto", inventarioProducto.getId()+"", "Editar", sesion.getBd());
 		}
 	}
 	
@@ -436,11 +490,11 @@ public class VentasController implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public Genero getTipoGenero() {
+	public int getTipoGenero() {
 		return tipoGenero;
 	}
 
-	public void setTipoGenero(Genero tipoGenero) {
+	public void setTipoGenero(int tipoGenero) {
 		this.tipoGenero = tipoGenero;
 	}
 
@@ -450,14 +504,6 @@ public class VentasController implements Serializable {
 
 	public void setGeneros(List<Genero> generos) {
 		this.generos = generos;
-	}
-
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
 	}
 
 	public List<DetalleVenta> getProductosCompra() {
@@ -569,7 +615,18 @@ public class VentasController implements Serializable {
 		this.agregado = agregado;
 	}
 
-	
+	public int getCantidadAgregar() {
+		return cantidadAgregar;
+	}
+
+	public void setCantidadAgregar(int cantidadAgregar) {
+		this.cantidadAgregar = cantidadAgregar;
+	}
+
+	public boolean isClienteExiste() {
+		return cliente == null;
+	}
+
 	
 
 }

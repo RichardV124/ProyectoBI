@@ -15,7 +15,9 @@ import javax.persistence.Query;
 import entidades.AccesoTipoUsuario;
 import entidades.AccesoTipoUsuarioPK;
 import entidades.DetalleVenta;
+import entidades.Producto;
 import entidades.Usuario;
+import entidades.Venta;
 import excepciones.ExcepcionNegocio;
 
 @LocalBean
@@ -55,6 +57,50 @@ public class Persistencia  implements Serializable{
 		default:
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
+	}
+	
+	/**
+	 * Registra un detalle de venta
+	 * 
+	 * @param detalles
+	 *            detalles de venta que se desea registar
+	 * @param factura
+	 *            factura que se desea registrar
+	 */
+	public void registrarDetalleVenta(List<DetalleVenta> detalles, Venta venta) {
+
+		String sql = "INSERT INTO DETALLE_VENTA (ID_VENTA, "
+				+ "ID_PRODUCTO, CANTIDAD) VALUES (?1,?2,?3)";
+
+		switch (this.bd) {
+		case 1:
+			for (DetalleVenta dv : detalles) {
+
+				Query q = emO.createNativeQuery(sql);
+				q.setParameter(1, venta.getId());
+				q.setParameter(2, dv.getProducto().getId());
+				q.setParameter(3, dv.getCantidad());
+				q.executeUpdate();
+
+			}
+			break;
+
+		case 2:
+			for (DetalleVenta dv : detalles) {
+
+				Query q = emP.createNativeQuery(sql);
+				q.setParameter(1, venta.getId());
+				q.setParameter(2, dv.getProducto().getId());
+				q.setParameter(3, dv.getCantidad());
+				q.executeUpdate();
+
+			}
+			break;
+
+		default:
+			throw new ExcepcionNegocio("La base de datos a la cual intenta acceder no existe");
+		}
+
 	}
 	
 	public void eliminarDetalleVenta(DetalleVenta dv) {
