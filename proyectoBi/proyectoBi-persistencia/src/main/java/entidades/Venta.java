@@ -20,7 +20,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="VENTA")
 @NamedQueries({
-	@NamedQuery(name=Venta.LISTAR_POR_FECHA, query="SELECT v FROM Venta v WHERE v.fecha = ?1")})
+	@NamedQuery(name=Venta.LISTAR_POR_FECHA, query="SELECT v FROM Venta v WHERE v.fecha = ?1"),
+	@NamedQuery(name = Venta.CONSULTA_LISTAR_VENTAS, query = "SELECT v FROM Venta v"),
+	})
 public class Venta implements Serializable{
 	
 	/**
@@ -28,6 +30,7 @@ public class Venta implements Serializable{
 	 * ?1 fecha
 	 */
 	public static final String LISTAR_POR_FECHA = "Venta.listarPorFecha";
+	public static final String CONSULTA_LISTAR_VENTAS = "Venta.ListarVentas";
 	
 	@Id
 	@Column(name="ID")
