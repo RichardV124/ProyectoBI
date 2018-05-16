@@ -52,7 +52,17 @@
 						<f:selectItems value="#{registroUsuarioController.listaMunicipios}"
 							var="mun" itemValue="#{mun}" itemLabel="#{mun.nombre}" />
 					</h:selectOneMenu>
-					<p:message for="lbmunicipiocli" />					
+					<p:message for="lbmunicipiocli" />	
+
+					<p:commandButton id="btcregis" value="Registrarse" action="#{GestionClienteController.registrar}"
+					 process="@this " update="" />
+					
+					<p:commandButton id="btcedi" value="Editar" action="#{GestionClienteController.editar}"
+					 process="@this " update="" />
+					
+					<p:commandButton id="btcelim" value="Eliminar" action="#{GestionClienteController.eliminar}"
+					 process="@this " update="" />
+								
 					
 					
 				</h:panelGrid>
@@ -60,9 +70,7 @@
 						
 				
 				
-				<p:commandButton id="btcli" value="Registrarse" action="#{GestionClienteController.registrar}"
-					 process="@this " update="" />
-					
+				
 				
 				
 				<p:accordionPanel id="panelTablacliente"  style="margin-top:15px">
