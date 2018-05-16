@@ -229,7 +229,6 @@ public class GestionRecursosHumanosController implements Serializable {
 	}
 	
 	
-	
 	public void llenarCombos(){
 		try{
 			listaDptos = departamentoEJB.listar(sesion.getBd());
