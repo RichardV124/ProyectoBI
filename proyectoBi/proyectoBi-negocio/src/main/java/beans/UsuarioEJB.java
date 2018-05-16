@@ -110,6 +110,21 @@ public class UsuarioEJB {
 		}
 		
 	}
+	/**
+	 * Metodo para listar todos los registros de los recursos humanos
+	 * @param bd base de datos de la que se desea listar
+	 * @return una lista con todos los recuros humanos
+	 */
+	public List<Usuario> listarRecursosHumanos(int bd){
+		em.setBd(bd);	
+		List<Usuario> usuarios= (List<Usuario>)(Object)em.listar(Usuario.CONSULTA_LISTAR_RECURSOS_HUMANOS);
+		if (usuarios.isEmpty()) {
+			throw new ExcepcionNegocio("No hay usuarios registrados en la base de datos");
+		} else {
+			return usuarios;
+		}
+		
+	}
 	
 
 	/**
