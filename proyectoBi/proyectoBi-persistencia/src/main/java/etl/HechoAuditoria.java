@@ -1,4 +1,4 @@
-package entidades;
+package etl;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,31 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="AUDITORIA_USUARIO")
-@NamedQueries({ 
-	@NamedQuery(name = AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT au FROM AuditoriaUsuario au"),
-	@NamedQuery(name = AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, query = "SELECT au "
-			+ "FROM AuditoriaUsuario au WHERE au.entidad=?1")
-	})
-public class AuditoriaUsuario implements Serializable{
+@Table(name="HECHO_AUDITORIA")
+public class HechoAuditoria implements Serializable{
 
-	public static final String CONSULTA_LISTAR_AUDITORIAS = "AuditoriaUsuario.ListarAuditorias";
-	public static final String CONSULTA_LISTAR_AUDITORIAS_ENTIDAD = "AuditoriaUsuario.ListarAuditoriasEntidad";
-	
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "AUDITORIA_USUARIO_SEQ")
-    @SequenceGenerator(sequenceName = "auditoria_usuario_seq", allocationSize = 1, name = "AUDITORIA_USUARIO_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "HECHO_AUDITORIA_SEQ")
+    @SequenceGenerator(sequenceName = "hecho_auditoria_seq", allocationSize = 1, name = "HECHO_AUDITORIA_SEQ")
 	private int id;
 	
 	@Column(name="ACCION",length=40,nullable=false)
@@ -58,7 +46,7 @@ public class AuditoriaUsuario implements Serializable{
 	@Column(name="OBJETO_AUDITADO", nullable=false)
 	private String objetoAuditado;
 	
-	public AuditoriaUsuario() {
+	public HechoAuditoria() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -125,7 +113,6 @@ public class AuditoriaUsuario implements Serializable{
 	public void setObjetoAuditado(String objetoAuditado) {
 		this.objetoAuditado = objetoAuditado;
 	}
-	
 	
 	
 }

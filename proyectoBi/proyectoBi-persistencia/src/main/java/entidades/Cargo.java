@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @NamedQueries({
-	@NamedQuery(name=Cargo.LISTAR_CARGOS,query="SELECT c FROM Cargo c")
+	@NamedQuery(name=Cargo.CONSULTA_LISTAR_CARGOS,query="SELECT c FROM Cargo c")
 })
 @Entity
 @Table(name="CARGO")
@@ -21,7 +21,7 @@ public class Cargo implements Serializable {
 	/**
 	 * Lista los cargos registrados
 	 */
-	public static final String LISTAR_CARGOS = "Cargo.listar";
+	public static final String CONSULTA_LISTAR_CARGOS = "Cargo.listar";
 	
 	@Id
 	@Column(name="ID")
@@ -30,18 +30,19 @@ public class Cargo implements Serializable {
 	@Column(name="DESCRIPCION", length=30)
 	private String descripcion;
 	
-	@Column(name="SALARIO")
-	private double salario;
+	@Column(name="NOMBRE", length=30)
+	private String nombre;
+	
 	
 	public Cargo() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Cargo(int id, String descripcion, double salario) {
+	public Cargo(int id, String descripcion,String nombre) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
-		this.salario = salario;
+				this.nombre=nombre;
 	}
 
 
@@ -62,13 +63,15 @@ public class Cargo implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public double getSalario() {
-		return salario;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setSalario(double salario) {
-		this.salario = salario;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
+	
+	
 	
 	
 

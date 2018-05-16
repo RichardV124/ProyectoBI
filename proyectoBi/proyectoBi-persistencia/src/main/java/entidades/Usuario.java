@@ -22,7 +22,9 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name=Usuario.CONSULTA_LISTAR_USUARIOS_INACTIVOS,query="SELECT u FROM Usuario u WHERE u.login.activo=?1"),
 	@NamedQuery(name=Usuario.buscarPorUsername,query="SELECT u FROM Usuario u WHERE u.login.username=?1"),
 	@NamedQuery(name=Usuario.buscarCliente,query="SELECT u FROM Usuario u WHERE u.cedula=?1 and u.cargo.id='"+3+"'"),
-	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu") 
+	@NamedQuery(name = Usuario.CONSULTA_LISTAR_USUARIOS, query = "SELECT usu FROM Usuario usu"),
+	@NamedQuery(name = Usuario.CONSULTA_LISTAR_TIPO_USUARIO, query = "SELECT u "
+			+ "FROM Usuario u WHERE u.tipo=?1")
 	})
 public class Usuario implements Serializable{
 	
@@ -31,6 +33,7 @@ public class Usuario implements Serializable{
 	
 	public static final String CONSULTA_LISTAR_USUARIOS = "Usuario.listarUsuarios";
 	public static final String CONSULTA_LISTAR_USUARIOS_INACTIVOS = "Usuario.listarUsuariosInactivos";
+	public static final String CONSULTA_LISTAR_TIPO_USUARIO = "Usuario.listarTipoUsuario";
 	
 	@Id
 	@Column(name="CEDULA",length=40,nullable=false)
@@ -47,7 +50,7 @@ public class Usuario implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
 	
-	@JoinColumn(name="cargo")
+	@JoinColumn(name="CARGO_ID")
 	@ManyToOne
 	private Cargo cargo;
 	

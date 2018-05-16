@@ -26,11 +26,9 @@
 
 				</h:panelGrid>
 
-				<p:commandButton value="Registrar" ajax="false"
-					action="#{GestionTipoProductoController.registrar}" />
-					<p:commandButton value="Buscar" ajax="false" process="@this,panelDatos"
-					update="panelDatos"
-					action="#{GestionTipoProductoController.buscar}" />
+				<p:commandButton value="Registrar"
+					action="#{GestionTipoProductoController.registrar}" process="@this panelDatos" 
+					update="panelDatos panelTablaTipoPr"/>
 			</p:fieldset>
 
 			<h:form prependId="false">

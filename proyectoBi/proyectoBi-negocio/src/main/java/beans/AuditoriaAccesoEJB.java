@@ -8,7 +8,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import entidades.AuditoriaAcceso;
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import excepciones.ExcepcionNegocio;
 import persistencia.Persistencia;
 

@@ -9,7 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import entidades.AuditoriaUsuario;
+import entidades.Auditoria;
 import entidades.Departamento;
 import entidades.Municipio;
 import excepciones.ExcepcionNegocio;
@@ -17,7 +17,7 @@ import persistencia.Persistencia;
 
 @LocalBean
 @Stateless
-public class AuditoriaUsuarioEJB {
+public class AuditoriaEJB {
 
 	@EJB
 	private Persistencia em;
@@ -87,7 +87,7 @@ public class AuditoriaUsuarioEJB {
 	 * @param browserDeta os y brows del que se conecta
 	 * @param usuario usuario que emplea la accion sobre los registros
 	 */
-	public void crear(AuditoriaUsuario auditoria, int bd, String accion, String browserDeta) {
+	public void crear(Auditoria auditoria, int bd, String accion, String browserDeta) {
 
 
 		this.browserDetails = browserDeta;
@@ -114,9 +114,9 @@ public class AuditoriaUsuarioEJB {
 	 * @param bd, base de datos de la cual se desea listar
 	 * @return una lista con los auditorias registrados
 	 */
-	public List<AuditoriaUsuario> listar(int bd){
+	public List<Auditoria> listar(int bd){
 		em.setBd(bd);	
-		List<AuditoriaUsuario> auditorias= (List<AuditoriaUsuario>)(Object)em.listar(AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS);
+		List<Auditoria> auditorias= (List<Auditoria>)(Object)em.listar(Auditoria.CONSULTA_LISTAR_AUDITORIAS);
 		if (auditorias.isEmpty()) {
 			throw new ExcepcionNegocio("No hay auditorias de usuarios registradas en la base de datos");
 		} else {
@@ -128,14 +128,14 @@ public class AuditoriaUsuarioEJB {
 	/**
 	 * metodo para listar las auditorias registrados
 	 */
-	public List<AuditoriaUsuario> listarParametro(int bd, String entidad) {
+	public List<Auditoria> listarParametro(int bd, String entidad) {
 		em.setBd(bd);	
 		
-		List<AuditoriaUsuario> muns =  (List<AuditoriaUsuario>)(Object)em.listarConUnParametro(AuditoriaUsuario.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, entidad);
-		if (muns.isEmpty()) {
+		List<Auditoria> auds =  (List<Auditoria>)(Object)em.listarConUnParametro(Auditoria.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, entidad);
+		if (auds.isEmpty()) {
 			throw new ExcepcionNegocio("No hay auditorias registrados en la base de datos");
 		} else {
-			return muns;
+			return auds;
 		}
 	}
 }

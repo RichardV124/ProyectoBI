@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+		
+		
+			<p:fieldset legend="Gestion Cargo" style="margin-top:10px">
+			
+		<h:panelGrid columns="3" id="datobusca">
+				
+					<p:outputLabel for="tfbuscargo" id="buscargo" value="Codigo" />
+					<p:inputText id="tfbuscargo" class="form-control" placeholder="Codigo" value="#{gestionCargoController.id}" />
+					<p:message for="tfbuscargo" />
+					
+					<p:commandButton id="btbuscargo" value="Buscar" action="#{gestionCargoController.buscar}"
+					 process="@this datobusca" update="datoscargo"  />
+					
+				</h:panelGrid>
+			
+				<h:panelGrid columns="3" id="datoscargo">
+				
+					<p:outputLabel for="tfnomcargo" id="nomcargo" value="Nombre" />
+					<p:inputText id="tfnomcargo" class="form-control" placeholder="nombre" value="#{gestionCargoController.nombre}" />
+					<p:message for="tfnomcargo" />
+	
+					<p:outputLabel for="tfDescripcar" id="desctipcargo" value="Descripcion" />
+					<p:inputTextarea id="tfDescripcar" class="form-control"
+						value="#{gestionCargoController.descripcion}" placeholder="Descripcion"/>
+					
+				</h:panelGrid>
+				
+				<p:commandButton id="btcargo" value="Resgistar" action="#{gestionCargoController.registrar}"
+					 process="@this datoscargo panelTablacarg" update="datoscargo panelTablacarg" />
+					 
+					 <p:commandButton id="btregaare" value="Editar" action="#{gestionCargoController.editar}"
+					 process="@this datoscargo panelTablacarg" update="datoscargo panelTablacarg" />
+					 
+					 <p:commandButton id="bteliminarcarg" value="Eliminar" action="#{gestionCargoController.eliminar}"
+					 process="@this datoscargo panelTablacarg" update="datoscargo panelTablacarg" />
+				
+				</p:fieldset>
+				<h:form prependId="false">
+				
+				
+				<p:accordionPanel id="panelTablacarg"  style="margin-top:15px">
+					<p:tab title="Cargos Registrados">
+					<p:dataTable value="#{gestionCargoController.tipoCargo}" id="tabla" 
+					var="a" border="1">
+						
+						<p:column>
+							<f:facet name="header">
+							Codigo
+						</f:facet>
+						<p:outputLabel value="#{a.id}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Nombre
+						</f:facet>
+						<p:outputLabel value="#{a.nombre}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+							Descripciono
+						</f:facet>
+						<p:outputLabel value="#{a.descripcion}" />
+						</p:column>
+						
+												
+					</p:dataTable>
+				</p:tab>
+				</p:accordionPanel>
+				
+				</h:form>
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>
