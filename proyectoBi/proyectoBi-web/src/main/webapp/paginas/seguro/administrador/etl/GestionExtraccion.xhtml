@@ -119,7 +119,7 @@
 					</p:tab>
 				</p:accordionPanel>
 						
-				<p:commandButton id="btregis" value="ETL - TRANSFORMACION" process="@this" action="/paginas/seguro/administrador/etl/GestionTransformacion.xhtml?faces-redirect=true" />								
+				<p:commandButton id="btregis" value="ETL - TRANSFORMACION" process="@this" action="#{gestionExtraccionController.transformar}" />								
 				</h:panelGrid>
 				</p:fieldset>
 		</h:form>

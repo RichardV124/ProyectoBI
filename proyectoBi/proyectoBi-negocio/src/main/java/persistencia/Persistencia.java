@@ -266,6 +266,29 @@ public class Persistencia  implements Serializable{
 	}
 	
 	/**
+	 * Listar objetos
+	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
+	 * @return lista de los objetos encontrados
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object> listarConDosParametro(String sql, Object o, Object o2){
+		switch (this.bd) {
+		case 1:
+			Query q = emO.createNamedQuery(sql);
+			q.setParameter(1, o);
+			q.setParameter(2, o2);
+			return q.getResultList();
+		case 2:
+			Query p = emP.createNamedQuery(sql);
+			p.setParameter(1, o);
+			p.setParameter(2, o2);
+			return p.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
+		}
+	}
+	
+	/**
 	 * Listar objetos usando un parametro
 	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
 	 * @parametro el parametro necesario para la consulta

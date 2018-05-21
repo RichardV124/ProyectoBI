@@ -9,10 +9,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.omnifaces.cdi.ViewScoped;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
+import beans.AuditoriaEJB;
 import beansETL.TransformacionEJB;
+import entidades.Auditoria;
 import excepciones.ExcepcionNegocio;
+import session.SessionController;
 
 @ViewScoped
 @Named("gestionTransformacionController")
@@ -20,6 +24,12 @@ public class GestionTransformacionController implements Serializable{
 	
 	@EJB
 	private TransformacionEJB transformacionEJB;
+	
+	@EJB
+	private AuditoriaEJB auditoriaEJB;
+	
+	@Inject
+	private SessionController sesion;
 	
 	public static List<HechoAuditoria> listaAuditoriasTrans;
 	
@@ -43,6 +53,26 @@ public class GestionTransformacionController implements Serializable{
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
+	}
+	
+	public String cargar(){
+		try{
+			transformacionEJB.cargar(listaAuditoriasTrans, listaVentasTrans);
+			crearAuditoria("ETL",GestionETLController.tipo,"Carga", sesion.getBd());
+			Messages.addFlashGlobalInfo("Carga exitosa");
+			return "/paginas/seguro/administrador/etl/GestionETL.xhtml?faces-redirect=true";
+		} catch(Exception e){
+			Messages.addFlashGlobalInfo(e.getMessage());
+		}
+		return null;
+	}
+	
+	public void crearAuditoria(String entidad,String objeto, String accion, int bd){
+		String browserDetails = Faces.getRequestHeader("User-Agent");
+		Auditoria auditoria = new Auditoria();
+		auditoria.setEntidad(entidad);
+		auditoria.setObjetoAuditado(objeto);
+		auditoriaEJB.crear(auditoria, bd, accion, browserDetails);
 	}
 
 	public List<HechoAuditoria> getListaAuditoriasTrans() {

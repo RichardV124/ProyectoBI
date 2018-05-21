@@ -19,13 +19,11 @@ public class DimensionUsuario implements Serializable{
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DIMENSION_USUARIO_SEQ")
-    @SequenceGenerator(sequenceName = "dimension_usuario_seq", allocationSize = 1, name = "DIMENSION_USUARIO_SEQ")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="FECHA_NACIMIENTO")
-	@Temporal(TemporalType.DATE)
-	private Date fechaNacimiento;
+	@Column(name="EDAD")
+	private int edad;
 	
 	@Column(name="MUNICIPIO")
 	private String municipio;
@@ -60,12 +58,12 @@ public class DimensionUsuario implements Serializable{
 		this.id = id;
 	}
 
-	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+	public int getEdad() {
+		return edad;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setEdad(int edad) {
+		this.edad = edad;
 	}
 
 	public String getMunicipio() {

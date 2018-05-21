@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false" id="gestion">
+			<p:fieldset legend="Gestion del Proceso ETL" style="margin-top:10px">
+				<h:panelGrid columns="1" id="datos">
+					<p:outputLabel for="cbtipo" id="lbtipo" value="Tipo - ETL" />
+					<h:selectOneMenu id="cbtipo" value="#{gestionETLController.tipo}" class="form-control">
+						<f:selectItem itemLabel="Acumulacion Simple" itemValue="acumulacionSimple" />
+						<f:selectItem itemLabel="Rolling" itemValue="rolling" />
+					</h:selectOneMenu>
+
+					<h:outputLabel for="tfFechaInicio" value="Fecha Inicio" />
+					<h:inputText id="tfFechaInicio"
+						value="#{gestionETLController.fechaInicio}" mode="inline"
+						a:placeholder="dia-mes-año" class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tfFechaInicio" />
+
+					<h:outputLabel for="tfFechaFin" value="Fecha Inicio" />
+					<h:inputText id="tfFechaFin"
+						value="#{gestionETLController.fechaFin}" mode="inline"
+						a:placeholder="dia-mes-año" class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tfFechaFin" />
+
+					<p:commandButton id="btregis" value="ETL - TRANSFORMACION"
+						process="@this datos"
+						action="#{gestionETLController.iniciar}" />
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

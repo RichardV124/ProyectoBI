@@ -19,8 +19,7 @@ public class DimensionProducto implements Serializable{
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DIMENSION_PRODUCTO_SEQ")
-    @SequenceGenerator(sequenceName = "dimension_producto_seq", allocationSize = 1, name = "DIMENSION_PRODUCTO_SEQ")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name="NOMBRE")

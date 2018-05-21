@@ -1,6 +1,8 @@
 package beansETL;
 
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -67,6 +69,64 @@ public class ExtracionEJB {
 		}
 		try {
 			List<Auditoria> listaO = listarAuditoriasOracle();
+			for(Auditoria a : listaO){
+				lista.add(a);
+			}
+		} catch (ExcepcionNegocio e) {
+
+		}
+		
+		return lista;
+	}
+	
+	
+	/**
+	 * Listar Auditorias de la base de datos oracle
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<Auditoria> listarAuditoriasFechaOracle(Date fechaI, Date fechaF){
+		em.setBd(1);
+		List<Auditoria> auditorias= (List<Auditoria>)(Object)em.listarConDosParametro(Auditoria.CONSULTA_LISTAR_AUDITORIAS_FECHA, fechaI, fechaF);
+		if (auditorias.isEmpty()) {
+			throw new ExcepcionNegocio("No hay auditorias registradas en la BD Oracle");
+		} else {
+			return auditorias;
+		}
+	}
+	
+	/**
+	 * Listar Auditorias de la base de datos oracle
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<Auditoria> listarAuditoriasFechaPostgres(Date fechaI, Date fechaF){
+		em.setBd(2);
+		List<Auditoria> auditorias= (List<Auditoria>)(Object)em.listarConDosParametro(Auditoria.CONSULTA_LISTAR_AUDITORIAS_FECHA, fechaI, fechaF);
+		if (auditorias.isEmpty()) {
+			throw new ExcepcionNegocio("No hay auditorias registradas en la BD Oracle");
+		} else {
+			return auditorias;
+		}
+	}
+	
+	/**
+	 * Listar Auditorias
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<Auditoria> listarAuditoriasFecha(Date fechaI, Date fechaF){
+		List<Auditoria> lista = new ArrayList<Auditoria>();
+		try {
+			List<Auditoria> listaP = listarAuditoriasFechaPostgres(fechaI, fechaF);
+			for(Auditoria a : listaP){
+				lista.add(a);
+			}
+		} catch (ExcepcionNegocio e) {
+
+		}
+		try {
+			List<Auditoria> listaO = listarAuditoriasFechaOracle(fechaI, fechaF);
 			for(Auditoria a : listaO){
 				lista.add(a);
 			}

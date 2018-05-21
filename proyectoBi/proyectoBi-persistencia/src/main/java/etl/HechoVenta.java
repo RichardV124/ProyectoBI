@@ -3,6 +3,7 @@ package etl;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +22,7 @@ public class HechoVenta implements Serializable{
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "HECHO_VENTA_SEQ")
-    @SequenceGenerator(sequenceName = "hecho_venta_seq", allocationSize = 1, name = "HECHO_VENTA_SEQ")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name="FECHA")
@@ -30,15 +30,15 @@ public class HechoVenta implements Serializable{
 	private Date fecha;
 	
 	@JoinColumn(name="USUARIO_CEDULA")
-	@ManyToOne(cascade = {})
+	@ManyToOne(cascade = CascadeType.ALL)
 	private DimensionUsuario usuario;
 	
 	@JoinColumn(name="PRODUCTO_ID")
-	@ManyToOne(cascade = {})
+	@ManyToOne(cascade = CascadeType.ALL)
 	private DimensionProducto producto;
 	
 	@JoinColumn(name="CLIENTE_CEDULA")
-	@ManyToOne(cascade = {})
+	@ManyToOne(cascade = CascadeType.ALL)
 	private DimensionCliente cliente;
 	
 	@Column(name="CANTIDAD")

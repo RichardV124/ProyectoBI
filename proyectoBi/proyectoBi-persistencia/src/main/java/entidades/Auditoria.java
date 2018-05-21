@@ -22,12 +22,15 @@ import javax.persistence.TemporalType;
 @NamedQueries({ 
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS, query = "SELECT a FROM Auditoria a"),
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, query = "SELECT a "
-			+ "FROM Auditoria a WHERE a.entidad=?1")
+			+ "FROM Auditoria a WHERE a.entidad=?1"),
+	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS_FECHA, query = "SELECT a "
+			+ "FROM Auditoria a WHERE a.fecha BETWEEN ?1 AND ?2")
 	})
 public class Auditoria implements Serializable{
 
 	public static final String CONSULTA_LISTAR_AUDITORIAS = "Auditoria.ListarAuditorias";
 	public static final String CONSULTA_LISTAR_AUDITORIAS_ENTIDAD = "Auditoria.ListarAuditoriasEntidad";
+	public static final String CONSULTA_LISTAR_AUDITORIAS_FECHA = "Auditoria.ListarAuditoriasFecha";
 	
 	@Id
 	@Column(name="ID")

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,8 +18,7 @@ public class HechoAuditoria implements Serializable{
 
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "HECHO_AUDITORIA_SEQ")
-    @SequenceGenerator(sequenceName = "hecho_auditoria_seq", allocationSize = 1, name = "HECHO_AUDITORIA_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name="ACCION",length=40,nullable=false)
@@ -112,6 +110,70 @@ public class HechoAuditoria implements Serializable{
 
 	public void setObjetoAuditado(String objetoAuditado) {
 		this.objetoAuditado = objetoAuditado;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((accion == null) ? 0 : accion.hashCode());
+		result = prime * result + ((dispositivo == null) ? 0 : dispositivo.hashCode());
+		result = prime * result + ((entidad == null) ? 0 : entidad.hashCode());
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((hora == null) ? 0 : hora.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((navegador == null) ? 0 : navegador.hashCode());
+		result = prime * result + ((objetoAuditado == null) ? 0 : objetoAuditado.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HechoAuditoria other = (HechoAuditoria) obj;
+		if (accion == null) {
+			if (other.accion != null)
+				return false;
+		} else if (!accion.equals(other.accion))
+			return false;
+		if (dispositivo == null) {
+			if (other.dispositivo != null)
+				return false;
+		} else if (!dispositivo.equals(other.dispositivo))
+			return false;
+		if (entidad == null) {
+			if (other.entidad != null)
+				return false;
+		} else if (!entidad.equals(other.entidad))
+			return false;
+		if (fecha == null) {
+			if (other.fecha != null)
+				return false;
+		} else if (!fecha.equals(other.fecha))
+			return false;
+		if (hora == null) {
+			if (other.hora != null)
+				return false;
+		} else if (!hora.equals(other.hora))
+			return false;
+		if (id != other.id)
+			return false;
+		if (navegador == null) {
+			if (other.navegador != null)
+				return false;
+		} else if (!navegador.equals(other.navegador))
+			return false;
+		if (objetoAuditado == null) {
+			if (other.objetoAuditado != null)
+				return false;
+		} else if (!objetoAuditado.equals(other.objetoAuditado))
+			return false;
+		return true;
 	}
 	
 	
