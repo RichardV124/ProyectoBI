@@ -19,7 +19,9 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = DetalleVenta.LISTAR_DETALLES_FACTURA, query = "SELECT dv FROM DetalleVenta dv"
 			+ " WHERE dv.venta = ?1"),
-	@NamedQuery(name = DetalleVenta.CONSULTA_LISTAR, query = "SELECT dv FROM DetalleVenta dv") 
+	@NamedQuery(name = DetalleVenta.CONSULTA_LISTAR, query = "SELECT dv FROM DetalleVenta dv"),
+	@NamedQuery(name = DetalleVenta.CONSULTA_LISTAR_DETALLEVENTA_FECHA, query = "SELECT dv "
+			+ "FROM DetalleVenta dv WHERE dv.venta.fecha BETWEEN ?1 AND ?2")
 	})
 public class DetalleVenta implements Serializable{
 	
@@ -27,6 +29,7 @@ public class DetalleVenta implements Serializable{
 	public static final String LISTAR_DETALLES_FACTURA = "detalle.listarDetalleFactura";
 	
 	public static final String CONSULTA_LISTAR = "DetalleVenta.Listar";
+	public static final String CONSULTA_LISTAR_DETALLEVENTA_FECHA = "DetalleVenta.ListarDetalleVentaFecha";
 	
 	@Id
 	@ManyToOne(cascade={})

@@ -57,7 +57,11 @@ public class GestionTransformacionController implements Serializable{
 	
 	public String cargar(){
 		try{
-			transformacionEJB.cargar(listaAuditoriasTrans, listaVentasTrans);
+			if(GestionETLController.tipo.equalsIgnoreCase("rolling")){
+				transformacionEJB.cargar(listaAuditoriasTrans, listaVentasTrans);
+			} else{
+				transformacionEJB.cargarAcumulacionSimple(listaAuditoriasTrans, listaVentasTrans);
+			}
 			crearAuditoria("ETL",GestionETLController.tipo,"Carga", sesion.getBd());
 			Messages.addFlashGlobalInfo("Carga exitosa");
 			return "/paginas/seguro/administrador/etl/GestionETL.xhtml?faces-redirect=true";

@@ -65,7 +65,8 @@ public class TransformacionEJB {
 	 * 		los reportes en el DWH
 	 * -> Se debe calcular el valor total de la venta para que se tenga en cuenta en el DWH
 	 * -> Se debe calcular la edad del usuario a partir de su fecha de nacimiento
-	 * -> Se debe calcular la edad del usuario a partir de su fecha de nacimiento
+	 * -> Se debe calcular la edad del Cliente a partir de su fecha de nacimiento
+	 * -> Se debe Agrupar la informacion de Venta y DetalleVenta en una sola tabla de hecho
 	 * @param listaVentas
 	 * @return
 	 */
@@ -127,6 +128,31 @@ public class TransformacionEJB {
 	public void cargar(List<HechoAuditoria> audis, List<HechoVenta> ventas){
 		if(audis != null){
 			emM.createNativeQuery("DELETE FROM hecho_auditoria;").executeUpdate();
+			for(HechoAuditoria ha : audis){
+				emM.createNativeQuery("INSERT INTO hecho_auditoria (ACCION, DISPOSITIVO, "
+						+ "ENTIDAD, FECHA, HORA, NAVEGADOR, OBJETO_AUDITADO) "
+						+ "VALUES ('"+ha.getAccion()+"', '"+ha.getDispositivo()+"', '"+ha.getEntidad()+
+						"', STR_TO_DATE('"+ha.getFecha()+"', '%Y-%m-%d'), '"+ha.getHora()+"', '"+ha.getNavegador()+"', '"+ha.getObjetoAuditado()+
+						"');").executeUpdate();
+				
+			}
+		}
+		
+		if(ventas!= null){
+			emM.createNativeQuery("DELETE FROM hecho_venta;").executeUpdate();
+			emM.createNativeQuery("DELETE FROM dimension_producto;").executeUpdate();
+			emM.createNativeQuery("DELETE FROM dimension_cliente;").executeUpdate();
+			emM.createNativeQuery("DELETE FROM dimension_usuario;").executeUpdate();
+			for(HechoVenta hv : ventas){
+				emM.persist(hv);
+			}
+		}
+		
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void cargarAcumulacionSimple(List<HechoAuditoria> audis, List<HechoVenta> ventas){
+		if(audis != null){
 			for(HechoAuditoria ha : audis){
 				emM.createNativeQuery("INSERT INTO hecho_auditoria (ACCION, DISPOSITIVO, "
 						+ "ENTIDAD, FECHA, HORA, NAVEGADOR, OBJETO_AUDITADO) "

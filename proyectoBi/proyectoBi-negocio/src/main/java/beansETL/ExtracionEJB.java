@@ -46,7 +46,7 @@ public class ExtracionEJB {
 		em.setBd(2);
 		List<Auditoria> auditorias= (List<Auditoria>)(Object)em.listar(Auditoria.CONSULTA_LISTAR_AUDITORIAS);
 		if (auditorias.isEmpty()) {
-			throw new ExcepcionNegocio("No hay auditorias registradas en la BD Oracle");
+			throw new ExcepcionNegocio("No hay auditorias registradas en la BD Postgres");
 		} else {
 			return auditorias;
 		}
@@ -185,6 +185,64 @@ public class ExtracionEJB {
 		}
 		try {
 			List<DetalleVenta> listaO = listarVentasOracle();
+			for(DetalleVenta a : listaO){
+				lista.add(a);
+			}
+		} catch (ExcepcionNegocio e) {
+
+		}
+		
+		return lista;
+	}
+	
+
+	/**
+	 * Listar Ventas de la base de datos oracle
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<DetalleVenta> listarVentasFechaOracle(Object o, Object o2){
+		em.setBd(1);
+		List<DetalleVenta> ventas= (List<DetalleVenta>)(Object)em.listarConDosParametro(DetalleVenta.CONSULTA_LISTAR_DETALLEVENTA_FECHA, o, o2);
+		if (ventas.isEmpty()) {
+			throw new ExcepcionNegocio("No hay ventas registradas en la BD Oracle");
+		} else {
+			return ventas;
+		}
+	}
+	
+	/**
+	 * Listar Auditorias de la base de datos oracle
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<DetalleVenta> listarVentasFechaPostgres(Object o, Object o2){
+		em.setBd(2);
+		List<DetalleVenta> ventas= (List<DetalleVenta>)(Object)em.listarConDosParametro(DetalleVenta.CONSULTA_LISTAR_DETALLEVENTA_FECHA, o, o2);
+		if (ventas.isEmpty()) {
+			throw new ExcepcionNegocio("No hay ventas registradas en la BD Oracle");
+		} else {
+			return ventas;
+		}
+	}
+	
+	/**
+	 * Listar ventas
+	 * @param bd base de datos en la que obtendra los accesos
+	 * @return lista de auditorias
+	 */
+	public List<DetalleVenta> listarVentasFecha(Object o, Object o2){
+		List<DetalleVenta> lista = new ArrayList<DetalleVenta>();
+		try {
+			List<DetalleVenta> listaP = listarVentasFechaPostgres(o, o2);
+			for(DetalleVenta a : listaP){
+				lista.add(a);
+			}
+		} catch (ExcepcionNegocio e) {
+
+		}
+		try {
+			List<DetalleVenta> listaO = listarVentasFechaOracle(o, o2);
 			for(DetalleVenta a : listaO){
 				lista.add(a);
 			}

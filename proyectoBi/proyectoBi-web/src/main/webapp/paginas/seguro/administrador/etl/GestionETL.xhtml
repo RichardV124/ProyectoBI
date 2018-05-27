@@ -19,20 +19,20 @@
 					<h:outputLabel for="tfFechaInicio" value="Fecha Inicio" />
 					<h:inputText id="tfFechaInicio"
 						value="#{gestionETLController.fechaInicio}" mode="inline"
-						a:placeholder="dia-mes-año" class="form-control">
-						<f:convertDateTime pattern="dd-MM-yyyy" />
+						a:placeholder="año-mes-dia" class="form-control">
+						<f:convertDateTime pattern="yyyy-MM-dd" />
 					</h:inputText>
 					<p:message for="tfFechaInicio" />
 
-					<h:outputLabel for="tfFechaFin" value="Fecha Inicio" />
+					<h:outputLabel for="tfFechaFin" value="Fecha Fin" />
 					<h:inputText id="tfFechaFin"
 						value="#{gestionETLController.fechaFin}" mode="inline"
-						a:placeholder="dia-mes-año" class="form-control">
-						<f:convertDateTime pattern="dd-MM-yyyy" />
+						a:placeholder="año-mes-dia" class="form-control">
+						<f:convertDateTime pattern="yyyy-MM-dd" />
 					</h:inputText>
 					<p:message for="tfFechaFin" />
 
-					<p:commandButton id="btregis" value="ETL - TRANSFORMACION"
+					<p:commandButton id="btregis" value="ETL - EXTRACCION"
 						process="@this datos"
 						action="#{gestionETLController.iniciar}" />
 

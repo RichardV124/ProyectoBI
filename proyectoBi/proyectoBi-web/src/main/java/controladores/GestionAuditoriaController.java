@@ -48,7 +48,7 @@ public class GestionAuditoriaController implements Serializable {
 
 	public void llenarTablas() {
 		try {
-			audi_1 = auditoriaEJB.listarParametro(sesion.getBd(), "TipoUsuario");
+			audi_1 = auditoriaEJB.listarParametro(sesion.getBd(), "ETL");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}

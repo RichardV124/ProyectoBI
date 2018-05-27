@@ -89,7 +89,7 @@ public class AuditoriaEJB {
 	 */
 	public void crear(Auditoria auditoria, int bd, String accion, String browserDeta) {
 
-
+		em.setBd(bd);
 		this.browserDetails = browserDeta;
 		userAgent = browserDetails;
 		user2 = userAgent.toLowerCase();

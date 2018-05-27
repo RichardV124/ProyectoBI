@@ -66,6 +66,12 @@ public class GestionExtraccionController implements Serializable {
 			} catch (ExcepcionNegocio e) {
 				Messages.addFlashGlobalInfo(e.getMessage());
 			}
+			
+			try {
+				listaVentas = extracionEJB.listarVentasFecha(GestionETLController.fechaInicio, GestionETLController.fechaFin);
+			} catch (ExcepcionNegocio e) {
+				Messages.addFlashGlobalInfo(e.getMessage());
+			}
 		}
 	}
 	

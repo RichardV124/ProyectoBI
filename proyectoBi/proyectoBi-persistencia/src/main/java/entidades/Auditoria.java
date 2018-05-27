@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS_ENTIDAD, query = "SELECT a "
 			+ "FROM Auditoria a WHERE a.entidad=?1"),
 	@NamedQuery(name = Auditoria.CONSULTA_LISTAR_AUDITORIAS_FECHA, query = "SELECT a "
-			+ "FROM Auditoria a WHERE a.fecha BETWEEN ?1 AND ?2")
+			+ "FROM Auditoria a WHERE a.fecha>= ?1 AND a.fecha<=?2")
 	})
 public class Auditoria implements Serializable{
 

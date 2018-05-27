@@ -11,13 +11,13 @@
 				<h:panelGrid columns="1" id="datosaudi">
 				
 					<p:accordionPanel id="panelTablaAud1" >
-					<p:tab title="Auditoria Tipo Usuario">
+					<p:tab title="Auditoria Proceso ETL">
 						<p:dataTable value="#{gestionAuditoriaController.audi_1}" id="tabla1"
 							var="a" border="1">
 							
 							<p:column>
 								<f:facet name="header">
-								Accioon
+								Accion
 							</f:facet>
 								<p:outputLabel value="#{a.accion}" />
 							</p:column>
@@ -59,7 +59,7 @@
 							
 							<p:column>
 								<f:facet name="header">
-								Auditado
+								Tipo
 							</f:facet>
 								<p:outputLabel value="#{a.objetoAuditado}" />
 							</p:column>
