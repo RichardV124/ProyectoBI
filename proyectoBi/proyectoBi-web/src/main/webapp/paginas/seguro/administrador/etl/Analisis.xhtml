@@ -18,10 +18,6 @@
 					</h:inputText>
 					<p:message for="tfFechaResultado" />
 
-					<br />
-					<br />
-					<br />
-
 					<p:outputLabel value="Resultado" />
 					<p:fileUpload
 						fileUploadListener="#{gestionAnalisisController.subirImagen}"
@@ -42,17 +38,6 @@
 					process="@this panelDatos" update="panelDatos" />
 			</p:fieldset>
 
-		</h:form>
-
-		<h:form enctype="multipart/form-data">
-
-			<p:fileUpload value="#{gestionAnalisisController.file}" mode="simple"
-				skinSimple="true" />
-
-			<p:commandButton value="Submit" ajax="true"
-				actionListener="#{gestionAnalisisController.upload}" />
-			<p:commandButton value="Submit" ajax="true"
-				actionListener="#{gestionAnalisisController.aaa}" />
 		</h:form>
 	</ui:define>
 

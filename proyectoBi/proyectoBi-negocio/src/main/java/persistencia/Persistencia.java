@@ -19,6 +19,7 @@ import entidades.DetalleVenta;
 import entidades.Producto;
 import entidades.Usuario;
 import entidades.Venta;
+import etl.Analisis;
 import excepciones.ExcepcionNegocio;
 
 @LocalBean
@@ -401,6 +402,22 @@ public class Persistencia  implements Serializable{
 	}
 	
 	
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void crearAnalisis(Analisis analisis){
+		// TODO Auto-generated method stub
+		
+		
+		Query q = emP.createNativeQuery("INSERT INTO ANALISIS (FECHA,RESULTADO,DESCRIPCION) VALUES (?1,?2,?3)");
+		
+		q.setParameter(1, analisis.getFecha());
+		q.setParameter(2, analisis.getResultado());
+		q.setParameter(3, analisis.getDescripcion());
+		
+		q.executeUpdate();
+		
+	}
+
 
 	/**
 	 * Accesores Y Modificadores

@@ -34,7 +34,7 @@ public class AnalisisEJB {
 		// Buscamos si existe un tipo con el mismo nombre
 		List<Object> lista = conexion.listarConParametroDate(Analisis.buscarPorFecha, analisis.getFecha());
 		if(lista.size() == 0){
-			conexion.crear(analisis);
+			conexion.crearAnalisis(analisis);
 		}else{
 			throw new excepciones.ExcepcionNegocio("Ya existe un analisis realizado en la fecha: "+analisis.getFecha());
 		}

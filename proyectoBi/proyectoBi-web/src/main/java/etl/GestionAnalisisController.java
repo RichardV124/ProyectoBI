@@ -80,7 +80,7 @@ public class GestionAnalisisController implements Serializable {
 		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
 				.getContext();
 		String path = servletContext.getRealPath("") + File.separatorChar + "resources" + File.separatorChar + "img"
-				+ File.separatorChar + "temp" + File.separatorChar + nombreArchivo;
+				+ File.separatorChar + "tmp" + File.separatorChar + nombreArchivo;
 
 		File f = null;
 		InputStream in = null;
@@ -114,6 +114,7 @@ public class GestionAnalisisController implements Serializable {
 		try {
 			analisis.setResultado(event.getFile().getContents());
 			imagenAnalisis = guardaBlobEnFicheroTemporal(analisis.getResultado(), event.getFile().getFileName());
+			Messages.addFlashGlobalInfo("Se subio la imagen correctamente");
 		} catch (Exception e) {
 			Messages.addFlashGlobalInfo("Problemas al subir la imagen");
 		}
