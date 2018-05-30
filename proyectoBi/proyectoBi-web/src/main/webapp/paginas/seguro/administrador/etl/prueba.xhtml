@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+	<p:growl id="messages" showDetail="true" />
+
+	<h:form enctype="multipart/form-data">
+    
+ 
+    <p:fileUpload value="#{pruebaBean.file}" mode="simple" skinSimple="true"/>
+ 
+    <p:commandButton value="Submit" ajax="false" actionListener="#{pruebaBean.upload}" disabled="false" mode="single"  />
+     <p:commandButton value="aaaaaa"  actionListener="#{pruebaBean.aaa}" disabled="false" />
+</h:form>
+
+<h:form>
+    <p:fileUpload fileUploadListener="#{pruebaBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+           update="messages" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+</h:form>
+	</ui:define>
+
+</ui:composition>
+

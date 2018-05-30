@@ -2,6 +2,7 @@ package persistencia;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -318,6 +319,28 @@ public class Persistencia  implements Serializable{
 	 */
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Object> listarConParametroString(String sql, String parametro){
+		switch (this.bd) {
+		case 1:
+			Query q = emO.createNamedQuery(sql);
+			q.setParameter(1, parametro);
+			return q.getResultList();
+		case 2:
+			Query p = emP.createNamedQuery(sql);
+			p.setParameter(1, parametro);
+			return p.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
+		}
+	}
+	
+	/**
+	 * Listar objetos usando un parametro String
+	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
+	 * @parametro el parametro necesario para la consulta
+	 * @return lista de los objetos encontrados
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object> listarConParametroDate(String sql, Date parametro){
 		switch (this.bd) {
 		case 1:
 			Query q = emO.createNamedQuery(sql);

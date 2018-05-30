@@ -116,9 +116,13 @@
 					<h:inputText value="#{ventasController.apellido}" id="tfapellido"
 						placeholder="Ingrese el apellido" />
 
-					<p:outputLabel id="maskNacimiento" value="Fecha de nacimiento" />
-					<p:inputMask id="dateNacimiento"
-						value="#{ventasController.fechaNacimiento}" mask="99/99/9999" />
+
+					<h:outputLabel for="maskNacimiento" value="Fecha Nacimiento" />
+					<h:inputText id="maskNacimiento"
+						value="#{ventasController.fechaNacimiento}" mode="inline"
+						class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
 
 
 					<h:outputLabel id="lblGenero" value="Genero" />
