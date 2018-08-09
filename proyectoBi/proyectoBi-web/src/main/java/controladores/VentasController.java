@@ -80,7 +80,7 @@ public class VentasController implements Serializable {
 	private boolean mostrarDatosCliente;
 
 	// Datos venta
-	private int cantidadAgregar =12;
+	private int cantidadAgregar =1;
 	private List<DetalleVenta> productosCompra;
 	private Producto inventarioProductoComprar;
 	double totalVenta = 0;
@@ -169,7 +169,7 @@ public class VentasController implements Serializable {
 				productosCompra.add(detalleAgregar);
 				inventariosEditar.add(inventarioProductoComprar);
 				detalleAgregar = null;
-				
+				reload();
 
 			} else {
 				Messages.addFlashGlobalInfo("No existe esta cantidad en el inventario");
@@ -236,9 +236,6 @@ public class VentasController implements Serializable {
 
 		cliente = usuarioEJB.buscarCliente(cedula, sesion.getBd());
 
-		mostrarDatosCliente = true;
-//		reload();
-//		System.out.println("DEPUSES DEL RELOAD MANO");
 
 		if (cliente != null) {
 

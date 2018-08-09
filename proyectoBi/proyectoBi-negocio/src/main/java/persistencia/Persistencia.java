@@ -2,6 +2,7 @@ package persistencia;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -18,6 +19,7 @@ import entidades.DetalleVenta;
 import entidades.Producto;
 import entidades.Usuario;
 import entidades.Venta;
+import etl.Analisis;
 import excepciones.ExcepcionNegocio;
 
 @LocalBean
@@ -333,6 +335,28 @@ public class Persistencia  implements Serializable{
 	}
 	
 	/**
+	 * Listar objetos usando un parametro String
+	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
+	 * @parametro el parametro necesario para la consulta
+	 * @return lista de los objetos encontrados
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object> listarConParametroDate(String sql, Date parametro){
+		switch (this.bd) {
+		case 1:
+			Query q = emO.createNamedQuery(sql);
+			q.setParameter(1, parametro);
+			return q.getResultList();
+		case 2:
+			Query p = emP.createNamedQuery(sql);
+			p.setParameter(1, parametro);
+			return p.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
+		}
+	}
+	
+	/**
 	 * Listar objetos de una tabla usando las 2 bases de datos
 	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
 	 * @return lista de los objetos encontrados
@@ -378,6 +402,22 @@ public class Persistencia  implements Serializable{
 	}
 	
 	
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void crearAnalisis(Analisis analisis){
+		// TODO Auto-generated method stub
+		
+		
+		Query q = emP.createNativeQuery("INSERT INTO ANALISIS (FECHA,RESULTADO,DESCRIPCION) VALUES (?1,?2,?3)");
+		
+		q.setParameter(1, analisis.getFecha());
+		q.setParameter(2, analisis.getResultado());
+		q.setParameter(3, analisis.getDescripcion());
+		
+		q.executeUpdate();
+		
+	}
+
 
 	/**
 	 * Accesores Y Modificadores

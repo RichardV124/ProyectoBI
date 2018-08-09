@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/index.xhtml">
+
+	<ui:define name="cuerpo">
+		<h:form enctype="multipart/form-data" id="formGestion">
+			<p:fieldset legend="Resultados" style="margin-top:10px">
+				<h:panelGroup columns="3" id="panelDatos">
+
+
+					<h:outputLabel for="tfFechaResultado" value="Fecha de realizacion" />
+					<h:inputText id="tfFechaResultado"
+						value="#{gestionAnalisisController.fechaResultado}" mode="inline"
+						class="form-control">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</h:inputText>
+					<p:message for="tfFechaResultado" />
+
+					<p:outputLabel value="Resultado" />
+					<p:fileUpload
+						fileUploadListener="#{gestionAnalisisController.subirImagen}"
+						mode="advanced" dragDropSupport="false"
+						update="messages formGestion" sizeLimit="500000" fileLimit="1"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+					<p:growl id="messages" showDetail="true" />
+
+				</h:panelGroup>
+
+				<p:commandButton value="Registrar"
+					action="#{gestionAnalisisController.crearAnalisis}"
+					process="@this panelDatos" update="panelDatos" />
+
+				<p:commandButton value="Buscar"
+					action="#{gestionAnalisisController.buscarAnalisis}"
+					process="@this panelDatos" update="panelDatos" />
+			</p:fieldset>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
