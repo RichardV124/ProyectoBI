@@ -37,6 +37,19 @@ public class TransformacionEJB {
 	private EntityManager emM;
 	
 	/**
+	 * Listar todos los datos del DW
+	 * @param sql
+	 * @return una lista con la informacion
+	 */
+	public List<HechoVenta> listarHechoVenta(String sql){
+		
+		Query q = emM.createNamedQuery(sql);
+		return q.getResultList();
+		
+		
+	}	
+	
+	/**
 	 * Metodo para la transformacion de las auditoias
 	 * @param auds
 	 * @return

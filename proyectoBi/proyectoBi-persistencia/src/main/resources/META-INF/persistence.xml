@@ -25,14 +25,14 @@
 		</properties> 
     </persistence-unit>
     
-    <persistence-unit name="mysql">
+     <persistence-unit name="mysql">
      <jta-data-source>java:jboss/datasources/ProyectoBiMySQLDS</jta-data-source>
      
      <properties>
-			 <property name="hibernate.hbm2ddl.auto" value="none" />
+			 <property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.show_sql" value="true" /> 
 			<property name="wildfly.jpa.default-unit" value="true"/>
 		</properties> 
-    </persistence-unit>
+    </persistence-unit> 
 
 </persistence>

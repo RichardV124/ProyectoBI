@@ -390,6 +390,20 @@ public class Persistencia  implements Serializable{
 	public void setBd(int bd) {
 		this.bd = bd;
 	}	
+	
+	
+	
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object> listarDW(String sql){
+		switch (this.bd) {
+		case 1:
+			Query q = emM.createNamedQuery(sql);
+			return q.getResultList();
+		default:
+			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
+		}
+	}
 
 }
 

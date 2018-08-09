@@ -21,6 +21,8 @@ public class ExtracionEJB {
 	
 	@EJB
 	private Persistencia em;
+		
+	
 
 	/**
 	 * Listar Auditorias de la base de datos oracle

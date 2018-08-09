@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+	
+	<ui:define name="cuerpo">
+
+		<h:form prependId="false">
+
+
+			<p:tabView id="tabPrincipal">
+
+				<p:tab title="Exportar Aditoria">
+
+					<h:panelGrid id="paneldatos" columns="3">
+
+						<p:commandButton action="#{csvController.generalcsvAuditoria}"
+							styleClass="buttonIni" process="@this "
+							value="Cargar datos de DW" update="panelTablas" />
+						<h:commandLink>
+							<h:graphicImage url="./../../images/csv.jpeg" />
+							<p:dataExporter type="csv" target="panelTablas"
+								fileName="auditoria"></p:dataExporter>
+						</h:commandLink>
+
+						<h:commandLink>
+							<h:graphicImage url="./../../images/ex.png" />
+							<p:dataExporter type="xls" target="panelTablas"
+								fileName="auditoriaExcel"></p:dataExporter>
+						</h:commandLink>
+					</h:panelGrid>
+
+
+					<p:dataTable id="panelTablas" value="#{csvController.listAdDW}"
+						scrollable="true" var="doc" border="1" class="table">
+
+						<p:column headerText="Nombre del modulo">
+							<h:outputLabel value="#{doc.nombre}" />
+						</p:column>
+						<p:column headerText="Accion">
+							<h:outputLabel value="#{doc.accion}" />
+						</p:column>
+
+						<p:column headerText="Fecha de registro">
+							<h:outputLabel value="#{doc.fecha}" />
+						</p:column>
+
+						<p:column headerText="Tipo de navegador">
+							<h:outputLabel value="#{doc.navegador}" />
+						</p:column>
+
+						<p:column headerText="Tipo de O.S.">
+							<h:outputLabel value="#{doc.origen}" />
+						</p:column>
+
+						<p:column headerText="Usuario que realizo la accion">
+							<h:outputLabel value="#{doc.dwUsuario.nombreUs}" />
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+
+				<p:tab title="Exportar Ventas">
+					<h:panelGrid id="paneldatosVenta" columns="3">
+
+						<p:commandButton action="#{csvController.generalcsvVenta}"
+							styleClass="buttonIni" process="@this "
+							value="Cargar datos de DW" update="panelTablasVentas" />
+						<h:commandLink>
+							<h:graphicImage url="./../../images/csv.jpeg" />
+							<p:dataExporter type="csv" target="panelTablasVentas"
+								fileName="venta"></p:dataExporter>
+						</h:commandLink>
+
+						<h:commandLink>
+							<h:graphicImage url="./../../images/ex.png" />
+							<p:dataExporter type="xls" target="panelTablasVentas"
+								fileName="ventaExcel"></p:dataExporter>
+						</h:commandLink>
+					</h:panelGrid>
+					
+					<p:dataTable id="panelTablasVentas" value="#{csvController.listaVentaDW}"
+						scrollable="true" var="doc" border="1" class="table tamañoTablaVenta" style="background:white">
+
+						<p:column width="150" headerText="Id venta">
+							<h:outputLabel value="#{doc.idVenta}" />
+						</p:column>
+						<p:column width="150" headerText="Id inventario">
+							<h:outputLabel value="#{doc.inventario.idInventario}" />
+						</p:column>
+
+						<p:column width="150" headerText="Fecha ingreso inventario">
+							<h:outputLabel value="#{doc.inventario.fechaIngresoInv}" />
+						</p:column>
+
+						<p:column width="150" headerText="Nombre del producto">
+							<h:outputLabel value="#{doc.inventario.nombreProducto}" />
+						</p:column>
+
+						<p:column width="150" headerText="Descripción del produto">
+							<h:outputLabel value="#{doc.inventario.descripcionProducto}" />
+						</p:column>
+
+						<p:column width="150" headerText="Valor del producto">
+							<h:outputLabel value="#{doc.inventario.valorProducto}" />
+						</p:column>
+
+						<p:column width="150" headerText="Id gestion venta">
+							<h:outputLabel value="#{doc.gestionVenta.idGestionVenta}" />
+						</p:column>
+						<p:column width="150" headerText="Fecha gestion venta">
+							<h:outputLabel value="#{doc.gestionVenta.fecha}" />
+						</p:column>
+						<p:column width="150" headerText="Numero factura gestion venta">
+							<h:outputLabel value="#{doc.gestionVenta.numeroFactura}" />
+						</p:column>
+						<p:column width="150" headerText="Id empleado">
+							<h:outputLabel value="#{doc.empleado.idEmpleado}" />
+						</p:column>
+						<p:column width="150" headerText="Salario empleado">
+							<h:outputLabel value="#{doc.empleado.salario}" />
+						</p:column>
+						<p:column width="150" headerText="Fecha ingreso empleado">
+							<h:outputLabel value="#{doc.empleado.fechaIngresoEmp}" />
+						</p:column>
+						<p:column width="150" headerText="Nombre del empleado">
+							<h:outputLabel value="#{doc.empleado.nombreEmpleado}" />
+						</p:column>
+						<p:column width="150" headerText="Id cliente">
+							<h:outputLabel value="#{doc.persona.idPersona}" />
+						</p:column>
+						<p:column width="150" headerText="Cedula cliente">
+							<h:outputLabel value="#{doc.persona.cedula}" />
+						</p:column>
+						<p:column width="150" headerText="Nombre del cliente">
+							<h:outputLabel value="#{doc.persona.nombreCompleto}" />
+						</p:column>
+						<p:column width="150" headerText="Edad del cliente">
+							<h:outputLabel value="#{doc.persona.fechaNacimiento}" />
+						</p:column>
+						<p:column width="150" headerText="Genero del cliente">
+							<h:outputLabel value="#{doc.persona.genero}" />
+						</p:column>
+						<p:column width="150" headerText="Cantidad del producto">
+							<h:outputLabel value="#{doc.cantidad}" />
+						</p:column>
+						
+					</p:dataTable>
+
+				</p:tab>
+
+				<p:tab title="Importar imagenes de datamark">
+
+					<p:fileUpload value="Cargar imagen" mode="simple" 
+						skinSimple="true" />
+
+					<p:commandButton value="Submit" ajax="false"
+						actionListener="#{csvController.upload}"  />
+
+				</p:tab>
+			</p:tabView>
+
+		</h:form>
+	</ui:define>
+	
+	
+</ui:composition>

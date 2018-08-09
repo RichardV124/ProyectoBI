@@ -9,6 +9,10 @@
   <packaging>war</packaging>
   
     <dependencies>
+    
+	
+    
+    
   	<dependency>
   		<groupId>co.edu.eam.ingesoft.bi</groupId>
   		<artifactId>proyectoBi-negocio</artifactId>
@@ -69,6 +73,13 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>3.17</version>
+	</dependency>
+		
   	
   </dependencies>
   
