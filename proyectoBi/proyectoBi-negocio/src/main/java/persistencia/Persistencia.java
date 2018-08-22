@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,9 @@ import entidades.Usuario;
 import entidades.Venta;
 import etl.Analisis;
 import excepciones.ExcepcionNegocio;
+import km.DimensionPage;
+import km.DimensionUser;
+import km.HechoRecentChange;
 
 @LocalBean
 @Stateless
@@ -43,6 +47,12 @@ public class Persistencia  implements Serializable{
 	 */
 	@PersistenceContext(unitName = "mysql")
 	private EntityManager emM;
+	
+	/**
+	 * Instancia a MySQL (3)
+	 */
+	@PersistenceContext(unitName = "mediawiki")
+	private EntityManager emMw;
 	
 	/**
 	 * Es la base de dato en la cual esta funcionando el sistema actualmente
@@ -246,6 +256,7 @@ public class Persistencia  implements Serializable{
 		}
 	}
 	
+	
 	/**
 	 * Listar objetos
 	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
@@ -444,6 +455,138 @@ public class Persistencia  implements Serializable{
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
 	}
+	
 
+	// ------------------>Gestion de la Wiki<----------------------
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DimensionUser> listaUsuarios(){
+		List<DimensionUser> users = new ArrayList<DimensionUser>();
+		List<Object[]> usersBd = listarWiki("SELECT CAST(u.user_name AS CHAR) username, CAST(u.user_real_name AS CHAR) NAME FROM USER u;");
+		for (Object[] a : usersBd) {
+		    System.out.println("INFOOOOOOOOOOOOOOOOOO Usuario " + a[0] + " " + a[1]);
+		    DimensionUser user = new DimensionUser();
+		    user.setUsername(String.valueOf(a[0]));
+		    user.setRealname(String.valueOf(a[1]));		
+		    users.add(user);
+		}
+		return users;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void guardarUsers(List<DimensionUser> users){		
+		if(users!=null){		
+			for(DimensionUser du : users){
+				emM.persist(du);
+			}
+		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DimensionPage> listaPaginas() throws Exception{
+		List<DimensionPage> pages = new ArrayList<DimensionPage>();
+		List<Object[]> pagesBd = listarWiki("SELECT (SELECT DATE_FORMAT(CAST(rc.rc_timestamp AS CHAR), '%d/%m/%Y')) AS fecha,"
+				+ " CAST(rc.rc_user_text AS CHAR) USER, CAST(rc.rc_title AS CHAR) title, "
+				+ "CAST(rc.rc_comment AS CHAR) COMMENT FROM recentchanges rc  WHERE rc.rc_new=1;");
+		
+		List<Object[]> texts = listaTextos();
+		
+		for (Object[] a : pagesBd) {
+			for(Object[] t : texts){
+				if(String.valueOf(a[2]).equalsIgnoreCase(String.valueOf(t[0]))){
+				    System.out.println("INFOOOOOOOOOOOOOOOOOO Pages " + a[0] + " " + a[1] + a[2]);
+				    DimensionPage page = new DimensionPage();	
+				    page.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(a[0])));
+				    page.setTitle(String.valueOf(a[2]));
+				    page.setComment(String.valueOf(a[3]));
+				    page.setText(String.valueOf(t[1]));
+				    pages.add(page);
+				}
+			}
+		}
+		return pages;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void guardarPages(List<DimensionPage> pages){		
+		if(pages!=null){
+			for(DimensionPage dp : pages){
+				emM.persist(dp);
+			}
+		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object[]> listaTextos() {
+		List<Object[]> textsBd = listarWiki("SELECT CAST(si_title AS CHAR) title, CAST(si_text AS CHAR) TEXT FROM searchindex;");
+		for (Object[] a : textsBd) {
+		    System.out.println("INFOOOOOOOOOOOOOOOOOO Texts " + a[0] + " " + a[1]);
+		    
+		}
+		return textsBd;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<HechoRecentChange> listaCambios() throws Exception{
+		List<HechoRecentChange> changes = new ArrayList<HechoRecentChange>();
+		List<Object[]> changesBd = listarWiki("SELECT (SELECT DATE_FORMAT(CAST(rc.rc_timestamp AS CHAR), '%d/%m/%Y')) AS fecha"
+				+ ", CAST(rc.rc_user_text AS CHAR) USER, CAST(rc.rc_title AS CHAR) title"
+				+ ", CAST(rc.rc_comment AS CHAR) COMMENT, rc.rc_old_len OLD, rc.rc_new_len NEW "
+				+ "FROM recentchanges rc WHERE rc.rc_new=0;");
+		
+		List<DimensionUser> users = listaUsuarios();
+		List<DimensionPage> pages = listaPaginas();
+		
+		for (Object[] c : changesBd) {
+			if(c[4] != null && c[5]!=null){
+				HechoRecentChange change = new HechoRecentChange();
+				change.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(c[0])));
+				change.setComment(String.valueOf(c[3]));
+				change.setOldLengTH(Integer.parseInt(String.valueOf(c[4])));
+				change.setNewLength(Integer.parseInt(String.valueOf(c[5])));
+				for(DimensionUser u : users){
+					if(u.getUsername().equalsIgnoreCase(String.valueOf(c[1]))){
+						change.setUser(u);
+						for(DimensionPage p : pages){
+							if(p.getTitle().equalsIgnoreCase(String.valueOf(c[2]))){	
+								change.setPage(p);
+							    changes.add(change);
+							}
+						}
+					}
+				}
+			}
+		}
+		return changes;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void guardarChanges(List<HechoRecentChange> changes){		
+		if(changes!=null){
+			for(HechoRecentChange hc : changes){
+				emM.persist(hc);
+			}
+		}
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void limpiarKmDwh(){		
+		emM.createNativeQuery("DELETE FROM hecho_recent_change;").executeUpdate();
+		emM.createNativeQuery("DELETE FROM dimension_user;").executeUpdate();
+		emM.createNativeQuery("DELETE FROM dimension_page;").executeUpdate();
+			
+	}
+	
+	/**
+	 * Listar objetos
+	 * @param sql consulta a ejecutar, nos traera objetos de una determinada tabla
+	 * @return lista de los objetos encontrados
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Object[]> listarWiki(String sql){
+		Query q = emMw.createNativeQuery(sql);
+		return q.getResultList();
+	}
+	
 }
 

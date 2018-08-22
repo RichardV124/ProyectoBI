@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/templates/index.xhtml"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+	<ui:define name="cuerpo">
+		<h:form prependId="false" id="gestion">
+			<p:fieldset legend="Gestion del Conocimiento" style="margin-top:10px">
+				<h:panelGrid columns="1" id="datos">
+					<p:commandButton id="btregis" value="ETL - GESTIÓN DEL CONOCIMIENTO"
+						process="@this datos" action="#{gestionKmController.gestionar}" />
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
