@@ -9,6 +9,9 @@
 			<p:fieldset legend="Resultados" style="margin-top:10px">
 				<h:panelGroup columns="3" id="panelDatos">
 
+					<p:outputLabel for="tfdescriana" id="lbldescrana" value="Descripcion" />
+					<p:inputText id="tfdescriana" class="form-control"
+						value="#{gestionAnalisisController.descripcion}" />
 
 					<h:outputLabel for="tfFechaResultado" value="Fecha de realizacion" />
 					<h:inputText id="tfFechaResultado"
@@ -21,17 +24,20 @@
 					<p:outputLabel value="Resultado" />
 					<p:fileUpload
 						fileUploadListener="#{gestionAnalisisController.subirImagen}"
-						mode="advanced" dragDropSupport="false"
+						mode="advanced" dragDropSupport="false" label="Seleccione"
+						uploadLabel="Subir Imagen" cancelLabel="Cancelar"
 						update="messages formGestion" sizeLimit="500000" fileLimit="1"
 						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
 					<p:growl id="messages" showDetail="true" />
 
-				</h:panelGroup>
+					<p:graphicImage id="graImaResultado"
+						value="#{gestionAnalisisController.imagenAnalisis}" width="150"
+						height="120"></p:graphicImage>
 
-				<p:commandButton value="Registrar"
-					action="#{gestionAnalisisController.crearAnalisis}"
-					process="@this panelDatos" update="panelDatos" />
+
+
+				</h:panelGroup>
 
 				<p:commandButton value="Buscar"
 					action="#{gestionAnalisisController.buscarAnalisis}"
