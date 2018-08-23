@@ -7,14 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="DIMENSION_PAGE")
+@NamedQueries({ 
+	@NamedQuery(name = DimensionPage.CONSULTA_LISTAR_DIMENSION_PAGE, query = "SELECT dp FROM DimensionPage dp") 
+	})
 public class DimensionPage {
 
+	public static final String CONSULTA_LISTAR_DIMENSION_PAGE = "DimensionPage.ListarDimensionPage";
+	
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,7 +31,8 @@ public class GestionKmEJB {
 		try {
 			List<DimensionPage> pages = em.listaPaginas();
 			em.guardarPages(pages);
-			List<HechoRecentChange> changes = em.listaCambios();
+			
+			List<HechoRecentChange> changes = em.listaCambios(users, pages);
 			em.guardarChanges(changes);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

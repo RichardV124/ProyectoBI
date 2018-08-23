@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,8 +18,6 @@ import javax.persistence.Query;
 import entidades.AccesoTipoUsuario;
 import entidades.AccesoTipoUsuarioPK;
 import entidades.DetalleVenta;
-import entidades.Producto;
-import entidades.Usuario;
 import entidades.Venta;
 import etl.Analisis;
 import excepciones.ExcepcionNegocio;
@@ -527,15 +526,12 @@ public class Persistencia  implements Serializable{
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<HechoRecentChange> listaCambios() throws Exception{
+	public List<HechoRecentChange> listaCambios(List<DimensionUser> users, List<DimensionPage> pages) throws Exception{
 		List<HechoRecentChange> changes = new ArrayList<HechoRecentChange>();
 		List<Object[]> changesBd = listarWiki("SELECT (SELECT DATE_FORMAT(CAST(rc.rc_timestamp AS CHAR), '%d/%m/%Y')) AS fecha"
 				+ ", CAST(rc.rc_user_text AS CHAR) USER, CAST(rc.rc_title AS CHAR) title"
 				+ ", CAST(rc.rc_comment AS CHAR) COMMENT, rc.rc_old_len OLD, rc.rc_new_len NEW "
 				+ "FROM recentchanges rc WHERE rc.rc_new=0;");
-		
-		List<DimensionUser> users = listaUsuarios();
-		List<DimensionPage> pages = listaPaginas();
 		
 		for (Object[] c : changesBd) {
 			if(c[4] != null && c[5]!=null){
@@ -588,5 +584,51 @@ public class Persistencia  implements Serializable{
 		return q.getResultList();
 	}
 	
+	/**
+	 * metodo para listar los users registrados en el DWH
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DimensionUser> listarUsersDwh() {		
+		List<DimensionUser> users = new ArrayList<DimensionUser>();
+		Query q = emM.createNativeQuery("SELECT * FROM dimension_user;");
+		List<Object[]> usersBd = q.getResultList();
+		if (usersBd.isEmpty()) {
+			throw new ExcepcionNegocio("No hay Users registrados en la base de datos");
+		} else {
+			for (Object[] a : usersBd) {
+			    System.out.println("INFOOOOOOOOOOOOOOOOOO Usuario " + a[0] + " " + a[1] + a[2]);
+			    DimensionUser user = new DimensionUser();
+			    user.setId(Integer.parseInt(String.valueOf(a[0])));
+			    user.setUsername(String.valueOf(a[2]));
+			    user.setRealname(String.valueOf(a[1]));		
+			    users.add(user);
+			}
+			return users;
+		}
+	}
+	
+	/**
+	 * metodo para listar las paginas registrados en el DWH
+	 * @throws ParseException 
+	 */
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DimensionPage> listarPagesDwh() throws ParseException {		
+		List<DimensionPage> pages = new ArrayList<DimensionPage>();
+		Query q = emM.createNativeQuery("SELECT * FROM dimension_page;");
+		List<Object[]> pagesBd = q.getResultList();
+		if (pagesBd.isEmpty()) {		
+			throw new ExcepcionNegocio("No hay paginas registrados en la base de datos");
+		} else {									
+			for (Object[] a : pagesBd) {
+				System.out.println("INFOOOOOOOOOOOOOOOOOO Pages " + a[0] + " " + a[1] + a[2]+ a[3]+ a[4]);
+				DimensionPage page = new DimensionPage();	
+				page.setId(Integer.parseInt(String.valueOf(a[0])));
+				page.setComment(String.valueOf(a[1]));
+				page.setDate((Date) a[2]);
+				page.setText(String.valueOf(a[3]));		
+				page.setTitle(String.valueOf(a[4]));										
+			}
+			return pages;
+		}
+	}
 }
-
