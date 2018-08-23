@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/templates/index.xhtml">
+	
+	<ui:define name="cuerpo">
+		<h:form prependId="false">
+
+			<h1> DATA WAREHOUSE</h1>
+
+
+			<p:dataTable id="tablaHechos1" var="hecho" border="1"
+				scrollable="true" scrollWidth="100%" scrollHeight="150"
+				value="#{controladorVentasDWH.hechosVenta}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+				paginator="true" rows="10" style="margin-top: 25px;">
+
+				<f:facet name="{Exporters}">
+					<div style="float: right">
+						<h:commandButton accion="#{controladorVentasDWH.crearAditoriaEx}">
+							<p:graphicImage
+								value="#{FacesContext.getCurrentInstance().getExternalContext()}/images/ex.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tablaHechos1" fileName="ventas"  />
+						</h:commandButton>
+
+						<h:commandButton accion="#{controladorVentasDWH.crearAditoria}">
+							<p:graphicImage
+								value="#{FacesContext.getCurrentInstance().getExternalContext()}/images/csv.jpeg"
+								width="24" />
+							<p:dataExporter type="csv" target="tablaHechos1" fileName="ventas"  />
+						</h:commandButton>
+					</div>
+				</f:facet>
+
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="5" headerText="Datos Producto" />
+						<p:column colspan="3" headerText="Datos Venta" />
+						<p:column colspan="4" headerText="Datos Usuario" />
+						<p:column colspan="2" headerText="Datos Cliente" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Codigo" />
+						<p:column headerText="Producto" />
+						<p:column headerText="Precio" />
+						<p:column headerText="Lote" />
+						<p:column headerText="Tipo" />
+						
+						<p:column headerText="Identificador" />
+						<p:column headerText="Unidades Compradas" />
+						<p:column headerText="Unidades fecha" />
+						
+						
+						<p:column headerText="Cedula" />
+						<p:column headerText="Genero" />
+						<p:column headerText="Edad" />
+						<p:column headerText="Salario" />
+						
+						<p:column headerText="Cedula" />
+						<p:column headerText="Genero" />
+					</p:row>
+				</p:columnGroup>
+
+				<p:column headerText="Codigo Producto">
+					<h:outputLabel value="#{hecho.producto.id}" />
+				</p:column>
+
+				<p:column headerText="Producto">
+					<h:outputLabel value="#{hecho.producto.nombre}" />
+				</p:column>
+
+				<p:column headerText="Precio">
+					<h:outputLabel value="#{hecho.producto.valor}" />
+				</p:column>
+				
+				<p:column headerText="Lote">
+					<h:outputLabel value="#{hecho.producto.lote}" />
+				</p:column>
+
+				<p:column headerText="Tipo Producto">
+					<h:outputLabel value="#{hecho.producto.tipoProducto}" />
+				</p:column>
+				
+				<p:column headerText="Identificador">
+					<h:outputLabel value="#{hecho.id}" />
+				</p:column>
+
+				<p:column headerText="Unidades compradas">
+					<h:outputLabel value="#{hecho.cantidad}" />
+				</p:column>
+				
+				<p:column headerText="Fecha">
+					<h:outputLabel value="#{hecho.fecha}" />
+				</p:column>
+
+				
+				<p:column headerText="Cedula usuario">
+					<h:outputLabel value="#{hecho.usuario.id}" />
+				</p:column>
+				
+				<p:column headerText="Genero usuario">
+					<h:outputLabel value="#{hecho.usuario.genero}" />
+				</p:column>
+
+				<p:column headerText="Edad usuario">
+					<h:outputLabel value="#{hecho.usuario.edad}" />
+				</p:column>
+				
+				<p:column headerText="Edad usuario">
+					<h:outputLabel value="#{hecho.usuario.salario}" />
+				</p:column>
+
+				<p:column headerText="Cedula cliente">
+					<h:outputLabel value="#{hecho.cliente.id}" />
+				</p:column>
+				
+				<p:column headerText="Edad cliente">
+					<h:outputLabel value="#{hecho.cliente.genero}" />
+				</p:column>
+
+			
+				
+
+			</p:dataTable>
+
+
+		</h:form>
+	</ui:define>
+	
+		
+</ui:composition>

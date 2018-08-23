@@ -55,6 +55,7 @@ public class GestionAuditoriaController implements Serializable {
 		
 		try {
 			audi_2 = auditoriaEJB.listarParametro(sesion.getBd(), "Analisis");
+			audi_2 = auditoriaEJB.listarParametro(sesion.getBd(), "HechoVenta");
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}

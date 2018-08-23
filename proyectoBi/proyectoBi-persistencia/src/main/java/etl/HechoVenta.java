@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,7 +19,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="HECHO_VENTA")
+@NamedQuery(name = HechoVenta.TRAER_VENTA, query = "SELECT A FROM HechoVenta A")
 public class HechoVenta implements Serializable{
+	
+	public static final String TRAER_VENTA = "HechoVenta.listdwVENTA";
 
 	@Id
 	@Column(name="ID")
