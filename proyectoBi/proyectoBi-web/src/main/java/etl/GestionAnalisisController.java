@@ -1,16 +1,20 @@
 package etl;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -19,6 +23,8 @@ import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import beans.AuditoriaEJB;
@@ -31,9 +37,11 @@ import session.SessionController;
 @Named("gestionAnalisisController")
 public class GestionAnalisisController implements Serializable {
 
-	private String imagenAnalisis;
+	private StreamedContent imagenAnalisis;
 
 	private Date fechaResultado;
+	
+	private String descripcion;
 
 	@EJB
 	private AuditoriaEJB auditoriaEJB;
@@ -48,12 +56,8 @@ public class GestionAnalisisController implements Serializable {
 	
 	private UploadedFile file;
 	
-	public void upload() {
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-    }
+	private File imagenFile;
+	
 	
 	public void aaa(){
 		String a = "a";
@@ -108,14 +112,21 @@ public class GestionAnalisisController implements Serializable {
 		}
 		return ubicacionImagen;
 	}
-
+	
 	public void subirImagen(FileUploadEvent event) {
 
 		try {
-			analisis.setResultado(event.getFile().getContents());
-			imagenAnalisis = guardaBlobEnFicheroTemporal(analisis.getResultado(), event.getFile().getFileName());
+			byte[] imagen = new byte[(int) event.getFile().getContents().length];
+			BufferedInputStream ima = (BufferedInputStream) event.getFile().getInputstream();
+		
+		ima.read(imagen);
+		analisis.setResultado(imagen);
+		
+		crearAnalisis();
+		//	imagenAnalisis = guardaBlobEnFicheroTemporal(analisis.getResultado(), event.getFile().getFileName());
 			Messages.addFlashGlobalInfo("Se subio la imagen correctamente");
 		} catch (Exception e) {
+			e.printStackTrace();
 			Messages.addFlashGlobalInfo("Problemas al subir la imagen");
 		}
 	}
@@ -123,16 +134,21 @@ public class GestionAnalisisController implements Serializable {
 
 	public void crearAnalisis() {
 		try {
+			
+			if(analisis.getResultado()!=null){
 
-			analisis.setFecha(fechaResultado);
+			analisis.setFecha(new Date());
+			analisis.setDescripcion(descripcion);
 
-			analisisEJB.crear(analisis, sesion.getBd());
+			analisisEJB.crear(analisis, 3);
 
 			// creando la auditoria
 			crearAuditoria("Analisis", "Objeto", "Crear", sesion.getBd());
 			analisis = new Analisis();
 
-			Messages.addFlashGlobalInfo("Registro exitoso");
+			}else{
+				Messages.addFlashGlobalInfo("Debe cargar la imagen");
+			}
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
 		}
@@ -140,7 +156,13 @@ public class GestionAnalisisController implements Serializable {
 	
 	public void buscarAnalisis(){
 		try{
-			analisis = analisisEJB.buscarPorFecha(fechaResultado, sesion.getBd());
+			analisis = analisisEJB.buscar(6, sesion.getBd());
+		//	analisis = analisisEJB.buscarPorFecha(fechaResultado, sesion.getBd());
+			if(analisis!=null){
+				Messages.addFlashGlobalInfo("Si encontro algo chamito");
+			}else{
+				Messages.addFlashGlobalInfo("No encontro nada chamito");
+			}
 		
 		} catch (ExcepcionNegocio e) {
 			Messages.addFlashGlobalInfo(e.getMessage());
@@ -150,14 +172,25 @@ public class GestionAnalisisController implements Serializable {
 			Messages.addFlashGlobalInfo("Problemas al buscar el analisis");
 		}
 	}
+	
+	
+	public StreamedContent getImagenAnalisis() throws IOException, SQLException {
 
-	public String getImagenAnalisis() {
-		return imagenAnalisis;
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		}
+
+		else {
+
+			byte[] image = analisis.getResultado();
+
+			return new DefaultStreamedContent(new ByteArrayInputStream(image));
+
+		}
 	}
 
-	public void setImagenAnalisis(String imagenAnalisis) {
-		this.imagenAnalisis = imagenAnalisis;
-	}
 
 	public Date getFechaResultado() {
 		return fechaResultado;
@@ -181,6 +214,18 @@ public class GestionAnalisisController implements Serializable {
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	public void setImagenAnalisis(StreamedContent imagenAnalisis) {
+		this.imagenAnalisis = imagenAnalisis;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	

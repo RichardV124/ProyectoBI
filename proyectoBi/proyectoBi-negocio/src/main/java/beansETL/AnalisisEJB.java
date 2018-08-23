@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import entidades.Cargo;
 import entidades.TipoUsuario;
 import etl.Analisis;
 import excepciones.ExcepcionNegocio;
@@ -32,12 +33,12 @@ public class AnalisisEJB {
 	public void crear(Analisis analisis, int bd){
 		conexion.setBd(bd);
 		// Buscamos si existe un tipo con el mismo nombre
-		List<Object> lista = conexion.listarConParametroDate(Analisis.buscarPorFecha, analisis.getFecha());
-		if(lista.size() == 0){
-			conexion.crearAnalisis(analisis);
-		}else{
-			throw new excepciones.ExcepcionNegocio("Ya existe un analisis realizado en la fecha: "+analisis.getFecha());
-		}
+	//	List<Object> lista = conexion.listarConParametroDate(Analisis.buscarPorFecha, analisis.getFecha());
+		//if(lista.size() == 0){
+			conexion.crear(analisis);
+		//}else{
+		//	throw new excepciones.ExcepcionNegocio("Ya existe un analisis realizado en la fecha: "+analisis.getFecha());
+		//}
 	}
 	
 	/**
@@ -85,12 +86,17 @@ public class AnalisisEJB {
 	 */
 	public Analisis buscarPorFecha(Date fecha, int bd){
 		conexion.setBd(bd);
-		List<Object> lista = conexion.listarConParametroDate(TipoUsuario.buscarPorNombre,fecha);
+		List<Object> lista = conexion.listarConParametroDate(Analisis.buscarPorFecha,fecha);
 		if(lista.size() > 0){
 			return (Analisis)lista.get(0);
 		}else{
 			return null;
 		}
+	}
+	
+	public Analisis buscar(int id, int bd){
+		conexion.setBd(bd);
+		return (Analisis) conexion.buscar(Analisis.class, id);
 	}
 
 

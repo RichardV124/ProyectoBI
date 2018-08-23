@@ -70,6 +70,10 @@ public class Persistencia  implements Serializable{
 		case 2:
 			emP.persist(objeto);
 			break;
+			
+		case 3:
+			emM.persist(objeto);
+			break;
 		default:
 			throw new ExcepcionNegocio("La base de datos #"+this.bd+" no existe.");
 		}
